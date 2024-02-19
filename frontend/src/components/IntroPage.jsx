@@ -1,24 +1,21 @@
-
 import Lottie from "lottie-web";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "tailwindcss/tailwind.css";
 import startanimation from "../assets/animations/start_animation.json";
 
 const IntroPage = () => {
+  const startanimationContainer = useRef(null);
   useEffect(() => {
-    console.log("useEffect is running");
-    // Use lottie to render the animation
-    const animationContainer = document.getElementById("lottie-container");
-    Lottie.loadAnimation({
-      container: animationContainer,
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      animationData: startanimation,
-      
-    });
-    console.log("Component rendered"); 
+    if (startanimationContainer.current.childElementCount == 0) {
+      Lottie.loadAnimation({
+        container: startanimationContainer.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        animationData: startanimation,
+      });
+    }
   }, []);
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center">
@@ -38,8 +35,8 @@ const IntroPage = () => {
           </Link>
         </div>
       </div>
-      <div id="lottie-container" className="w-1/6 h-1/6"></div>
-      <h1 className="text-8xl font-bold mb-6 text-right text-warning-500 text-txtcol">
+      <div ref={startanimationContainer} className="w-1/6"></div>
+      <h1 className="text-8xl font-bold mb-6 text-right text-txtcol">
         QuestCraft
       </h1>
       <p className="mb-4 text-right text-txtcol-900">

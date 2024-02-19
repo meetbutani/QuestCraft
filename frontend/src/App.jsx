@@ -4,8 +4,7 @@ import "react";
 import IntroPage from "./components/IntroPage";
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import LoginPage from "./components/LoginPage";
-// import RegistrationPage from "./components/RegistrationPage";
+import RegisterPage from "./components/RegisterPage";
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<IntroPage />} />
         <Route path="/login" element={<IntroPage />} />
-        <Route path="/register" element={<IntroPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
     </Router>
   );
