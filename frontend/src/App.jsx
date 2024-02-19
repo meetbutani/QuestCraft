@@ -2,6 +2,7 @@ import "react";
 
 // import "./App.css";
 import IntroPage from "./components/IntroPage";
+
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // import LoginPage from "./components/LoginPage";
 // import RegistrationPage from "./components/RegistrationPage";
