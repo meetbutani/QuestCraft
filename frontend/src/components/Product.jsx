@@ -5,7 +5,7 @@ const Product = () => {
   return (
     <>
     <div>This is a Product Page</div>
-    <Link to="/layout/dashboard" className='underline'>Go to dashboard Page</Link>
+    {/* <Link to="/layout/dashboard" className='underline'>Go to dashboard Page</Link> */}
     </>
   )
 }
