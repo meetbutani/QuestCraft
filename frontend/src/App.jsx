@@ -4,6 +4,8 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import Dashboard from './pages/Dashboard/Dashboard';
 
+import SubjectPaper from './pages/QPG/SubjectPaper';
+
 function App() {
   const [loading, setLoading] = useState(true);
   const { pathname } = useLocation();
@@ -36,6 +38,15 @@ function App() {
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               {/* <Calendar /> */}
+            </>
+          }
+        />
+        <Route
+          path='/qpaper/set-subject-paper'
+          element={
+            <>
+              <PageTitle title="Questcraft Dashboard" />
+              <SubjectPaper />
             </>
           }
         />
