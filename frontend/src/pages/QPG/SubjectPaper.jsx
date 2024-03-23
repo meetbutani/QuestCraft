@@ -107,21 +107,66 @@ const SubjectPaper = () => {
                   </div>
                 </div>
 
-                {/* <SelectCourse /> */}
+                
 
-                <div className="mb-6">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Message
-                  </label>
-                  <textarea
-                    rows={6}
-                    placeholder="Type your message"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  ></textarea>
-                </div>
+                <table className="table-fixed w-full border-spacing-2 border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="w-3/4 px-4 py-2">Unit Name</th>
+                      <th className="w-1/4 px-4 py-2" colSpan="2">Question Bank</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="px-4 py-2">Choose the most appropriate option in each of the following question</td>
+                      <td className="w-1/6 px-4 py-2">23</td>
+                      <td className=" w-5/6 px-4 py-2">
+                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2">Answer The Following Questions in Short</td>
+                      <td className="w-1/6 px-4 py-2">10</td>
+                      <td className=" w-5/6 px-4 py-2">
+                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2">Answer The Following Questions in Brief</td>
+                      <td className="w-1/6 px-4 py-2">20</td>
+                      <td className=" w-5/6 px-4 py-2">
+                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2">Answer The Following Questions in Eassy Form</td>
+                      <td className="w-1/6 px-4 py-2">11</td>
+                      <td className=" w-5/6 px-4 py-2">
+                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-2">Answer The Following Statements in True or False</td>
+                      <td className="w-1/6 px-4 py-2">20</td>
+                      <td className=" w-5/6 px-4 py-2">
+                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                      </td>
+                    </tr>
 
-                <button className="flex w-full justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
-                  Send Message
+                    <tr>
+                      <td className="px-4 py-2">Fill In the Blanks with Suitable Words</td>
+                      <td className="w-1/6 px-4 py-2">20</td>
+                      <td className=" w-5/6 px-4 py-2">
+                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                      </td>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+
+
+                <button className="flex flex-row items-center w-1/2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                  Confirm
                 </button>
               </div>
             </form>
