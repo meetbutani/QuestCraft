@@ -5,6 +5,7 @@ import PageTitle from './components/PageTitle';
 import Dashboard from './pages/Dashboard/Dashboard';
 
 import SubjectPaper from './pages/QPG/SubjectPaper';
+import CoursePage from './pages/Courses/CoursePage';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -45,8 +46,18 @@ function App() {
           path='/qpaper/set-subject-paper'
           element={
             <>
-              <PageTitle title="Questcraft Dashboard" />
+              <PageTitle title="Set Subject Paper" />
               <SubjectPaper />
+            </>
+          }
+        />
+
+        <Route
+          path='/courses'
+          element={
+            <>
+              <PageTitle title="Courses" />
+              <CoursePage />
             </>
           }
         />
