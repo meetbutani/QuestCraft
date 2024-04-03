@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-const SelectCourse = () => {
+const SelectCourse = ({ Title, optionlist }) => {
   const [selectedOption, setSelectedOption] = useState('');
   const [isOptionSelected, setIsOptionSelected] = useState(false);
 
-  const changeTextColor = () => {
+  const changeTextColor = (value) => {
+    setSelectedOption(value);
     setIsOptionSelected(true);
   };
 
@@ -12,32 +13,22 @@ const SelectCourse = () => {
     <div className="mb-4.5">
       <label className="mb-2.5 block text-black dark:text-white">
         {' '}
-        Select Course{' '}
+        {Title}{' '}
       </label>
 
       <div className="relative z-20 bg-transparent dark:bg-form-input">
         <select
           value={selectedOption}
-          onChange={(e) => {
-            setSelectedOption(e.target.value);
-            changeTextColor();
-          }}
+          onChange={(e) => changeTextColor(e.target.value)}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
             isOptionSelected ? 'text-black dark:text-white' : ''
           }`}
         >
-          <option value="" disabled className="text-body dark:text-bodydark">
-            Select your subject
-          </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            ICT
-          </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            CE
-          </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            IT
-          </option>
+          {optionlist.map((option, index) => (
+            <option key={index} value={option} disabled={option === ''} className="text-body dark:text-bodydark">
+              {option}
+            </option>
+          ))}
         </select>
 
         <span className="absolute top-1/2 right-4 z-30 -translate-y-1/2">

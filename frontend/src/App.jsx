@@ -6,6 +6,13 @@ import Dashboard from './pages/Dashboard/Dashboard';
 
 import SubjectPaper from './pages/QPG/SubjectPaper';
 import CoursePage from './pages/Courses/CoursePage';
+import ManageSubject from './pages/Subject/ManageSubject';
+import AddSubject from './pages/Subject/AddSubject';
+import AddUnitPage from './pages/Unit/AddUnitPage';
+import ManageQuestion from './pages/Question/ManageQuestion';
+import AddQuestion from './pages/Question/AddQuestion';
+import SetUnitPaper from './pages/QPG/SetUnitPaper';
+import ManagePaper from './pages/QPG/ManagePaper';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -53,6 +60,26 @@ function App() {
         />
 
         <Route
+          path='/qpaper/set-unit-paper'
+          element={
+            <>
+              <PageTitle title="Add Subject" />
+              <SetUnitPaper />
+            </>
+          }
+        />
+
+        <Route
+          path='/qpaper/manage-paper'
+          element={
+            <>
+              <PageTitle title="Add Subject" />
+              <ManagePaper />
+            </>
+          }
+        />
+
+        <Route
           path='/courses'
           element={
             <>
@@ -61,7 +88,71 @@ function App() {
             </>
           }
         />
+
+        <Route
+          path='/subject/add-subject'
+          element={
+            <>
+              <PageTitle title="Add Subject" />
+              <AddSubject />
+            </>
+          }
+        />
+
+        <Route
+          path='/subject/add-subject-unit'
+          element={
+            <>
+              <PageTitle title="Add Unit" />
+              <AddUnitPage />
+            </>
+          }
+        />
+
+        <Route
+          path='/question/set-question'
+          element={
+            <>
+              <PageTitle title="Manage Question" />
+              <AddQuestion />
+            </>
+          }
+        />
+      
+
+        <Route
+          path='/subject/manage_subject'
+          element={
+            <>
+              <PageTitle title="Manage Subject" />
+              <ManageSubject />
+            </>
+          }
+        />
+
+        <Route
+          path='/question/set-question'
+          element={
+            <>
+              <PageTitle title="Manage Question" />
+              <AddQuestion />
+            </>
+          }
+        />
+
+        <Route
+          path='/question/manage-question'
+          element={
+            <>
+              <PageTitle title="Manage Question" />
+              <ManageQuestion />
+            </>
+          }
+        />
       </Routes>
+
+      
+      
     </>
   );
 }

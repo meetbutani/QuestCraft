@@ -3,8 +3,10 @@ import DefaultLayout from '../../layout/DefaultLayout';
 
 import Breadcrumb from '../../components/BreadCrumb/BreadCrumb';
 import SelectCourse from '../../components/Forms/SelectCourse';
+import DynamicDropDown from '../../components/Forms/DynamicDropDown';
 
 const SubjectPaper = () => {
+  const optionlist = (["AddOption","AddOption2","AddOption3"])
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Set Subject Paper" />
@@ -59,11 +61,11 @@ const SubjectPaper = () => {
 
                 <div className=' flex flex-col gap-4  xl:flex-row'>
                   <div className="w-full xl:w-1/2">
-                  <SelectCourse />
+                  <DynamicDropDown Title={"Select Status"} optionlist={optionlist} />
                     
                   </div>
                   <div className="w-full xl:w-1/2">
-                  <SelectCourse />
+                  <DynamicDropDown Title={"Select Status"} optionlist={optionlist} />
                     
                   </div>
                 </div>
@@ -93,7 +95,7 @@ const SubjectPaper = () => {
 
                 <div className=' flex flex-col gap-4  xl:flex-row'>
                   <div className="w-full xl:w-1/2">
-                  <SelectCourse />
+                  <DynamicDropDown Title={"Select Status"} optionlist={optionlist} />
                   </div>
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">

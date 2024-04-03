@@ -191,7 +191,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                           </li>
                           <li>
                             <NavLink
-                              to="/subject/manage-subject"
+                              to="/subject/manage_subject"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
@@ -208,9 +208,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* <!-- Menu Item Forms --> */}
 
-              {/* <!-- Menu Item Forms --> */}
+              
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/question' || pathname.includes('question')
