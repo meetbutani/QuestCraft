@@ -16,6 +16,7 @@ import ManagePaper from './pages/QPG/ManagePaper';
 import RegisterPage from './pages/auth/RegisterPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignIn from './pages/auth/SignIn';
+import SignUp from './pages/auth/SignUp';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ function App() {
   ) : (
     <Routes>
       <Route
-        path='/login'
+        path='/auth/login'
         element={
           <>
             <PageTitle title="Set Subject Paper" />
@@ -43,16 +44,25 @@ function App() {
         }
       />
       <Route
-        path='/signin'
+        path='/auth/signin'
         element={
           <>
-            <PageTitle title="Set Subject Paper" />
+            <PageTitle title="Sign In" />
             <SignIn />
           </>
         }
       />
       <Route
-        path='/register'
+        path='/auth/signup'
+        element={
+          <>
+            <PageTitle title="Sign Up" />
+            <SignUp />
+          </>
+        }
+      />
+      <Route
+        path='/auth/register'
         element={
           <>
             <PageTitle title="Set Subject Paper" />

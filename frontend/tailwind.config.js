@@ -16,6 +16,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        iconColor: '#b1b9c5',
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',
