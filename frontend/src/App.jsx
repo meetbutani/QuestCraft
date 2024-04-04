@@ -13,6 +13,9 @@ import ManageQuestion from './pages/Question/ManageQuestion';
 import AddQuestion from './pages/Question/AddQuestion';
 import SetUnitPaper from './pages/QPG/SetUnitPaper';
 import ManagePaper from './pages/QPG/ManagePaper';
+import RegisterPage from './pages/auth/RegisterPage';
+import LoginPage from './pages/auth/LoginPage';
+import SignIn from './pages/auth/SignIn';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -29,131 +32,144 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
-    <>
-      <Routes>
-        <Route
-          index
-          element={
-            <>
-              <PageTitle title="Questcraft Dashboard" />
-              <Dashboard />
-            </>
-          }
-        />
-        <Route
-          path="/calendar"
-          element={
-            <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              {/* <Calendar /> */}
-            </>
-          }
-        />
-        <Route
-          path='/qpaper/set-subject-paper'
-          element={
-            <>
-              <PageTitle title="Set Subject Paper" />
-              <SubjectPaper />
-            </>
-          }
-        />
+    <Routes>
+      <Route
+        path='/login'
+        element={
+          <>
+            <PageTitle title="Set Subject Paper" />
+            <LoginPage />
+          </>
+        }
+      />
+      <Route
+        path='/signin'
+        element={
+          <>
+            <PageTitle title="Set Subject Paper" />
+            <SignIn />
+          </>
+        }
+      />
+      <Route
+        path='/register'
+        element={
+          <>
+            <PageTitle title="Set Subject Paper" />
+            <RegisterPage />
+          </>
+        }
+      />
+      <Route
+        index
+        element={
+          <>
+            <PageTitle title="Questcraft Dashboard" />
+            <Dashboard />
+          </>
+        }
+      />
+      <Route
+        path='/qpaper/set-subject-paper'
+        element={
+          <>
+            <PageTitle title="Set Subject Paper" />
+            <SubjectPaper />
+          </>
+        }
+      />
 
-        <Route
-          path='/qpaper/set-unit-paper'
-          element={
-            <>
-              <PageTitle title="Add Subject" />
-              <SetUnitPaper />
-            </>
-          }
-        />
+      <Route
+        path='/qpaper/set-unit-paper'
+        element={
+          <>
+            <PageTitle title="Add Subject" />
+            <SetUnitPaper />
+          </>
+        }
+      />
 
-        <Route
-          path='/qpaper/manage-paper'
-          element={
-            <>
-              <PageTitle title="Add Subject" />
-              <ManagePaper />
-            </>
-          }
-        />
+      <Route
+        path='/qpaper/manage-paper'
+        element={
+          <>
+            <PageTitle title="Add Subject" />
+            <ManagePaper />
+          </>
+        }
+      />
 
-        <Route
-          path='/courses'
-          element={
-            <>
-              <PageTitle title="Courses" />
-              <CoursePage />
-            </>
-          }
-        />
+      <Route
+        path='/courses'
+        element={
+          <>
+            <PageTitle title="Courses" />
+            <CoursePage />
+          </>
+        }
+      />
 
-        <Route
-          path='/subject/add-subject'
-          element={
-            <>
-              <PageTitle title="Add Subject" />
-              <AddSubject />
-            </>
-          }
-        />
+      <Route
+        path='/subject/add-subject'
+        element={
+          <>
+            <PageTitle title="Add Subject" />
+            <AddSubject />
+          </>
+        }
+      />
 
-        <Route
-          path='/subject/add-subject-unit'
-          element={
-            <>
-              <PageTitle title="Add Unit" />
-              <AddUnitPage />
-            </>
-          }
-        />
+      <Route
+        path='/subject/add-subject-unit'
+        element={
+          <>
+            <PageTitle title="Add Unit" />
+            <AddUnitPage />
+          </>
+        }
+      />
 
-        <Route
-          path='/question/set-question'
-          element={
-            <>
-              <PageTitle title="Manage Question" />
-              <AddQuestion />
-            </>
-          }
-        />
-      
+      <Route
+        path='/question/set-question'
+        element={
+          <>
+            <PageTitle title="Manage Question" />
+            <AddQuestion />
+          </>
+        }
+      />
 
-        <Route
-          path='/subject/manage_subject'
-          element={
-            <>
-              <PageTitle title="Manage Subject" />
-              <ManageSubject />
-            </>
-          }
-        />
 
-        <Route
-          path='/question/set-question'
-          element={
-            <>
-              <PageTitle title="Manage Question" />
-              <AddQuestion />
-            </>
-          }
-        />
+      <Route
+        path='/subject/manage_subject'
+        element={
+          <>
+            <PageTitle title="Manage Subject" />
+            <ManageSubject />
+          </>
+        }
+      />
 
-        <Route
-          path='/question/manage-question'
-          element={
-            <>
-              <PageTitle title="Manage Question" />
-              <ManageQuestion />
-            </>
-          }
-        />
-      </Routes>
+      <Route
+        path='/question/set-question'
+        element={
+          <>
+            <PageTitle title="Manage Question" />
+            <AddQuestion />
+          </>
+        }
+      />
 
-      
-      
-    </>
+      <Route
+        path='/question/manage-question'
+        element={
+          <>
+            <PageTitle title="Manage Question" />
+            <ManageQuestion />
+          </>
+        }
+      />
+    </Routes>
   );
 }
 

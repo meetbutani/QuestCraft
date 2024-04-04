@@ -1,16 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../images/logo/logo.svg';
 import { HiOutlineLogout, HiOutlineViewGrid } from 'react-icons/hi'
 import { FaBook, FaBuilding, FaChevronDown, FaGraduationCap, FaRegListAlt, FaUserAlt } from "react-icons/fa";
 import { IoMdAdd, IoMdSettings } from "react-icons/io";
 import { CgFileDocument } from "react-icons/cg";
 import { RiListSettingsFill } from "react-icons/ri";
 import { RiKey2Line } from "react-icons/ri";
-import { RxHamburgerMenu } from "react-icons/rx";
-
-
+import { IoCloseOutline } from "react-icons/io5";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -60,8 +57,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   }, [sidebarExpanded]);
 
   return (
-    <>
-    
     <aside
       ref={sidebar}
       className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -73,18 +68,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* <img src={Logo} alt="Logo" /> */}
           <h1 className='flex text-title-xl font-bold text-bodydark1'>Questcraft</h1>
         </NavLink>
-        
-        <div className='ml-2'>
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)} 
-            aria-controls="sidebar"
-            aria-expanded={sidebarOpen}
-          >
-            <RxHamburgerMenu size={50} />
-          </button>
-        </div>
+
+        <button
+          ref={trigger}
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          aria-controls="sidebar"
+          aria-expanded={sidebarOpen}
+          className="block sm:hidden"
+        >
+          <IoCloseOutline size={32} />
+        </button>
       </div>
-      
+
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
@@ -116,7 +111,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <ul className="mb-6 flex flex-col gap-1.5">
 
               {/* <!-- Menu Item Course --> */}
-              
+
               <li>
                 <NavLink
                   to="/courses"
@@ -128,7 +123,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   Course
                 </NavLink>
               </li>
-              
+
               {/* <!-- Menu Item Course --> */}
 
               {/* <!-- Menu Item Forms --> */}
@@ -209,7 +204,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 }}
               </SidebarLinkGroup>
 
-              
+
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/question' || pathname.includes('question')
@@ -568,7 +563,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {/* <!-- Sidebar Menu --> */}
       </div>
     </aside>
-    </>
   );
 };
 
