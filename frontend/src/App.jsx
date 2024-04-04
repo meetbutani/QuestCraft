@@ -37,7 +37,7 @@ function App() {
         path='/login'
         element={
           <>
-            <PageTitle title="Set Subject Paper" />
+            <PageTitle title="Login Page" />
             <LoginPage />
           </>
         }

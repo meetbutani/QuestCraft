@@ -1,12 +1,41 @@
-import { Link } from 'react-router-dom';
-import DefaultLayout from '../../layout/DefaultLayout';
+import { Link } from "react-router-dom";
+import DefaultLayout from "../../layout/DefaultLayout";
 
-import Breadcrumb from '../../components/BreadCrumb/BreadCrumb';
-import SelectCourse from '../../components/Forms/SelectCourse';
-import DynamicDropDown from '../../components/Forms/DynamicDropDown';
+import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
+import SelectCourse from "../../components/Forms/SelectCourse";
+import DynamicDropDown from "../../components/Forms/DynamicDropDown";
+import JoditEditor from "jodit-react";
+import ReactQill from "react-quill";
+import { useMemo, useRef, useState } from "react";
+import "react-quill/dist/quill.snow.css";
 
 const SubjectPaper = () => {
-  const optionlist = (["AddOption","AddOption2","AddOption3"])
+  const [value, setValue] = useState("");
+  const toolbarOptions = [
+    ["bold", "italic", "underline", "strike"], 
+    ["blockquote", "code-block"],
+    ["link", "image", "video", "formula"],
+
+    [{ header: 1 }, { header: 2 }], 
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ script: "sub" }, { script: "super" }], 
+    [{ indent: "-1" }, { indent: "+1" }], 
+    [{ direction: "rtl" }], 
+
+    [{ size: ["small", false, "large", "huge"] }], 
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }], 
+    [{ font: [] }],
+    [{ align: [] }],
+
+    ["clean"], 
+  ];
+  const module = {
+    toolbar: toolbarOptions,
+  };
+
+  const optionlist = ["AddOption", "AddOption2", "AddOption3"];
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Set Subject Paper" />
@@ -32,46 +61,49 @@ const SubjectPaper = () => {
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
-                
+
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white font-bold">
                       Subject Details
                     </label>
-                    <div className='flex flex-row xl:flex-col'>
-                        <div className='flex flex-col xl:flex-row gap-3'>
-                            <label className="mb-2.5 block text-black dark:text-white">
-                            Subject :- 
-                            </label>
-                            <label className="mb-2.5 block text-black dark:text-white">
-                            Entered Subject Will be Displayed Here 
-                            </label>
-                        </div>
-                        <div className='flex flex-col xl:flex-row gap-3'>
-                            <label className="mb-2.5 block text-black dark:text-white">
-                            Course Details :- 
-                            </label>
-                            <label className="mb-2.5 block text-black dark:text-white">
-                            Entered Course Will be Displayed Here 
-                            </label>
-                        </div>
+                    <div className="flex flex-row xl:flex-col">
+                      <div className="flex flex-col xl:flex-row gap-3">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Subject :-
+                        </label>
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Entered Subject Will be Displayed Here
+                        </label>
+                      </div>
+                      <div className="flex flex-col xl:flex-row gap-3">
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Course Details :-
+                        </label>
+                        <label className="mb-2.5 block text-black dark:text-white">
+                          Entered Course Will be Displayed Here
+                        </label>
+                      </div>
                     </div>
-                    
                   </div>
                 </div>
 
-                <div className=' flex flex-col gap-4  xl:flex-row'>
+                <div className=" flex flex-col gap-4  xl:flex-row">
                   <div className="w-full xl:w-1/2">
-                  <DynamicDropDown Title={"Select Status"} optionlist={optionlist} />
-                    
+                    <DynamicDropDown
+                      Title={"Select Course"}
+                      optionlist={optionlist}
+                    />
                   </div>
                   <div className="w-full xl:w-1/2">
-                  <DynamicDropDown Title={"Select Status"} optionlist={optionlist} />
-                    
+                    <DynamicDropDown
+                      Title={"Select Status"}
+                      optionlist={optionlist}
+                    />
                   </div>
                 </div>
 
-                <div className=' flex flex-col gap-4  xl:flex-row'>
-                <div className="w-full xl:w-1/2">
+                <div className=" flex flex-col gap-4  xl:flex-row">
+                  <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
                       Time Allowance
                     </label>
@@ -93,9 +125,12 @@ const SubjectPaper = () => {
                   </div>
                 </div>
 
-                <div className=' flex flex-col gap-4  xl:flex-row'>
+                <div className=" flex flex-col gap-4  xl:flex-row">
                   <div className="w-full xl:w-1/2">
-                  <DynamicDropDown Title={"Select Status"} optionlist={optionlist} />
+                    <DynamicDropDown
+                      Title={"Questions Have Section"}
+                      optionlist={optionlist}
+                    />
                   </div>
                   <div className="w-full xl:w-1/2">
                     <label className="mb-2.5 block text-black dark:text-white">
@@ -109,75 +144,105 @@ const SubjectPaper = () => {
                   </div>
                 </div>
 
-                
-
                 <table className="table-fixed w-full border-spacing-2 border border-gray-300">
                   <thead>
                     <tr>
                       <th className="w-3/4 px-4 py-2">Unit Name</th>
-                      <th className="w-1/4 px-4 py-2" colSpan="2">Question Bank</th>
+                      <th className="w-1/4 px-4 py-2" colSpan="2">
+                        Question Bank
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="px-4 py-2">Choose the most appropriate option in each of the following question</td>
+                      <td className="px-4 py-2">
+                        Choose the most appropriate option in each of the
+                        following question
+                      </td>
                       <td className="w-1/6 px-4 py-2">23</td>
                       <td className=" w-5/6 px-4 py-2">
-                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        <input
+                          type="number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2">Answer The Following Questions in Short</td>
+                      <td className="px-4 py-2">
+                        Answer The Following Questions in Short
+                      </td>
                       <td className="w-1/6 px-4 py-2">10</td>
                       <td className=" w-5/6 px-4 py-2">
-                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        <input
+                          type="number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2">Answer The Following Questions in Brief</td>
+                      <td className="px-4 py-2">
+                        Answer The Following Questions in Brief
+                      </td>
                       <td className="w-1/6 px-4 py-2">20</td>
                       <td className=" w-5/6 px-4 py-2">
-                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        <input
+                          type="number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2">Answer The Following Questions in Eassy Form</td>
+                      <td className="px-4 py-2">
+                        Answer The Following Questions in Eassy Form
+                      </td>
                       <td className="w-1/6 px-4 py-2">11</td>
                       <td className=" w-5/6 px-4 py-2">
-                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        <input
+                          type="number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-2">Answer The Following Statements in True or False</td>
+                      <td className="px-4 py-2">
+                        Answer The Following Statements in True or False
+                      </td>
                       <td className="w-1/6 px-4 py-2">20</td>
                       <td className=" w-5/6 px-4 py-2">
-                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        <input
+                          type="number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
                       </td>
                     </tr>
 
                     <tr>
-                      <td className="px-4 py-2">Fill In the Blanks with Suitable Words</td>
+                      <td className="px-4 py-2">
+                        Fill In the Blanks with Suitable Words
+                      </td>
                       <td className="w-1/6 px-4 py-2">20</td>
                       <td className=" w-5/6 px-4 py-2">
-                        <input type="number" className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        <input
+                          type="number"
+                          className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-2 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        />
                       </td>
                     </tr>
-                    
                   </tbody>
                 </table>
 
-                <div className="mb-6 m-6">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Question Paper Description
-                  </label>
-                  <textarea
-                    rows={6}
-                    placeholder="Write Your Description Here"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  ></textarea>
-                </div>
+                <label className="mb-2.5 mt-8 block text-black dark:text-white">
+                  Question Paper Description
+                </label>
+                <ReactQill
+                  className="h-50 mb-25"
+                  modules={module}
+                  theme="snow"
+                  value={value}
+                  onChange={setValue}
+                />
 
-
+                {/* Your previous code */}
                 <button className="flex flex-row items-center w-1/2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
                   Confirm
                 </button>
@@ -185,8 +250,6 @@ const SubjectPaper = () => {
             </form>
           </div>
         </div>
-
-        
       </div>
     </DefaultLayout>
   );
