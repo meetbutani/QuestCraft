@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import DefaultLayout from "../../layout/DefaultLayout";
 
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
-import SelectCourse from "../../components/Forms/SelectCourse";
+
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
-import JoditEditor from "jodit-react";
+
 import ReactQill from "react-quill";
-import { useMemo, useRef, useState } from "react";
+import {useState } from "react";
 import "react-quill/dist/quill.snow.css";
 
 const SubjectPaper = () => {
