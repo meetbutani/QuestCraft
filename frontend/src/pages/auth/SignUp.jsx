@@ -55,20 +55,36 @@ const SignUp = () => {
             </h2>
 
             <form>
-              <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Name
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Enter your full name"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-
-                  <span className="absolute right-4 top-4">
-                    <GoPerson size={22} fill='#b1b9c5' />
-                  </span>
+              <div className="mb-4 grid grid-cols-2 gap-4">
+                <div>
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    First Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Enter your first name"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                    <span className="absolute right-4 top-4">
+                      <GoPerson size={22} fill='#b1b9c5' />
+                    </span>
+                  </div>
+                </div>
+                <div>
+                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                    Last Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Enter your last name"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                    <span className="absolute right-4 top-4">
+                      <GoPerson size={22} fill='#b1b9c5' />
+                    </span>
+                  </div>
                 </div>
               </div>
 

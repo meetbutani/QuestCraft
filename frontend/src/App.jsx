@@ -13,8 +13,6 @@ import ManageQuestion from './pages/Question/ManageQuestion';
 import AddQuestion from './pages/Question/AddQuestion';
 import SetUnitPaper from './pages/QPG/SetUnitPaper';
 import ManagePaper from './pages/QPG/ManagePaper';
-import RegisterPage from './pages/auth/RegisterPage';
-import LoginPage from './pages/auth/LoginPage';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 
@@ -35,15 +33,6 @@ function App() {
   ) : (
     <Routes>
       <Route
-        path='/auth/login'
-        element={
-          <>
-            <PageTitle title="Login Page" />
-            <LoginPage />
-          </>
-        }
-      />
-      <Route
         path='/auth/signin'
         element={
           <>
@@ -58,15 +47,6 @@ function App() {
           <>
             <PageTitle title="Sign Up" />
             <SignUp />
-          </>
-        }
-      />
-      <Route
-        path='/auth/register'
-        element={
-          <>
-            <PageTitle title="Set Subject Paper" />
-            <RegisterPage />
           </>
         }
       />
