@@ -24,8 +24,8 @@ const ManageSubject = () => {
       courseName: "ICT",
       semester: 1,
       status: "Active",
-      createdBy : "Namra Ravani",
-      updatedBy : "Meet Butani"
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani"
     },
     {
       id: 2,
@@ -34,8 +34,8 @@ const ManageSubject = () => {
       courseName: "ICT",
       semester: 1,
       status: "Active",
-      createdBy : "Namra Ravani",
-      updatedBy : "Meet Butani"
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani"
     },
     {
       id: 3,
@@ -44,8 +44,8 @@ const ManageSubject = () => {
       courseName: "ICT",
       semester: 1,
       status: "Active",
-      createdBy : "Namra Ravani",
-      updatedBy : "Meet Butani"
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani"
     },
     {
       id: 4,
@@ -54,11 +54,11 @@ const ManageSubject = () => {
       courseName: "ICT",
       semester: 1,
       status: "Active",
-      createdBy : "Namra Ravani",
-      updatedBy : "Meet Butani"
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani"
     },
-    
-    
+
+
   ]);
 
   const handleItemsPerPageChange = (e) => {
@@ -116,7 +116,7 @@ const ManageSubject = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manage Subject" />
-      <div className="flex justify-normal items-center mb-4">
+      <div className="flex justify-between items-center mb-4">
         <div>
           <button
             onClick={() => setShowModal(true)}
@@ -127,16 +127,16 @@ const ManageSubject = () => {
           </button>
           {/* {showModal && <AddCoursePage onClose={() => setShowModal(false)} />} */}
         </div>
-        <form className="flex items-center ml-100">
+        <form className="flex items-center mx-8">
           <input
             type="text"
             placeholder="Search by Subject & Course"
-            className="max-w-100 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </form>
-        <div className="flex ml-35">
+        <div className="flex">
           <label className="mr-2 mt-2">Show entries:</label>
           <select
             value={itemsPerPage}
@@ -158,7 +158,7 @@ const ManageSubject = () => {
               <tr className="bg-gray-2 text-left dark:bg-meta-4">
                 <th
                   onClick={() => handleNumberSorting("id", number)}
-                  className="min-w-[50px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                  className="min-w-[50px] font-medium text-black dark:text-white"
                 >
                   <span className="flex items-center gap-1">
                     No
@@ -171,7 +171,7 @@ const ManageSubject = () => {
                 </th>
                 <th
                   onClick={() => handleSorting("subject_name", order)}
-                  className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                  className="min-w-[200px] font-medium text-black dark:text-white"
                 >
                   <span className="flex items-center gap-1">
                     Subject
@@ -184,7 +184,20 @@ const ManageSubject = () => {
                 </th>
                 <th
                   onClick={() => handleSorting("subject_name", order)}
-                  className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
+                  className="min-w-[200px] font-medium text-black dark:text-white"
+                >
+                  <span className="flex items-center gap-1">
+                    Subject Code
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa />
+                    ) : (
+                      <FcAlphabeticalSortingAz />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("subject_name", order)}
+                  className="min-w-[150px] font-medium text-black dark:text-white"
                 >
                   <span className="flex items-center gap-1">
                     Course
@@ -197,7 +210,7 @@ const ManageSubject = () => {
                 </th>
                 <th
                   onClick={() => handleSorting("course_name", order)}
-                  className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
+                  className="min-w-[150px] font-medium text-black dark:text-white"
                 >
                   <span className="flex items-center gap-1">
                     Semester
@@ -210,7 +223,7 @@ const ManageSubject = () => {
                 </th>
                 <th
                   onClick={() => handleSorting("status", order)}
-                  className="min-w-[100px] py-4 px-4 font-medium text-black dark:text-white"
+                  className="min-w-[100px] font-medium text-black dark:text-white"
                 >
                   <span className="flex items-center gap-1">
                     Status
@@ -221,7 +234,33 @@ const ManageSubject = () => {
                     )}
                   </span>
                 </th>
-                <th className="min-w-[150px] py-4 px-20 font-medium text-black dark:text-white ">
+                <th
+                  onClick={() => handleSorting("status", order)}
+                  className="min-w-[100px] font-medium text-black dark:text-white"
+                >
+                  <span className="flex items-center gap-1">
+                    Created By
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa />
+                    ) : (
+                      <FcAlphabeticalSortingAz />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("status", order)}
+                  className="min-w-[100px] font-medium text-black dark:text-white"
+                >
+                  <span className="flex items-center gap-1">
+                    Updated By
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa />
+                    ) : (
+                      <FcAlphabeticalSortingAz />
+                    )}
+                  </span>
+                </th>
+                <th className="min-w-[250px] font-medium text-black dark:text-white ">
                   Actions
                 </th>
               </tr>
@@ -256,11 +295,10 @@ const ManageSubject = () => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p
-                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        packageItem.status === "Active"
-                          ? "bg-success text-success"
-                          : "bg-danger text-danger"
-                      }`}
+                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === "Active"
+                        ? "bg-success text-success"
+                        : "bg-danger text-danger"
+                        }`}
                     >
                       {packageItem.status}
                     </p>

@@ -2,11 +2,10 @@ const subjectService = require('./subject.service'); // Importing the subject se
 
 // Controller function to handle subject creation
 async function createSubject(req, res) {
-    const { subjectName, subjectCode, courseName, semester } = req.body;
-    const createdBy = req.user.username; // Assuming req.user contains the authenticated user details
+    const { subjectName, subjectCode, courseName, semester, createdBy, updatedBy } = req.body;
     try {
         // Create a new subject
-        const subject = await subjectService.createSubject(subjectName, subjectCode, courseName, semester, createdBy);
+        const subject = await subjectService.createSubject(subjectName, subjectCode, courseName, semester, createdBy, updatedBy);
         res.status(201).json({ message: "Subject created successfully", subject });
     } catch (error) {
         res.status(500).json({ message: "Internal server error", error: error.message });

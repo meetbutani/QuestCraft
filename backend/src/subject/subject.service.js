@@ -1,7 +1,7 @@
 const Subject = require('./subject.model'); // Importing the Subject model
 
 // Function to create a new subject
-async function createSubject(subjectName, subjectCode, courseName, semester, createdBy) {
+async function createSubject(subjectName, subjectCode, courseName, semester, createdBy, updatedBy) {
     try {
         const subject = new Subject({
             subjectName,
@@ -9,6 +9,7 @@ async function createSubject(subjectName, subjectCode, courseName, semester, cre
             courseName,
             semester,
             createdBy,
+            updatedBy,
         });
         await subject.save();
         return subject;

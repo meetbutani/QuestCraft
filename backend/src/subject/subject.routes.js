@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const subjectController = require('./path/to/subjectController'); // Importing the subject controller
-const authMiddleware = require('./path/to/authMiddleware'); // Assuming you have authentication middleware
+const subjectController = require('./subject.controller'); // Importing the subject controller
 
 // Route for creating a new subject
-router.post('/subjects', authMiddleware, subjectController.createSubject);
+router.post('/subjects', subjectController.createSubject);
 
 // Route for finding a subject by subjectCode
 router.get('/subjects/:code', subjectController.findSubject);

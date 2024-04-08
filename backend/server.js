@@ -25,12 +25,18 @@ async function run() {
         await mongoose.connect(uri, clientOptions);
         await mongoose.connection.db.admin().command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-        await mongoose.disconnect();
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
     }
+    // finally {
+    //     // await mongoose.disconnect();
+    //     console.error("Error connecting to MongoDB:", error);
+    // }
 }
 
 run().catch(console.dir);
+
+app.use("/api", require('./src/subject/subject.routes'));
 
 app.get("/", (req, res) => res.send("Hello World!"));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
