@@ -35,7 +35,9 @@ const SubjectPaper = () => {
     toolbar: toolbarOptions,
   };
 
-  const optionlist = ["AddOption", "AddOption2", "AddOption3"];
+  const optionlist = ["ICT"];
+  const statuslist = ["--------Select Status--------------","Active","InActive"];
+  const QuestionHaveSection = ["--------Select Question Status--------------","Yes","No"];
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Set Subject Paper" />
@@ -97,7 +99,7 @@ const SubjectPaper = () => {
                   <div className="w-full xl:w-1/2">
                     <DynamicDropDown
                       Title={"Select Status"}
-                      optionlist={optionlist}
+                      optionlist={statuslist}
                     />
                   </div>
                 </div>
@@ -108,7 +110,7 @@ const SubjectPaper = () => {
                       Time Allowance
                     </label>
                     <input
-                      type="text"
+                      type="time"
                       placeholder="Enter The Time"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
@@ -121,6 +123,7 @@ const SubjectPaper = () => {
                       type="text"
                       placeholder="Total Questions will be displayed here"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled
                     />
                   </div>
                 </div>
@@ -129,7 +132,7 @@ const SubjectPaper = () => {
                   <div className="w-full xl:w-1/2">
                     <DynamicDropDown
                       Title={"Questions Have Section"}
-                      optionlist={optionlist}
+                      optionlist={QuestionHaveSection}
                     />
                   </div>
                   <div className="w-full xl:w-1/2">
@@ -140,6 +143,7 @@ const SubjectPaper = () => {
                       type="text"
                       placeholder="Total Marks Will Be Displayed Here"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      disabled
                     />
                   </div>
                 </div>

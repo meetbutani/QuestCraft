@@ -120,7 +120,7 @@ function App() {
       />
 
       <Route
-        path='/question/set-question'
+        path='/question/add-question'
         element={
           <>
             <PageTitle title="Manage Question" />
@@ -145,7 +145,7 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Question" />
-            <AddQuestion />
+            <ManageQuestion />
           </>
         }
       />

@@ -19,46 +19,45 @@ const ManageSubject = () => {
   const [Data, setData] = useState([
     {
       id: 1,
-      subject_name: "AI(01CT)",
-      course_name: "ICT",
-      semester: "1stsemester",
+      subjectName: "AI",
+      subjectCode: "AI01CT",
+      courseName: "ICT",
+      semester: 1,
       status: "Active",
+      createdBy : "Namra Ravani",
+      updatedBy : "Meet Butani"
     },
     {
       id: 2,
-      subject_name: "OOP(01OP)",
-      course_name: "CS",
-      semester: "1stsemester",
+      subjectName: "AI",
+      subjectCode: "AI01CT",
+      courseName: "ICT",
+      semester: 1,
       status: "Active",
+      createdBy : "Namra Ravani",
+      updatedBy : "Meet Butani"
     },
     {
       id: 3,
-      subject_name: "EDCAD(o1ED)",
-      course_name: "ME",
-      semester: "2ndsemsester",
+      subjectName: "AI",
+      subjectCode: "AI01CT",
+      courseName: "ICT",
+      semester: 1,
       status: "Active",
+      createdBy : "Namra Ravani",
+      updatedBy : "Meet Butani"
     },
     {
       id: 4,
-      subject_name: "AI(01CT)",
-      course_name: "ICT",
-      semester: "1stsemester",
+      subjectName: "AI",
+      subjectCode: "AI01CT",
+      courseName: "ICT",
+      semester: 1,
       status: "Active",
+      createdBy : "Namra Ravani",
+      updatedBy : "Meet Butani"
     },
-    {
-      id: 5,
-      subject_name: "OOP(01OP)",
-      course_name: "CS",
-      semester: "1stsemester",
-      status: "Active",
-    },
-    {
-      id: 6,
-      subject_name: "EDCAD(o1ED)",
-      course_name: "ASIA  ",
-      semester: "2ndsemsester",
-      status: "Active",
-    },
+    
     
   ]);
 
@@ -102,9 +101,11 @@ const ManageSubject = () => {
     const searchTerm = search.toLowerCase();
     return (
       searchTerm === "" ||
-      item.course_name.toLowerCase().includes(searchTerm) ||
-      item.subject_name.toLowerCase().includes(searchTerm) ||
-      item.semester.toLowerCase().includes(searchTerm)
+      item.subjectName.toLowerCase().includes(searchTerm) ||
+      item.subjectCode.toLowerCase().includes(searchTerm) ||
+      item.courseName.toLowerCase().includes(searchTerm) ||
+      item.semester.toLowerCase().includes(searchTerm) ||
+      item.status.toLowerCase().includes(searchTerm)
     );
   });
 
@@ -235,12 +236,17 @@ const ManageSubject = () => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.subject_name}
+                      {packageItem.subjectName}
                     </h5>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                     <p className="text-black dark:text-white">
-                      {packageItem.course_name}
+                      {packageItem.subjectCode}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
+                      {packageItem.courseName}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
@@ -257,6 +263,16 @@ const ManageSubject = () => {
                       }`}
                     >
                       {packageItem.status}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
+                      {packageItem.createdBy}
+                    </p>
+                  </td>
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                    <p className="text-black dark:text-white">
+                      {packageItem.updatedBy}
                     </p>
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

@@ -8,6 +8,7 @@ import { CgFileDocument } from "react-icons/cg";
 import { RiListSettingsFill } from "react-icons/ri";
 import { RiKey2Line } from "react-icons/ri";
 import { IoCloseOutline } from "react-icons/io5";
+import { HiMiniDocumentDuplicate } from "react-icons/hi2";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -109,169 +110,47 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
+              <NavLink
+                  to="/subject/manage_subject"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('institution-info') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  <div className='flex w-[22px] justify-center'>
+                    <FaBook size={18} />
+                  </div>
+                    Subject
+               </NavLink>
 
-              {/* <!-- Menu Item Course --> */}
-
-              <li>
+               
                 <NavLink
-                  to="/courses"
+                  to="/unit/manage-unit"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('calendar') &&
                     'bg-graydark dark:bg-meta-4'
                     }`}
                 >
-                  <FaGraduationCap size={22} />
-                  Course
+                  <HiMiniDocumentDuplicate size={22} />
+                  Unit
                 </NavLink>
-              </li>
-
-              {/* <!-- Menu Item Course --> */}
-
-              {/* <!-- Menu Item Forms --> */}
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/subject' || pathname.includes('subject')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
-                          pathname.includes('subject')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <div className='flex w-[22px] justify-center'>
-                          <FaBook size={18} />
-                        </div>
-                        Subject
-                        <FaChevronDown className={`absolute right-4 top-1/2 -translate-y-1/2 ${open && 'rotate-180'}`} />
-                      </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/subject/add-subject"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              <IoMdAdd size={22} />
-                              Add Subject
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/subject/add-subject-unit"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              <IoMdAdd size={22} />
-                              Add Subject Unit
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/subject/manage_subject"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              <IoMdSettings size={22} />
-                              Manage Subject
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
+              
 
 
-              <SidebarLinkGroup
-                activeCondition={
-                  pathname === '/question' || pathname.includes('question')
-                }
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <NavLink
-                        to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
-                          pathname.includes('question')) &&
-                          'bg-graydark dark:bg-meta-4'
-                          }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
-                        }}
-                      >
-                        <div className='flex w-[22px] justify-center'>
-                          <FaRegListAlt size={22} />
-                        </div>
-                        Question
-                        <FaChevronDown className={`absolute right-4 top-1/2 -translate-y-1/2 ${open && 'rotate-180'}`} />
-                      </NavLink>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${!open && 'hidden'
-                          }`}
-                      >
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/question/set-question"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              <IoMdAdd size={22} />
-                              Set Question
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/question/manage-question"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              <IoMdSettings size={22} />
-                              Manage Question
-                            </NavLink>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
+               <NavLink
+                  to="/question/set-question"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('institution-info') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  <div className='flex w-[22px] justify-center'>
+                    <FaRegListAlt size={18} />
+                  </div>
+                    Question
+               </NavLink>
               {/* <!-- Menu Item Forms --> */}
 
               {/* <!-- Menu Item Forms --> */}
+
+              
               <SidebarLinkGroup
                 activeCondition={
                   pathname === '/qpaper' || pathname.includes('qpaper')
