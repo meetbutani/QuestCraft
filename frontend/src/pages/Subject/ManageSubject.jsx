@@ -13,13 +13,14 @@ import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
 
 const ManageSubject = () => {
+
   const [Data, setData] = useState([
     {
       id: 1,
-      subjectName: "AI",
-      subjectCode: "AI01CT",
-      courseName: "ICT",
-      semester: 1,
+      subjectName: "Advanced Web Technology",
+      subjectCode: "01CT1625",
+      courseName: "Information and Communication Technology",
+      semester: 6,
       status: "Active",
       createdBy: "Namra Ravani",
       updatedBy: "Meet Butani"
@@ -39,7 +40,7 @@ const ManageSubject = () => {
       subjectName: "AI",
       subjectCode: "AI01CT",
       courseName: "ICT",
-      semester: 12,
+      semester: 1,
       status: "Active",
       createdBy: "Namra Ravani",
       updatedBy: "Meet Butani"
@@ -48,15 +49,14 @@ const ManageSubject = () => {
       id: 4,
       subjectName: "AI",
       subjectCode: "AI01CT",
-      courseName: "IT",
+      courseName: "ICT",
       semester: 1,
       status: "Active",
       createdBy: "Namra Ravani",
       updatedBy: "Meet Butani"
     },
-
-
   ]);
+
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -100,33 +100,24 @@ const ManageSubject = () => {
   };
 
   const handleClick = () => {
-    
     navigate("/subject/add-subject");
   };
 
   const filteredData = Data.filter((item) => {
     const searchTerm = search.toLowerCase();
-    const subjectNameLower = item.subjectName.toLowerCase();
-    const subjectCodeLower = item.subjectCode.toLowerCase();
-    const courseNameLower = item.courseName.toLowerCase();
-    const semesterLower = item.semester.toString().toLowerCase(); 
-    const statusLower = item.status.toLowerCase();
-  
     return (
       searchTerm === "" ||
-      subjectNameLower.includes(searchTerm) ||
-      subjectCodeLower.includes(searchTerm) ||
-      courseNameLower.includes(searchTerm) ||
-      semesterLower.includes(searchTerm) ||
-      statusLower.includes(searchTerm)
+      item.subjectName.toLowerCase().includes(searchTerm) ||
+      item.subjectCode.toLowerCase().includes(searchTerm) ||
+      item.courseName.toLowerCase().includes(searchTerm) ||
+      item.semester.toLowerCase().includes(searchTerm) ||
+      item.status.toLowerCase().includes(searchTerm)
     );
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
-  
 
   return (
     <DefaultLayout>
@@ -140,12 +131,12 @@ const ManageSubject = () => {
             <IoAdd size={30} />
             Add Subject
           </button>
-          
+          {/* {showModal && <AddCoursePage onClose={() => setShowModal(false)} />} */}
         </div>
         <form className="flex items-center mx-8">
           <input
             type="text"
-            placeholder="Search by Any Field"
+            placeholder="Search by Subject & Course"
             className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -166,174 +157,176 @@ const ManageSubject = () => {
         </div>
       </div>
 
-      <div className="rounded-sm border border-stroke bg-white px-5  pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
+      <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <tr className="bg-gray-2 text-left dark:bg-meta-4 h-[60px]">
                 <th
                   onClick={() => handleNumberSorting("id", number)}
-                  className="min-w-[100px] font-medium text-black dark:text-white xl:pl-4 "
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     No
                     {number === "ASC" ? (
-                      <FcNumericalSorting21 />
+                      <FcNumericalSorting21 size={22} />
                     ) : (
-                      <FcNumericalSorting12 />
+                      <FcNumericalSorting12 size={22} />
                     )}
                   </span>
                 </th>
                 <th
                   onClick={() => handleSorting("subjectName", order)}
-                  className="min-w-[160px] font-medium text-black dark:text-white"
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Subject
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
                 <th
                   onClick={() => handleSorting("subjectCode", order)}
-                  className="min-w-[160px] font-medium text-black dark:text-white"
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Subject Code
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
                 <th
                   onClick={() => handleSorting("courseName", order)}
-                  className="min-w-[150px] font-medium text-black dark:text-white"
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Course
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
                 <th
-                  onClick={() => handleNumberSorting("semester",number)}
-                  className="min-w-[150px] font-medium text-black dark:text-white"
+                  onClick={() => handleSorting("semester", order)}
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Semester
                     {order === "ASC" ? (
-                      <FcNumericalSorting21 />
+                      <FcNumericalSorting21 size={22} />
                     ) : (
-                      <FcNumericalSorting12 />
+                      <FcNumericalSorting12 size={22} />
                     )}
                   </span>
                 </th>
                 <th
                   onClick={() => handleSorting("status", order)}
-                  className="min-w-[100px] font-medium text-black dark:text-white"
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Status
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
                 <th
                   onClick={() => handleSorting("createdBy", order)}
-                  className="min-w-[120px] font-medium text-black dark:text-white"
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Created By
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
                 <th
                   onClick={() => handleSorting("updatedBy", order)}
-                  className="min-w-[120px] font-medium text-black dark:text-white"
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     Updated By
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
-                <th className="min-w-[250px] pl-10 font-medium text-black dark:text-white xl:p-10 ">
-                  Actions
+                <th className="table-td-head">
+                  <span className="flex items-center gap-1">
+                    Actions
+                  </span>
                 </th>
               </tr>
             </thead>
             <tbody>
               {currentItems.map((packageItem, key) => (
-                <tr key={key}>
-                  <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark xl:pl-4">
+                <tr key={key} className="h-[60px]">
+                  <td className="table-td-data">
                     <h5 className="font-medium text-black dark:text-white">
                       {packageItem.id}
                     </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark">
+                  <td className="table-td-data max-w-[200px]">
                     <h5 className="font-medium text-black dark:text-white">
                       {packageItem.subjectName}
                     </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
                       {packageItem.subjectCode}
-                    </p>
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
                       {packageItem.courseName}
-                    </p>
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark xl:pl-9">
-                    <p className="text-black dark:text-white">
+                  <td className="table-td-data max-w-[100px]">
+                    <h5 className="text-black dark:text-white">
                       {packageItem.semester}
-                    </p>
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5  dark:border-strokedark">
-                    <p
+                  <td className="table-td-data">
+                    <h5
                       className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === "Active"
                         ? "bg-success text-success"
                         : "bg-danger text-danger"
                         }`}
                     >
                       {packageItem.status}
-                    </p>
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
                       {packageItem.createdBy}
-                    </p>
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
                       {packageItem.updatedBy}
-                    </p>
+                    </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className="table-td-data px-4">
                     <div className="flex items-center space-x-3.5">
                       <button className="hover:text-primary">
                         <RiDeleteBinLine color="#FF5733" />
                       </button>
-                      <div className="flex flex-row justify-center items-center rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium">
+                      <div className="inline-flex min-w-max justify-center items-center rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium">
                         <button className="hover:text-primary">
                           <IoAdd color="#000000" />
                         </button>
