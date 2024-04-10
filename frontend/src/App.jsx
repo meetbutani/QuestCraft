@@ -1,21 +1,23 @@
-import { useEffect, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import Loader from './common/Loader';
-import PageTitle from './components/PageTitle';
-import Dashboard from './pages/Dashboard/Dashboard';
+import { useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import Loader from "./common/Loader";
+import PageTitle from "./components/PageTitle";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
-import SubjectPaper from './pages/QPG/SubjectPaper';
-import CoursePage from './pages/Courses/CoursePage';
-import ManageSubject from './pages/Subject/ManageSubject';
-import AddSubject from './pages/Subject/AddSubject';
-import AddUnitPage from './pages/Unit/AddUnitPage';
-import ManageQuestion from './pages/Question/ManageQuestion';
-import AddQuestion from './pages/Question/AddQuestion';
-import SetUnitPaper from './pages/QPG/SetUnitPaper';
-import ManagePaper from './pages/QPG/ManagePaper';
-import SignIn from './pages/auth/SignIn';
-import SignUp from './pages/auth/SignUp';
-import ManageUnit from './pages/Unit/ManageUnit';
+import SubjectPaper from "./pages/QPG/SubjectPaper";
+import CoursePage from "./pages/Courses/CoursePage";
+import ManageSubject from "./pages/Subject/ManageSubject";
+import AddSubject from "./pages/Subject/AddSubject";
+import AddUnitPage from "./pages/Unit/AddUnitPage";
+import ManageQuestion from "./pages/Question/ManageQuestion";
+import AddQuestion from "./pages/Question/AddQuestion";
+import SetUnitPaper from "./pages/QPG/SetUnitPaper";
+import ManagePaper from "./pages/QPG/ManagePaper";
+import SignIn from "./pages/auth/SignIn";
+import SignUp from "./pages/auth/SignUp";
+import ManageUnit from "./pages/Unit/ManageUnit";
+import PreUnitPage from "./pages/Unit/PreUnitPage";
+import PreQuestionPage from "./pages/Question/PreQuestionPage";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -32,9 +34,10 @@ function App() {
   return loading ? (
     <Loader />
   ) : (
+    // --------------------- Auth Routes -----------------------
     <Routes>
       <Route
-        path='/auth/signin'
+        path="/auth/signin"
         element={
           <>
             <PageTitle title="Sign In" />
@@ -43,7 +46,7 @@ function App() {
         }
       />
       <Route
-        path='/auth/signup'
+        path="/auth/signup"
         element={
           <>
             <PageTitle title="Sign Up" />
@@ -51,6 +54,7 @@ function App() {
           </>
         }
       />
+      {/* // --------------------- Dashboard Route ----------------------- */}
       <Route
         index
         element={
@@ -60,8 +64,9 @@ function App() {
           </>
         }
       />
+      {/* // --------------------- QPG Route ----------------------- */}
       <Route
-        path='/qpaper/set-subject-paper'
+        path="/qpaper/set-subject-paper"
         element={
           <>
             <PageTitle title="Set Subject Paper" />
@@ -69,9 +74,8 @@ function App() {
           </>
         }
       />
-
       <Route
-        path='/qpaper/set-unit-paper'
+        path="/qpaper/set-unit-paper"
         element={
           <>
             <PageTitle title="Add Subject" />
@@ -79,9 +83,8 @@ function App() {
           </>
         }
       />
-
       <Route
-        path='/qpaper/manage-paper'
+        path="/qpaper/manage-paper"
         element={
           <>
             <PageTitle title="Add Subject" />
@@ -89,19 +92,10 @@ function App() {
           </>
         }
       />
+      {/* // --------------------- Subject Route ----------------------- */}
 
       <Route
-        path='/courses'
-        element={
-          <>
-            <PageTitle title="Courses" />
-            <CoursePage />
-          </>
-        }
-      />
-
-      <Route
-        path='/subject/add-subject'
+        path="/subject/add-subject"
         element={
           <>
             <PageTitle title="Add Subject" />
@@ -111,7 +105,19 @@ function App() {
       />
 
       <Route
-        path='/subject/add-subject-unit'
+        path="/subject/manage_subject"
+        element={
+          <>
+            <PageTitle title="Manage Subject" />
+            <ManageSubject />
+          </>
+        }
+      />
+
+      {/* // --------------------- Unit Route ----------------------- */}
+
+      <Route
+        path="/subject/add-subject-unit"
         element={
           <>
             <PageTitle title="Add Unit" />
@@ -121,7 +127,28 @@ function App() {
       />
 
       <Route
-        path='/question/add-question'
+        path="/unit/manage_unit"
+        element={
+          <>
+            <PageTitle title="Manage Unit" />
+            <ManageUnit />
+          </>
+        }
+      />
+      <Route
+        path="/unit/pre-unit-page"
+        element={
+          <>
+            <PageTitle title="Pre Unit Page" />
+            <PreUnitPage />
+          </>
+        }
+      />
+
+      {/* // --------------------- Question Route ----------------------- */}
+
+      <Route
+        path="/question/add-question"
         element={
           <>
             <PageTitle title="Manage Question" />
@@ -130,19 +157,8 @@ function App() {
         }
       />
 
-
       <Route
-        path='/subject/manage_subject'
-        element={
-          <>
-            <PageTitle title="Manage Subject" />
-            <ManageSubject />
-          </>
-        }
-      />
-
-      <Route
-        path='/question/set-question'
+        path="/question/manage-question"
         element={
           <>
             <PageTitle title="Manage Question" />
@@ -150,23 +166,12 @@ function App() {
           </>
         }
       />
-
       <Route
-        path='/question/manage-question'
+        path="/question/pre-question-page"
         element={
           <>
             <PageTitle title="Manage Question" />
-            <ManageQuestion />
-          </>
-        }
-      />
-
-<Route
-        path='/unit/manage_unit'
-        element={
-          <>
-            <PageTitle title="Manage Question" />
-            <ManageUnit />
+            <PreQuestionPage />
           </>
         }
       />

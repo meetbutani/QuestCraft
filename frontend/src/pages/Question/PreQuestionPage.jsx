@@ -4,14 +4,15 @@ import DynamicDropDown from "../../components/Forms/DynamicDropDown";
 import DefaultLayout from "../../layout/DefaultLayout";
 import { useNavigate } from "react-router-dom";
 
-const PreUnitPage = () => {
+const PreQuestionPage = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/unit/manage_unit");
+    navigate("/question/manage-question");
   };
 
   const subjectList = ["AI", "AWT", "AJ"];
+  const unitList = ["NodeJs", "MachineLearning", "ExpressJs"];
 
   return (
     <DefaultLayout>
@@ -24,7 +25,7 @@ const PreUnitPage = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  Select Subject for which you need to manage Unit
+                  Select Subject and Unit for which you need to manage Question
                 </h3>
               </div>
               <form action="#">
@@ -37,7 +38,10 @@ const PreUnitPage = () => {
                   </div>
 
                   <div className="mb-4.5">
-                    {/* <DynamicDropDown Title={"Select Status"} optionlist={status} /> */}
+                    <DynamicDropDown
+                      Title={"Select Unit"}
+                      optionlist={unitList}
+                    />
                   </div>
                   <button
                     onClick={handleClick}
@@ -55,4 +59,4 @@ const PreUnitPage = () => {
   );
 };
 
-export default PreUnitPage;
+export default PreQuestionPage;

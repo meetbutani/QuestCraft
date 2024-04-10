@@ -192,7 +192,7 @@ const ManageUnit = () => {
                     )}
                   </span>
                 </th>
-                
+
                 <th
                   onClick={() => handleSorting("status", order)}
                   className="min-w-[100px] font-medium text-black dark:text-white"
@@ -255,7 +255,7 @@ const ManageUnit = () => {
                       {packageItem.subjectCode}
                     </p>
                   </td>
-                  
+
                   <td className="border-b border-[#eee] py-5  dark:border-strokedark">
                     <p
                       className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
