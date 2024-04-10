@@ -15,6 +15,7 @@ import SetUnitPaper from './pages/QPG/SetUnitPaper';
 import ManagePaper from './pages/QPG/ManagePaper';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
+import ManageUnit from './pages/Unit/ManageUnit';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -156,6 +157,16 @@ function App() {
           <>
             <PageTitle title="Manage Question" />
             <ManageQuestion />
+          </>
+        }
+      />
+
+<Route
+        path='/unit/manage_unit'
+        element={
+          <>
+            <PageTitle title="Manage Question" />
+            <ManageUnit />
           </>
         }
       />

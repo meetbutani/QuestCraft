@@ -20,36 +20,25 @@ import DynamicDropDown from '../../components/Forms/DynamicDropDown'
                 </h3>
               </div>
               <form action="#">
-                <div className="p-6.5">
+                <div className="p-6.5 flex flex-col">
                   
                   <div className="w-full">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Select Subject 
+                        Unit Name :- 
                       </label>
                       <input
                         type="text"
-                        placeholder="Select Subject"
-                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                      />
-                  </div>
-                  
-                  <div className="w-full">
-                      <label className="mb-2.5 block text-black dark:text-white">
-                        Unit Number 
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Unit Number"
+                        placeholder="eg Machine Learning"
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                   </div>
                   <div className="w-full">
                       <label className="mb-2.5 block text-black dark:text-white">
-                        Unit Name 
+                        Subject Code 
                       </label>
                       <input
                         type="text"
-                        placeholder="Unit Name"
+                        placeholder="eg 01AICT"
                         className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       />
                   </div>

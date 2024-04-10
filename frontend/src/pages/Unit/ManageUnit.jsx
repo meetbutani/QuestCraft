@@ -11,51 +11,40 @@ import { MdEdit } from "react-icons/md";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
-
-const ManageSubject = () => {
+const ManageUnit = () => {
   const [Data, setData] = useState([
     {
       id: 1,
-      subjectName: "AI",
-      subjectCode: "AI01CT",
-      courseName: "ICT",
-      semester: 1,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
     {
       id: 2,
-      subjectName: "AI",
-      subjectCode: "AI01CT",
-      courseName: "ICT",
-      semester: 1,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
     {
       id: 3,
-      subjectName: "AI",
-      subjectCode: "AI01CT",
-      courseName: "ICT",
-      semester: 12,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
     {
       id: 4,
-      subjectName: "AI",
-      subjectCode: "AI01CT",
-      courseName: "IT",
-      semester: 1,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
-
-
   ]);
   const navigate = useNavigate();
 
@@ -100,21 +89,18 @@ const ManageSubject = () => {
   };
 
   const handleClick = () => {
-    
-    navigate("/subject/add-subject");
+    navigate("/subject/add-subject-unit");
   };
 
   const filteredData = Data.filter((item) => {
     const searchTerm = search.toLowerCase();
-    const subjectNameLower = item.subjectName.toLowerCase();
+    const unitNameLower = item.unitName.toLowerCase();
     const subjectCodeLower = item.subjectCode.toLowerCase();
-    const courseNameLower = item.courseName.toLowerCase();
-    const semesterLower = item.semester.toString().toLowerCase(); 
     const statusLower = item.status.toLowerCase();
-  
+
     return (
       searchTerm === "" ||
-      subjectNameLower.includes(searchTerm) ||
+      unitNameLower.includes(searchTerm) ||
       subjectCodeLower.includes(searchTerm) ||
       courseNameLower.includes(searchTerm) ||
       semesterLower.includes(searchTerm) ||
@@ -125,12 +111,9 @@ const ManageSubject = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
-  
-
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Manage Subject" />
+      <Breadcrumb pageName="Manage Unit" />
       <div className="flex justify-between items-center mb-4">
         <div>
           <button
@@ -138,9 +121,8 @@ const ManageSubject = () => {
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             <IoAdd size={30} />
-            Add Subject
+            Add Unit
           </button>
-          
         </div>
         <form className="flex items-center mx-8">
           <input
@@ -185,11 +167,11 @@ const ManageSubject = () => {
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("subjectName", order)}
-                  className="min-w-[160px] font-medium text-black dark:text-white"
+                  onClick={() => handleSorting("unitName", order)}
+                  className="min-w-[160px] font-medium text-black dark:text-white xl:pl-12"
                 >
                   <span className="flex items-center gap-1">
-                    Subject
+                    Unit
                     {order === "ASC" ? (
                       <FcAlphabeticalSortingZa />
                     ) : (
@@ -210,32 +192,7 @@ const ManageSubject = () => {
                     )}
                   </span>
                 </th>
-                <th
-                  onClick={() => handleSorting("courseName", order)}
-                  className="min-w-[150px] font-medium text-black dark:text-white"
-                >
-                  <span className="flex items-center gap-1">
-                    Course
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
-                    ) : (
-                      <FcAlphabeticalSortingAz />
-                    )}
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleNumberSorting("semester",number)}
-                  className="min-w-[150px] font-medium text-black dark:text-white"
-                >
-                  <span className="flex items-center gap-1">
-                    Semester
-                    {order === "ASC" ? (
-                      <FcNumericalSorting21 />
-                    ) : (
-                      <FcNumericalSorting12 />
-                    )}
-                  </span>
-                </th>
+                
                 <th
                   onClick={() => handleSorting("status", order)}
                   className="min-w-[100px] font-medium text-black dark:text-white"
@@ -290,30 +247,22 @@ const ManageSubject = () => {
                   </td>
                   <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.subjectName}
+                      {packageItem.unitName}
                     </h5>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark xl:pl-6">
                     <p className="text-black dark:text-white">
                       {packageItem.subjectCode}
                     </p>
                   </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                    <p className="text-black dark:text-white">
-                      {packageItem.courseName}
-                    </p>
-                  </td>
-                  <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark xl:pl-9">
-                    <p className="text-black dark:text-white">
-                      {packageItem.semester}
-                    </p>
-                  </td>
+                  
                   <td className="border-b border-[#eee] py-5  dark:border-strokedark">
                     <p
-                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === "Active"
-                        ? "bg-success text-success"
-                        : "bg-danger text-danger"
-                        }`}
+                      className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                        packageItem.status === "Active"
+                          ? "bg-success text-success"
+                          : "bg-danger text-danger"
+                      }`}
                     >
                       {packageItem.status}
                     </p>
@@ -337,7 +286,7 @@ const ManageSubject = () => {
                         <button className="hover:text-primary">
                           <IoAdd color="#000000" />
                         </button>
-                        <span className="ml-2">Manage Unit</span>
+                        <span className="ml-2">Manage Question</span>
                       </div>
                       <button className="hover:text-primary">
                         <MdEdit color="#0000FF" />
@@ -389,4 +338,4 @@ const ManageSubject = () => {
   );
 };
 
-export default ManageSubject;
+export default ManageUnit;
