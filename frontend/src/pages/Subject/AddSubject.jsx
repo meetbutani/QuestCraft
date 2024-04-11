@@ -20,7 +20,7 @@ const AddSubject = () => {
               </h3>
             </div>
             <form action="#">
-              <div className="p-6.5 flex flex-col">
+              <div className="p-6.5 flex flex-col gap-2">
 
                 <div className="w-full mb-6">
                   <label className="mb-2.5 block text-black dark:text-white">

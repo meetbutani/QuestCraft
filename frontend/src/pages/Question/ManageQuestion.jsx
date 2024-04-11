@@ -11,40 +11,89 @@ import {
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
+import { FaEye } from "react-icons/fa";
 
 const ManageQuestion = () => {
-  const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(false);
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [Data, setData] = useState([
     {
       id: 1,
-      subject_name: "AI(01CT)",
-      course_name: "ICT",
-      semester: "1stsemester",
-      status: "Active",
+      queType: "MCQ",
+      queOrg: "What is the capital of France?",
+      marks: 1,
+      unitId: "Geography",
     },
     {
       id: 2,
-      subject_name: "OOP(01OP)",
-      course_name: "CS",
-      semester: "1stsemester",
-      status: "Active",
+      queType: "Fill in the Blanks",
+      queOrg: "The atomic number of hydrogen is __.",
+      marks: 2,
+      unitId: "Chemistry",
     },
     {
       id: 3,
-      subject_name: "EDCAD(o1ED)",
-      course_name: "ME",
-      semester: "2ndsemsester",
-      status: "Active",
+      queType: "Descriptive",
+      queOrg: "Write a short essay on the importance of education.",
+      marks: 3,
+      unitId: "Social Studies",
+    },
+    {
+      id: 4,
+      queType: "True or False",
+      queOrg: "Water boils at 100 degrees Celsius.",
+      marks: 1,
+      unitId: "Physics",
+    },
+    {
+      id: 5,
+      queType: "Multiple Response",
+      queOrg:
+        "Which of the following are prime numbers? Select all that apply.",
+      marks: 2,
+      unitId: "Mathematics",
+    },
+    {
+      id: 6,
+      queType: "Matching",
+      queOrg: "Match the following countries with their capitals.",
+      marks: 3,
+      unitId: "Geography",
+    },
+    {
+      id: 7,
+      queType: "Short Answer",
+      queOrg: "What is the formula for calculating the area of a rectangle?",
+      marks: 1,
+      unitId: "Mathematics",
+    },
+    {
+      id: 8,
+      queType: "Diagram Based",
+      queOrg: "Draw the structure of a human heart and label its parts.",
+      marks: 2,
+      unitId: "Biology",
+    },
+    {
+      id: 9,
+      queType: "Mathematical Problem",
+      queOrg: "If a train travels at 60 km/h for 2 hours, how far does it go?",
+      marks: 2,
+      unitId: "Physics",
+    },
+    {
+      id: 10,
+      queType: "Discussion",
+      queOrg: "Discuss the impact of climate change on global biodiversity.",
+      marks: 3,
+      unitId: "Environmental Science",
     },
   ]);
 
-  const handleClick = () => {
-    navigate("/question/add-question");
-  };
+  const navigate = useNavigate();
+
+  const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(parseInt(e.target.value, 10));
@@ -54,49 +103,45 @@ const ManageQuestion = () => {
   const [order, setOrder] = useState("ASC");
   const [number, setNumber] = useState("ASC");
 
-  const sorting = (col) => {
-    if (order === "ASC") {
-      const sorted = [...Data].sort((a, b) =>
-        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
-      );
-      setData(sorted);
-      setOrder("DSC");
-    }
-
-    if (order === "DSC") {
-      const sorted = [...Data].sort((a, b) =>
-        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
-      );
-      setData(sorted);
-      setOrder("ASC");
-    }
+  const handleSorting = (col, sortOrder) => {
+    const sortedData = [...Data].sort((a, b) => {
+      if (sortOrder === "ASC") {
+        return a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1;
+      } else {
+        return a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1;
+      }
+    });
+    setData(sortedData);
+    setOrder(sortOrder === "ASC" ? "DSC" : "ASC");
   };
 
-  const sortingNumbers = (col) => {
-    if (number === "ASC") {
-      const sorted = [...Data].sort((a, b) => a[col] - b[col]);
-      setData(sorted);
-      setNumber("DSC");
-    }
-
-    if (number === "DSC") {
-      const sorted = [...Data].sort((a, b) => b[col] - a[col]);
-      setData(sorted);
-      setNumber("ASC");
-    }
+  const handleNumberSorting = (col, sortOrder) => {
+    const sortedData = [...Data].sort((a, b) => {
+      if (sortOrder === "ASC") {
+        return a[col] - b[col];
+      } else {
+        return b[col] - a[col];
+      }
+    });
+    setData(sortedData);
+    setNumber(sortOrder === "ASC" ? "DSC" : "ASC");
   };
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  const handleClick = () => {
+    navigate("/unit/add-unit");
+  };
+
   const filteredData = Data.filter((item) => {
     const searchTerm = search.toLowerCase();
     return (
       searchTerm === "" ||
-      item.course_name.toLowerCase().includes(searchTerm) ||
-      item.subject_name.toLowerCase().includes(searchTerm) ||
-      item.semester.toLowerCase().includes(searchTerm)
+      item.queType.toLowerCase().includes(searchTerm) ||
+      item.queOrg.toLowerCase().includes(searchTerm) ||
+      item.unitId.toLowerCase().includes(searchTerm)
     );
   });
 
@@ -107,7 +152,7 @@ const ManageQuestion = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manage Question" />
-      <div className="flex justify-normal items-center mb-4">
+      <div className="flex justify-between items-center mb-4">
         <div>
           <button
             onClick={handleClick}
@@ -116,18 +161,19 @@ const ManageQuestion = () => {
             <IoAdd size={30} />
             Add Question
           </button>
-          {/* {showModal && <AddCoursePage onClose={() => setShowModal(false)} />} */}
         </div>
-        <form className="flex items-center ml-100">
+        <form className="flex items-center mx-8 relative">
           <input
             type="text"
-            placeholder="Search by Subject & Course"
-            className="max-w-100 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            placeholder="Search by Any Field.."
+            className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" // Adjusted px value to accommodate the icon
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+
+          <CiSearch className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
         </form>
-        <div className="flex ml-35">
+        <div className="flex">
           <label className="mr-2 mt-2">Show entries:</label>
           <select
             value={itemsPerPage}
@@ -146,136 +192,125 @@ const ManageQuestion = () => {
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <tr className="bg-gray-2 text-left dark:bg-meta-4 h-[60px]">
                 <th
-                  onClick={() => sortingNumbers("id")}
-                  className="min-w-[50px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                  onClick={() => handleNumberSorting("id", number)}
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
+                  <span>
                     No
                     {number === "ASC" ? (
-                      <FcNumericalSorting21 />
+                      <FcNumericalSorting21 size={22} />
                     ) : (
-                      <FcNumericalSorting12 />
+                      <FcNumericalSorting12 size={22} />
                     )}
                   </span>
                 </th>
                 <th
-                  onClick={() => sorting("subject_name")}
-                  className="min-w-[200px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11"
+                  onClick={() => handleSorting("queType", order)}
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
-                    Subject
+                  <span>
+                    Question Type
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
                 <th
-                  onClick={() => sorting("course_name")}
-                  className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
+                  onClick={() => handleSorting("queOrg", order)}
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
-                    Course
+                  <span>
+                    Question
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
+                    )}
+                  </span>
+                </th>
+
+                <th
+                  onClick={() => handleNumberSorting("marks", number)}
+                  className="table-td-head"
+                >
+                  <span>
+                    marks
+                    {order === "ASC" ? (
+                      <FcNumericalSorting21 size={22} />
+                    ) : (
+                      <FcNumericalSorting12 size={22} />
                     )}
                   </span>
                 </th>
                 <th
-                  onClick={() => sorting("course_name")}
-                  className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white"
+                  onClick={() => handleSorting("unitId", order)}
+                  className="table-td-head"
                 >
-                  <span className="flex items-center gap-1">
-                    Semester
+                  <span>
+                    Unit Name
                     {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
+                      <FcAlphabeticalSortingZa size={22} />
                     ) : (
-                      <FcAlphabeticalSortingAz />
+                      <FcAlphabeticalSortingAz size={22} />
                     )}
                   </span>
                 </th>
-                <th
-                  onClick={() => sorting("status")}
-                  className="min-w-[100px] py-4 px-4 font-medium text-black dark:text-white"
-                >
-                  <span className="flex items-center gap-1">
-                    Status
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa />
-                    ) : (
-                      <FcAlphabeticalSortingAz />
-                    )}
-                  </span>
-                </th>
-                <th className="min-w-[150px] py-4 px-20 font-medium text-black dark:text-white ">
-                  Actions
+
+                <th className="table-td-head">
+                  <span className="flex items-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {currentItems
-                .filter((item) => {
-                  return search.toLowerCase() === ""
-                    ? item
-                    : item.course_name.toLowerCase().includes(search) ||
-                        item.subject_name.toLowerCase().includes(search);
-                })
-                .map((packageItem, key) => (
-                  <tr key={key}>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <h5 className="font-medium text-black dark:text-white">
-                        {packageItem.id}
-                      </h5>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                      <h5 className="font-medium text-black dark:text-white">
-                        {packageItem.subject_name}
-                      </h5>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">
-                        {packageItem.course_name}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p className="text-black dark:text-white">
-                        {packageItem.semester}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                      <p
-                        className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                          packageItem.status === "Active"
-                            ? "bg-success text-success"
-                            : "bg-danger text-danger"
-                        }`}
-                      >
-                        {packageItem.status}
-                      </p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+              {currentItems.map((packageItem, key) => (
+                <tr key={key} className="h-[60px]">
+                  <td className="table-td-data">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem.id}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {packageItem.queType}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[400px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.queOrg}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.marks}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.unitId}
+                    </h5>
+                  </td>
+
+                  <td className="table-td-data px-4">
+                    <div className="flex items-center space-x-3.5">
+                      <button className="hover:text-primary">
+                        <RiDeleteBinLine color="#FF5733" />
+                      </button>
                       <div className="flex items-center space-x-3.5">
                         <button className="hover:text-primary">
-                          <RiDeleteBinLine color="#FF5733" />
-                        </button>
-                        <div className="flex flex-row justify-center items-center rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium">
-                          <button className="hover:text-primary">
-                            <IoAdd color="#000000" />
-                          </button>
-                          <span className="ml-2">Manage Unit</span>
-                        </div>
-                        <button className="hover:text-primary">
-                          <MdEdit color="#0000FF" />
+                          <FaEye color="#000000" />
                         </button>
                       </div>
-                    </td>
-                  </tr>
-                ))}
+                      <button className="hover:text-primary">
+                        <MdEdit color="#0000FF" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

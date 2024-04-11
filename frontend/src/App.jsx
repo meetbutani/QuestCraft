@@ -18,6 +18,10 @@ import SignUp from "./pages/auth/SignUp";
 import ManageUnit from "./pages/Unit/ManageUnit";
 import PreUnitPage from "./pages/Unit/PreUnitPage";
 import PreQuestionPage from "./pages/Question/PreQuestionPage";
+import AddUser from "./pages/User/AddUser";
+import AddRole from "./pages/Role/AddRole";
+import ManageUser from "./pages/User/ManageUser";
+import ManageRole from "./pages/Role/ManageRole";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -175,6 +179,46 @@ function App() {
           </>
         }
       />
+      {/* // ------------------------------------ user Routes ---------------------------- */}
+      <Route
+        path="/user/add-user"
+        element={
+          <>
+            <PageTitle title="Add User" />
+            <AddUser />
+          </>
+        }
+      />
+      <Route
+        path="/user/manage-user"
+        element={
+          <>
+            <PageTitle title="Manage User" />
+            <ManageUser />
+          </>
+        }
+      />
+
+      {/* // ------------------------------------ Role Routes ---------------------------- */}
+      <Route
+        path="/role/add-role"
+        element={
+          <>
+            <PageTitle title="Add User" />
+            <AddRole />
+          </>
+        }
+      />
+      <Route
+        path="/role/manage-role"
+        element={
+          <>
+            <PageTitle title="Manage Role" />
+            <ManageRole />
+          </>
+        }
+      />
+
     </Routes>
   );
 }

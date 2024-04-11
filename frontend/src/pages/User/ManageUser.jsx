@@ -12,41 +12,23 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-const ManageUnit = () => {
+import { FaEye } from "react-icons/fa6";
+
+const ManageUser = () => {
   const [Data, setData] = useState([
     {
       id: 1,
-      unitName: "Machine Learning",
-      subjectCode: "01AICT",
+      firstName: "Namra",
+      lastName: "Ravani",
+      username: "Namra53",
+      email: "namraravani8@gmail.com",
+      role: "Admin",
+      contactNo: "1234567890",
+      officeLocation: "MA106",
       status: "Active",
-      createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani",
-    },
-    {
-      id: 2,
-      unitName: "Machine Learning",
-      subjectCode: "01AICT",
-      status: "Active",
-      createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani",
-    },
-    {
-      id: 3,
-      unitName: "Machine Learning",
-      subjectCode: "01AICT",
-      status: "Active",
-      createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani",
-    },
-    {
-      id: 4,
-      unitName: "Machine Learning",
-      subjectCode: "01AICT",
-      status: "Active",
-      createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani",
     },
   ]);
+
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -90,15 +72,20 @@ const ManageUnit = () => {
   };
 
   const handleClick = () => {
-    navigate("/unit/add-unit");
+    navigate("/subject/add-subject");
   };
 
   const filteredData = Data.filter((item) => {
     const searchTerm = search.toLowerCase();
     return (
       searchTerm === "" ||
-      item.unitName.toLowerCase().includes(searchTerm) ||
-      item.subjectCode.toLowerCase().includes(searchTerm) ||
+      item.firstName.toLowerCase().includes(searchTerm) ||
+      item.lastName.toLowerCase().includes(searchTerm) ||
+      item.username.toLowerCase().includes(searchTerm) ||
+      item.email.toLowerCase().includes(searchTerm) ||
+      item.role.toLowerCase().includes(searchTerm) ||
+      item.contactNo.toLowerCase().includes(searchTerm) ||
+      item.officeLocation.toLowerCase().includes(searchTerm) ||
       item.status.toLowerCase().includes(searchTerm)
     );
   });
@@ -106,9 +93,10 @@ const ManageUnit = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Manage Unit" />
+      <Breadcrumb pageName="Manage Users" />
       <div className="flex justify-between items-center mb-4">
         <div>
           <button
@@ -116,7 +104,7 @@ const ManageUnit = () => {
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             <IoAdd size={30} />
-            Add Unit
+            Add User
           </button>
         </div>
         <form className="flex items-center mx-8 relative">
@@ -164,11 +152,11 @@ const ManageUnit = () => {
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("unitName", order)}
+                  onClick={() => handleSorting("firstName", order)}
                   className="table-td-head"
                 >
                   <span>
-                    Unit
+                    First Name
                     {order === "ASC" ? (
                       <FcAlphabeticalSortingZa size={22} />
                     ) : (
@@ -177,11 +165,11 @@ const ManageUnit = () => {
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("subjectCode", order)}
+                  onClick={() => handleSorting("lastName", order)}
                   className="table-td-head"
                 >
                   <span>
-                    Subject Code
+                    Last Name
                     {order === "ASC" ? (
                       <FcAlphabeticalSortingZa size={22} />
                     ) : (
@@ -189,7 +177,71 @@ const ManageUnit = () => {
                     )}
                   </span>
                 </th>
-
+                <th
+                  onClick={() => handleSorting("username", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    Username
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa size={22} />
+                    ) : (
+                      <FcAlphabeticalSortingAz size={22} />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("email", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    email
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa size={22} />
+                    ) : (
+                      <FcAlphabeticalSortingAz size={22} />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("role", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    Role
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa size={22} />
+                    ) : (
+                      <FcAlphabeticalSortingAz size={22} />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("contactNo", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    Contact No
+                    {order === "ASC" ? (
+                      <FcNumericalSorting21 size={22} />
+                    ) : (
+                      <FcNumericalSorting12 size={22} />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("officeLocation", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    Office location
+                    {order === "ASC" ? (
+                      <FcNumericalSorting21 size={22} />
+                    ) : (
+                      <FcNumericalSorting12 size={22} />
+                    )}
+                  </span>
+                </th>
                 <th
                   onClick={() => handleSorting("status", order)}
                   className="table-td-head"
@@ -203,32 +255,7 @@ const ManageUnit = () => {
                     )}
                   </span>
                 </th>
-                <th
-                  onClick={() => handleSorting("createdBy", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    Created By
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleSorting("updatedBy", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    Updated By
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
-                  </span>
-                </th>
+
                 <th className="table-td-head">
                   <span className="flex items-center gap-1">Actions</span>
                 </th>
@@ -244,15 +271,39 @@ const ManageUnit = () => {
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.unitName}
+                      {packageItem.firstName}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.subjectCode}
+                      {packageItem.lastName}
                     </h5>
                   </td>
-
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.username}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.email}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[100px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.role}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[100px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.contactNo}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[100px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.officeLocation}
+                    </h5>
+                  </td>
                   <td className="table-td-data">
                     <h5
                       className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
@@ -264,26 +315,17 @@ const ManageUnit = () => {
                       {packageItem.status}
                     </h5>
                   </td>
-                  <td className="table-td-data max-w-[200px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.createdBy}
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[200px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.updatedBy}
-                    </h5>
-                  </td>
+                  
                   <td className="table-td-data px-4">
                     <div className="flex items-center space-x-3.5">
                       <button className="hover:text-primary">
                         <RiDeleteBinLine color="#FF5733" />
                       </button>
-                      <div className="inline-flex min-w-max justify-center items-center rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium">
+                      <div className="flex items-center space-x-3.5">
                         <button className="hover:text-primary">
-                          <IoAdd color="#000000" />
+                          <FaEye color="#000000" />
                         </button>
-                        <span className="ml-2">Manage Question</span>
+                        
                       </div>
                       <button className="hover:text-primary">
                         <MdEdit color="#0000FF" />
@@ -300,7 +342,7 @@ const ManageUnit = () => {
           <button
             onClick={() => paginate(currentPage - 1)}
             className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                ${currentPage === 1 ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
+                    ${currentPage === 1 ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
             disabled={currentPage === 1}
           >
             Previous
@@ -313,7 +355,7 @@ const ManageUnit = () => {
                 key={number}
                 onClick={() => paginate(number + 1)}
                 className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                  ${currentPage === number + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-700 hover:bg-opacity-90"}`}
+                      ${currentPage === number + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-700 hover:bg-opacity-90"}`}
               >
                 {number + 1}
               </button>
@@ -324,7 +366,7 @@ const ManageUnit = () => {
           <button
             onClick={() => paginate(currentPage + 1)}
             className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                ${currentPage === Math.ceil(Data.length / itemsPerPage) ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
+                    ${currentPage === Math.ceil(Data.length / itemsPerPage) ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
             disabled={currentPage === Math.ceil(Data.length / itemsPerPage)}
           >
             Next
@@ -335,4 +377,4 @@ const ManageUnit = () => {
   );
 };
 
-export default ManageUnit;
+export default ManageUser;

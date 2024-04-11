@@ -11,9 +11,9 @@ import { MdEdit } from "react-icons/md";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
+import { CiSearch } from "react-icons/ci";
 
 const ManageSubject = () => {
-
   const [Data, setData] = useState([
     {
       id: 1,
@@ -23,7 +23,7 @@ const ManageSubject = () => {
       semester: 6,
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
     {
       id: 2,
@@ -33,7 +33,7 @@ const ManageSubject = () => {
       semester: 1,
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ const ManageSubject = () => {
       semester: 1,
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
     {
       id: 4,
@@ -53,7 +53,7 @@ const ManageSubject = () => {
       semester: 1,
       status: "Active",
       createdBy: "Namra Ravani",
-      updatedBy: "Meet Butani"
+      updatedBy: "Meet Butani",
     },
   ]);
 
@@ -131,16 +131,17 @@ const ManageSubject = () => {
             <IoAdd size={30} />
             Add Subject
           </button>
-          {/* {showModal && <AddCoursePage onClose={() => setShowModal(false)} />} */}
         </div>
-        <form className="flex items-center mx-8">
+        <form className="flex items-center mx-8 relative">
           <input
             type="text"
-            placeholder="Search by Subject & Course"
-            className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            placeholder="Search by Any Field.."
+            className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" // Adjusted px value to accommodate the icon
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+
+          <CiSearch className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
         </form>
         <div className="flex">
           <label className="mr-2 mt-2">Show entries:</label>
@@ -267,9 +268,7 @@ const ManageSubject = () => {
                   </span>
                 </th>
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">
-                    Actions
-                  </span>
+                  <span className="flex items-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -303,10 +302,11 @@ const ManageSubject = () => {
                   </td>
                   <td className="table-td-data">
                     <h5
-                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.status === "Active"
-                        ? "bg-success text-success"
-                        : "bg-danger text-danger"
-                        }`}
+                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                        packageItem.status === "Active"
+                          ? "bg-success text-success"
+                          : "bg-danger text-danger"
+                      }`}
                     >
                       {packageItem.status}
                     </h5>

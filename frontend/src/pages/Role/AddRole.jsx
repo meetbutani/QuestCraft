@@ -1,45 +1,49 @@
 import React from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
-
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
+import MultiSelect from "../../components/Forms/MultiSelect";
 
-const AddUnitPage = () => {
+const AddRole = () => {
   const optionlist = ["Active", "InActive"];
+  const optionsList = [
+    { value: "user", text: "User Module" },
+    { value: "role", text: "Role Module" },
+    { value: "subject", text: "Subject Module" },
+    // Add more options as needed
+  ];
+
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Add Unit" />
+      <Breadcrumb pageName="Add Role" />
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
-          {/* <!-- Create Subject Paper Form --> */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add Unit
+                Add Role
               </h3>
             </div>
             <form action="#">
-              <div className="p-6.5 flex flex-col">
+              <div className="p-6.5 flex flex-col gap-5">
                 <div className="w-full">
                   <label className="mb-2.5 block text-black dark:text-white">
-                    Unit Name :-
+                    Role Name
                   </label>
                   <input
                     type="text"
-                    placeholder="eg Machine Learning"
+                    placeholder="Enter Role Name here"
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+
                 <div className="w-full">
-                  <label className="mb-2.5 block text-black dark:text-white">
-                    Subject Code
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="eg 01AICT"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  <MultiSelect
+                    title={"Select Status"}
+                    optionsList={optionsList}
                   />
                 </div>
+
                 <div className="w-full">
                   <DynamicDropDown
                     Title={"Select Status"}
@@ -58,4 +62,4 @@ const AddUnitPage = () => {
   );
 };
 
-export default AddUnitPage;
+export default AddRole;
