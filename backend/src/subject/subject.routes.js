@@ -11,4 +11,10 @@ router.get('/subjects/:code', subjectController.findSubject);
 // Route for finding all subjects
 router.get('/subjects', subjectController.findAllSubjects);
 
+// Route for updating a subject
+router.put('/subjects/:id', subjectController.updateSubject);
+
+// Route for deleting a subject
+router.delete('/subjects/:id', subjectController.deleteSubject);
+
 module.exports = router;

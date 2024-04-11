@@ -5,6 +5,16 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
     {
+        firstName: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+        lastName: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         username: {
             type: String,
             required: true,
@@ -25,6 +35,19 @@ const userSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Role", // Reference to the Role model
             required: true,
+        },
+        contactNo: {
+            type: String,
+            trim: true,
+        },
+        officeLocation: {
+            type: String,
+            trim: true,
+        },
+        status: {
+            type: String,
+            enum: ["active", "inactive"],
+            default: "active",
         },
     },
     {
@@ -49,8 +72,12 @@ userSchema.pre("save", async function (next) {
 });
 
 // Custom method to compare the provided password with the hashed password stored in the database
-userSchema.methods.comparePassword = function (password) {
-    return bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = async function (password) {
+    try {
+        return await bcrypt.compare(password, this.password);
+    } catch (error) {
+        throw error;
+    }
 };
 
 const User = mongoose.model("User", userSchema);

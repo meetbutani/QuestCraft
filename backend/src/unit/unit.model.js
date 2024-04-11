@@ -7,6 +7,7 @@ const unitSchema = new Schema(
         unitName: {
             type: String,
             required: true,
+            unique: true,
             trim: true,
         },
         subjectCode: {
