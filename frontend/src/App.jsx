@@ -3,9 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import Dashboard from "./pages/Dashboard/Dashboard";
-
 import SubjectPaper from "./pages/QPG/SubjectPaper";
-import CoursePage from "./pages/Courses/CoursePage";
 import ManageSubject from "./pages/Subject/ManageSubject";
 import AddSubject from "./pages/Subject/AddSubject";
 import AddUnitPage from "./pages/Unit/AddUnitPage";
@@ -225,13 +223,11 @@ function App() {
         path="/profile"
         element={
           <>
-            <PageTitle title="Manage Role" />
+            <PageTitle title="Profile " />
             <ProfilePage />
           </>
         }
       />
-
-
     </Routes>
   );
 }
