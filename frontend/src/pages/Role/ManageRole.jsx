@@ -65,7 +65,7 @@ const ManageRole = () => {
   };
 
   const handleClick = () => {
-    navigate("/unit/add-unit");
+    navigate("/role/add-role");
   };
 
   const filteredData = Data.filter((item) => {

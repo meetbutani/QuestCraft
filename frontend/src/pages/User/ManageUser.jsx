@@ -72,7 +72,7 @@ const ManageUser = () => {
   };
 
   const handleClick = () => {
-    navigate("/subject/add-subject");
+    navigate("/user/add-user");
   };
 
   const filteredData = Data.filter((item) => {

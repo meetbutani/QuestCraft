@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 
 import UserOne from "../../images/user/user-01.png";
 import { GoPerson } from "react-icons/go";
+import { useNavigate } from "react-router-dom";
+
 const DropdownUser = () => {
+  const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef(null);
@@ -81,8 +84,8 @@ const DropdownUser = () => {
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
-            <Link
-              to="/profile"
+            <button
+              onClick={navigate("/profile")}
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
             >
               <svg
@@ -103,7 +106,7 @@ const DropdownUser = () => {
                 />
               </svg>
               My Profile
-            </Link>
+            </button>
           </li>
           <li>
             <Link

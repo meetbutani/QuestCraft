@@ -22,6 +22,7 @@ import AddUser from "./pages/User/AddUser";
 import AddRole from "./pages/Role/AddRole";
 import ManageUser from "./pages/User/ManageUser";
 import ManageRole from "./pages/Role/ManageRole";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -121,7 +122,7 @@ function App() {
       {/* // --------------------- Unit Route ----------------------- */}
 
       <Route
-        path="/subject/add-subject-unit"
+        path="/unit/add-unit"
         element={
           <>
             <PageTitle title="Add Unit" />
@@ -218,6 +219,18 @@ function App() {
           </>
         }
       />
+
+      {/* --------------------------------------Profile Route----------------------------- */}
+      <Route
+        path="/profile"
+        element={
+          <>
+            <PageTitle title="Manage Role" />
+            <ProfilePage />
+          </>
+        }
+      />
+
 
     </Routes>
   );

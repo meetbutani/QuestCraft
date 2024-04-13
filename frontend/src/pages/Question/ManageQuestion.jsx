@@ -132,7 +132,7 @@ const ManageQuestion = () => {
   };
 
   const handleClick = () => {
-    navigate("/unit/add-unit");
+    navigate("/question/add-question");
   };
 
   const filteredData = Data.filter((item) => {
