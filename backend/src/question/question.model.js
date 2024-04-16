@@ -16,29 +16,11 @@ const questionSchema = new Schema(
         queTrans: {
             type: String,
         },
-        optOrgA: {
-            type: String,
+        mcqOptionsOrg: {
+            type: [String],
         },
-        optTransA: {
-            type: String,
-        },
-        optOrgB: {
-            type: String,
-        },
-        optTransB: {
-            type: String,
-        },
-        optOrgC: {
-            type: String,
-        },
-        optTransC: {
-            type: String,
-        },
-        optOrgD: {
-            type: String,
-        },
-        optTransD: {
-            type: String,
+        mcqOptionsTrans: {
+            type: [String],
         },
         marks: {
             type: Number,
