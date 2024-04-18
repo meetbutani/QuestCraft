@@ -16,7 +16,7 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     public UserDocument createUser(UserDocument user) {
-//        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+       user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -39,17 +39,17 @@ public class UserService {
     public UserDocument updateUser(String userId, UserDocument updates) {
         UserDocument user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         if (updates.getEmail() != null) {
-            UserDocument existingUser = userRepository.findByEmail(updates.getEmail());
-            if (existingUser.getId().equals(user.getId())) {
-                throw new RuntimeException("Email already exists");
-            }
+            // UserDocument existingUser = userRepository.findByEmail(updates.getEmail());
+            // if (existingUser.getId().equals(user.getId())) {
+            //     throw new RuntimeException("Email already exists");
+            // }
             user.setEmail(updates.getEmail());
         }
         if (updates.getUsername() != null) {
-            UserDocument existingUser = userRepository.findByUsername(updates.getUsername());
-            if (existingUser.getId().equals(user.getId())) {
-                throw new RuntimeException("Username already exists");
-            }
+            // UserDocument existingUser = userRepository.findByUsername(updates.getUsername());
+            // if (existingUser.getId().equals(user.getId())) {
+            //     throw new RuntimeException("Username already exists");
+            // }
             user.setUsername(updates.getUsername());
         }
 //        if (updates.getRole() != null) {
