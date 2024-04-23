@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.error {
+    @apply text-red-500
+}
+
 .table-td-data {
     @apply border-b border-[#eee] dark:border-strokedark px-3;
 }

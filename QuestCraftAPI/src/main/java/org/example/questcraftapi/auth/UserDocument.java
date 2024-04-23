@@ -1,5 +1,6 @@
 package org.example.questcraftapi.auth;
 
+import org.example.questcraftapi.role.RoleDocument;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -31,9 +32,11 @@ public class UserDocument {
     @Field("password")
     private String password;
 
-//    @Field("role")
-//    @DBRef
-//    private RoleDocument role;
+    @Field("role")
+    @DBRef
+    private RoleDocument role;
+
+    private String roleId;
 
     @Field("contactNo")
     private String contactNo;
@@ -54,7 +57,7 @@ public class UserDocument {
                 .add("username='" + username + "'")
                 .add("email='" + email + "'")
                 .add("password='" + password + "'")
-//                .add("role=" + role)
+                .add("role=" + role)
                 .add("contactNo='" + contactNo + "'")
                 .add("officeLocation='" + officeLocation + "'")
                 .add("status=" + status)
@@ -114,13 +117,21 @@ public class UserDocument {
         this.password = password;
     }
 
-//    public RoleDocument getRole() {
-//        return role;
-//    }
-//
-//    public void setRole(RoleDocument role) {
-//        this.role = role;
-//    }
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public RoleDocument getRole() {
+        return role;
+    }
+
+    public void setRole(RoleDocument role) {
+        this.role = role;
+    }
 
     public String getContactNo() {
         return contactNo;

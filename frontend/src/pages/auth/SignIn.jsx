@@ -1,21 +1,40 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
-import DefaultLayout from '../../layout/DefaultLayout';
-import Breadcrumb from '../../components/BreadCrumb/BreadCrumb';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import MobileLogo from '../../images/loginimage/MobileLogo';
 import { GoMail } from "react-icons/go";
 import PasswordShowHideBtn from './PasswordShowHideBtn';
+import axios from "axios";
+import { javaBaseUrl } from '../../js/api.constatnt';
+import { encryptData } from '../../js/secureData';
+import * as yup from "yup";
+import { useFormik } from "formik";
 
 const SignIn = () => {
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const validationSchema = yup.object({
+    email: yup.string().email("Invalid email address").required("Email is required"),
+    password: yup.string().min(5, "Password must be at least 5 characters").required("Password is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
+  });
+
+  const handleSubmit = async (values) => {
+    const response = await axios.post(javaBaseUrl + "/api/auth/login", { ...values, "username": values.email });
+    if (response.status == 200) {
+      localStorage.setItem("user", encryptData(response.data));
+      navigate("/")
+    }
   };
 
   const handlePasswordVisibility = () => {
@@ -47,44 +66,57 @@ const SignIn = () => {
               Sign In to QuestCraft
             </h2>
 
-            <form>
+            <form onSubmit={formik.handleSubmit}>
               <div className="mb-4">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
-                  Email
-                </label>
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
+                <label className="block font-medium text-black dark:text-white">
+                  Username or Email
+                  <div className="mt-2.5 relative">
+                    <input
+                      placeholder="Enter your email"
+                      name='email'
+                      value={formik.values.email}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
 
-                  <span className="absolute right-4 top-4">
-                    <GoMail size={22} fill='#b1b9c5' />
-                  </span>
-                </div>
+                    <span className="absolute right-4 top-4">
+                      <GoMail size={22} fill='#b1b9c5' />
+                    </span>
+                  </div>
+                  {formik.touched.email && formik.errors.email ? (
+                    <div className="error">{formik.errors.email}</div>
+                  ) : null}
+                </label>
               </div>
 
               <div className="mb-6">
-                <label className="mb-2.5 block font-medium text-black dark:text-white">
+                <label className="block font-medium text-black dark:text-white">
                   Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="6+ Characters, 1 Capital letter"
-                    className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-
-                  <span className="absolute right-4 top-4">
-                    <PasswordShowHideBtn
-                      width={"22px"}
-                      fill={"#b1b9c5"}
-                      id={"pass1"}
-                      onClickPassShowHide={() => handlePasswordVisibility()}
+                  <div className="mt-2.5 relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="6+ Characters, 1 Capital letter"
+                      name='password'
+                      value={formik.values.password}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
-                  </span>
-                </div>
+
+                    <span className="absolute right-4 top-4">
+                      <PasswordShowHideBtn
+                        width={"22px"}
+                        fill={"#b1b9c5"}
+                        id={"pass1"}
+                        onClickPassShowHide={() => handlePasswordVisibility()}
+                      />
+                    </span>
+                  </div>
+                </label>
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="error">{formik.errors.password}</div>
+                ) : null}
               </div>
 
               <div className="mb-5">
@@ -92,12 +124,13 @@ const SignIn = () => {
                   type="submit"
                   value="Sign In"
                   className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                  disabled={!formik.isValid}
                 />
               </div>
 
               <div className="mt-6 text-center">
                 <p>
-                  Don’t have any account?{' '}
+                  Don't have any account?{' '}
                   <Link to="/auth/signup" className="text-primary">
                     Sign Up
                   </Link>
