@@ -1,92 +1,244 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
-
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
+import "../../css/AddUser.css";
+import * as yup from "yup";
+import { useFormik } from "formik";
+import axios from "axios";
+import { javaBaseUrl } from "../../js/api.constatnt";
+import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
+import { toLowerCase, toTitleCase } from "../../js/utils";
 
 const AddUser = () => {
-  const optionlist = ["Active", "InActive"];
-  const roleList = ["Super Admin", "Admin", "User"];
+  const statusList = ["Active", "Disable"];
+  const [roleList, setRoleList] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  useEffect(() => {
+    const getRoles = async () => {
+      const response = await axios.get(javaBaseUrl + "/api/roles/active");
+      if (response.status == 200) {
+        setRoleList(response.data);
+      }
+    };
+
+    getRoles();
+  }, []);
+
+  const validationSchema = yup.object({
+    firstName: yup
+      .string()
+      .required("First Name is required")
+      .transform(toTitleCase)
+      .matches(/^[a-zA-Z]+$/, "First Name should not contain spaces or special characters"),
+    lastName: yup
+      .string()
+      .required("Last Name is required")
+      .matches(/^[a-zA-Z]+$/, "Last Name should not contain spaces or special characters"),
+    username: yup
+      .string()
+      .required("Username is required")
+      .matches(/^[a-zA-Z0-9_]+$/, "Username should not contain spaces or special characters except '_'"),
+    email: yup
+      .string()
+      .email("Invalid email address")
+      .required("Email is required")
+      .matches(/^\S+@\S+\.\S+$/, "Email should not contain spaces"),
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required")
+      .matches(/^[^ ]+$/, "Password should not contain spaces"),
+    roleId: yup.string().required("Role is required"),
+    status: yup.string().required("Status is required"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      username: "",
+      email: "",
+      password: "",
+      roleId: "USER",
+      status: statusList[0],
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
+  });
+
+  const handleSubmit = async (values) => {
+    console.log(values);
+    const response = await axios.post(javaBaseUrl + "/api/auth/register", values);
+    if (response.status == 200) {
+      console.log(response.data);
+      formik.resetForm();
+    }
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Add User" />
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
-          
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Add User
               </h3>
             </div>
-            <form action="#" >
+            <form onSubmit={formik.handleSubmit}>
               <div className="p-6.5 flex flex-col gap-5">
                 <div className="flex flex-row gap-4">
                   <div className="w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      First Name :-
+                    <label className="labelfield">
+                      First Name
+                      <input
+                        name="firstName"
+                        value={formik.values.firstName}
+                        onChange={(e) => {
+                          formik.setFieldValue("firstName", toTitleCase(e.target.value))
+                        }}
+                        onBlur={formik.handleBlur}
+                        type="text"
+                        placeholder="Enter First Name"
+                        className="inputfield"
+                      />
+                      {formik.touched.firstName && formik.errors.firstName ? (
+                        <div className="error">{formik.errors.firstName}</div>
+                      ) : null}
                     </label>
-                    <input
-                      type="text"
-                      placeholder="Enter First Name"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
                   </div>
                   <div className="w-1/2">
-                    <label className="mb-2.5 block text-black dark:text-white">
-                      Last Name :-
+                    <label className="labelfield">
+                      Last Name
+                      <input
+                        name="lastName"
+                        value={formik.values.lastName}
+                        onChange={(e) => {
+                          formik.setFieldValue("lastName", toTitleCase(e.target.value))
+                        }}
+                        onBlur={formik.handleBlur}
+                        type="text"
+                        placeholder="Enter Last Name"
+                        className="inputfield"
+                      />
+                      {formik.touched.lastName && formik.errors.lastName ? (
+                        <div className="error">{formik.errors.lastName}</div>
+                      ) : null}
                     </label>
-                    <input
-                      type="text"
-                      placeholder="Enter Last Name"
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
                   </div>
                 </div>
 
                 <div className="w-full">
-                  <label className="mb-2.5 block text-black dark:text-white">
+                  <label className="labelfield">
                     Username
+                    <input
+                      name="username"
+                      value={formik.values.username}
+                      onChange={(e) => {
+                        formik.setFieldValue("username", e.target.value.toLowerCase());
+                      }}
+                      onBlur={formik.handleBlur}
+                      type="text"
+                      placeholder="Enter Username here"
+                      className="inputfield"
+                    />
+                    {formik.touched.username && formik.errors.username ? (
+                      <div className="error">{formik.errors.username}</div>
+                    ) : null}
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Username here"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
                 </div>
                 <div className="w-full">
-                  <label className="mb-2.5 block text-black dark:text-white">
+                  <label className="labelfield">
                     Email
+                    <input
+                      name="email"
+                      value={formik.values.email}
+                      onChange={(e) => {
+                        formik.setFieldValue("email", e.target.value.toLowerCase());
+                      }}
+                      onBlur={formik.handleBlur}
+                      type="text"
+                      placeholder="Enter Email here"
+                      className="inputfield"
+                    />
+                    {formik.touched.email && formik.errors.email ? (
+                      <div className="error">{formik.errors.email}</div>
+                    ) : null}
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Email here"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
                 </div>
                 <div className="w-full">
-                  <label className="mb-2.5 block text-black dark:text-white">
+                  <label className="labelfield">
                     Password
+                    <div className="mt-2.5 relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name='password'
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Enter Password here"
+                        className="inputfield"
+                      />
+                      <span className="absolute right-4 top-6">
+                        <PasswordShowHideBtn
+                          width={"22px"}
+                          fill={"#b1b9c5"}
+                          id={"pass1"}
+                          onClickPassShowHide={() => handlePasswordVisibility()}
+                        />
+                      </span>
+                    </div>
+                    {formik.touched.password && formik.errors.password ? (
+                      <div className="error">{formik.errors.password}</div>
+                    ) : null}
                   </label>
-                  <input
-                    type="text"
-                    placeholder="Enter Password here"
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
                 </div>
-                <div className="w-full">
-                  <DynamicDropDown
-                    Title={"Select Role"}
-                    optionlist={roleList}
-                  />
+                <div className="flex flex-row gap-4">
+                  <div className="w-1/2">
+                    <DynamicDropDown
+                      name="roleId"
+                      value={formik.values.roleId}
+                      title={"Select Role"}
+                      optionlist={roleList}
+                      onChange={(e) => {
+                        formik.setFieldValue("roleId", e.target.value);
+                      }}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.roleId && formik.errors.roleId ? (
+                      <div className="error">{formik.errors.roleId}</div>
+                    ) : null}
+                  </div>
+                  <div className="w-1/2">
+                    <DynamicDropDown
+                      name='status'
+                      title={"Select Status"}
+                      value={formik.values.status}
+                      optionlist={statusList}
+                      onChange={(e) => {
+                        formik.setFieldValue("status", e.target.value);
+                      }}
+                      onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.status && formik.errors.status ? (
+                      <div className="error">{formik.errors.status}</div>
+                    ) : null}
+                  </div>
                 </div>
-                <div className="w-full">
-                  <DynamicDropDown
-                    Title={"Select Status"}
-                    optionlist={optionlist}
-                  />
-                </div>
-                <button className="flex flex-row items-center w-1/2 justify-center rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90">
+                <button
+                  className="flex flex-row justify-center self-center mt-4.5 w-1/2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                  type="submit"
+                  disabled={!formik.isValid}
+                >
                   Confirm
                 </button>
               </div>

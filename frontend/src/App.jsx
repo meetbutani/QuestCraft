@@ -21,6 +21,7 @@ import AddRole from "./pages/Role/AddRole";
 import ManageUser from "./pages/User/ManageUser";
 import ManageRole from "./pages/Role/ManageRole";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import { PermissionGuard } from "./components/PermissionGuard";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -184,7 +185,9 @@ function App() {
         element={
           <>
             <PageTitle title="Add User" />
-            <AddUser />
+            <PermissionGuard requiredPermission={"createUser"}>
+              <AddUser />
+            </PermissionGuard>
           </>
         }
       />

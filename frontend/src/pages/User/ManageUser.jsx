@@ -1,11 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
-import {
-  FcAlphabeticalSortingAz,
-  FcAlphabeticalSortingZa,
-  FcNumericalSorting12,
-  FcNumericalSorting21,
-} from "react-icons/fc";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import DefaultLayout from "../../layout/DefaultLayout";
@@ -13,86 +7,155 @@ import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { FaEye } from "react-icons/fa6";
+import axios from "axios";
+import { javaBaseUrl } from "../../js/api.constatnt";
+import _ from "lodash";
+import NumberSorting from "../../components/Tables/NumberSorting";
+import StringSorting from "../../components/Tables/StringSorting";
 
 const ManageUser = () => {
-  const [Data, setData] = useState([
-    {
-      id: 1,
-      firstName: "Namra",
-      lastName: "Ravani",
-      username: "Namra53",
-      email: "namraravani8@gmail.com",
-      role: "Admin",
-      contactNo: "1234567890",
-      officeLocation: "MA106",
-      status: "Active",
-    },
-  ]);
+  const [userList, setUserList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const navigate = useNavigate();
-
-  const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value, 10));
-    setCurrentPage(1);
-  };
-
-  const [order, setOrder] = useState("ASC");
-  const [number, setNumber] = useState("ASC");
-
-  const handleSorting = (col, sortOrder) => {
-    const sortedData = [...Data].sort((a, b) => {
-      if (sortOrder === "ASC") {
-        return a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1;
-      } else {
-        return a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1;
-      }
-    });
-    setData(sortedData);
-    setOrder(sortOrder === "ASC" ? "DSC" : "ASC");
-  };
-
-  const handleNumberSorting = (col, sortOrder) => {
-    const sortedData = [...Data].sort((a, b) => {
-      if (sortOrder === "ASC") {
-        return a[col] - b[col];
-      } else {
-        return b[col] - a[col];
-      }
-    });
-    setData(sortedData);
-    setNumber(sortOrder === "ASC" ? "DSC" : "ASC");
-  };
-
-  const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
 
   const handleClick = () => {
     navigate("/user/add-user");
   };
 
-  const filteredData = Data.filter((item) => {
-    const searchTerm = search.toLowerCase();
-    return (
-      searchTerm === "" ||
-      item.firstName.toLowerCase().includes(searchTerm) ||
-      item.lastName.toLowerCase().includes(searchTerm) ||
-      item.username.toLowerCase().includes(searchTerm) ||
-      item.email.toLowerCase().includes(searchTerm) ||
-      item.role.toLowerCase().includes(searchTerm) ||
-      item.contactNo.toLowerCase().includes(searchTerm) ||
-      item.officeLocation.toLowerCase().includes(searchTerm) ||
-      item.status.toLowerCase().includes(searchTerm)
-    );
-  });
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const getFilteredData = () => {
+    const filteredData = userList.filter((user) =>
+      (user.firstName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.lastName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.username ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.roleId ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.contactNo ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.officeLocation ?? "").toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    return filteredData;
+  };
+
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const getPaginatedData = (data) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return data.slice(startIndex, startIndex + itemsPerPage);
+  };
+
+  const sortedUsers = _.orderBy(getFilteredData(), [sortConfig.key], [sortConfig.direction]);
+
+  const paginatedUsers = getPaginatedData(sortedUsers);
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const response = await axios.get(javaBaseUrl + "/api/auth");
+      if (response.status == 200) {
+        console.log(response.data);
+        // setUserList(response.data);
+        setUserList([...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data]);
+      }
+    };
+
+    getAllUsers();
+  }, []);
+
+  const getPaginationButtons = () => {
+    const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
+    const buttons = [];
+
+    // Show first button
+    if (currentPage > 3) {
+      buttons.push(
+        <li key={1}>
+          <button
+            onClick={() => handlePageChange(1)}
+            className={`px-3 py-2 leading-tight text-gray-500 rounded-md hover:text-white dark:bg-meta-4 dark:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white ${currentPage === 1 ? "bg-primary text-white dark:bg-primary dark:border-primary" : ""}`}
+          >
+            1
+          </button>
+        </li>
+      );
+    }
+
+    // Show previous button
+    if (currentPage > 4) {
+      buttons.push(
+        <li key="prev">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            className={`px-3 py-2 leading-tight text-gray-500 rounded-md hover:text-white dark:bg-meta-4 dark:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white`}
+          >
+            ...
+          </button>
+        </li>
+      );
+    }
+
+    // Show current page and adjacent pages
+    const startPage = Math.max(1, currentPage - 2);
+    const endPage = Math.min(totalPages, currentPage + 2);
+    for (let i = startPage; i <= endPage; i++) {
+      buttons.push(
+        <li key={i}>
+          <button
+            onClick={() => handlePageChange(i)}
+            className={`px-3 py-2 leading-tight text-gray-500 rounded-md hover:text-white dark:bg-meta-4 dark:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white ${currentPage === i ? "bg-primary text-white dark:bg-primary dark:border-primary" : ""}`}
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+
+    // Show next button
+    if (currentPage < totalPages - 3) {
+      buttons.push(
+        <li key="next">
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            className={`px-3 py-2 leading-tight text-gray-500 rounded-md hover:text-white dark:bg-meta-4 dark:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white`}
+          >
+            ...
+          </button>
+        </li>
+      );
+    }
+
+    // Show last button
+    if (currentPage < totalPages - 2) {
+      buttons.push(
+        <li key={totalPages}>
+          <button
+            onClick={() => handlePageChange(totalPages)}
+            className={`px-3 py-2 leading-tight text-gray-500 rounded-md hover:text-white dark:bg-meta-4 dark:text-white hover:bg-primary dark:hover:bg-primary dark:hover:text-white ${currentPage === totalPages ? "bg-primary text-white dark:bg-primary dark:border-primary" : ""}`}
+          >
+            {totalPages}
+          </button>
+        </li>
+      );
+    }
+
+    return buttons;
+  };
 
   return (
     <DefaultLayout>
@@ -107,13 +170,13 @@ const ManageUser = () => {
             Add User
           </button>
         </div>
-        <form className="flex items-center mx-8 relative">
+        <form action="#" method="post" onSubmit={(e) => e.preventDefault()} className="flex items-center mx-8 relative">
           <input
             type="text"
-            placeholder="Search by Any Field.."
+            placeholder="Search by First Name.."
+            value={searchTerm}
+            onChange={handleSearchChange}
             className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" // Adjusted px value to accommodate the icon
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
           />
 
           <CiSearch className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
@@ -121,14 +184,14 @@ const ManageUser = () => {
         <div className="flex">
           <label className="mr-2 mt-2">Show entries:</label>
           <select
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
             className="border rounded-md border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+            value={itemsPerPage}
+            onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); }}
           >
-            <option value="5">5</option>
             <option value="10">10</option>
             <option value="15">15</option>
             <option value="20">20</option>
+            <option value="50">50</option>
           </select>
         </div>
       </div>
@@ -137,122 +200,86 @@ const ManageUser = () => {
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-gray-2 text-left dark:bg-meta-4 h-[60px]">
+              <tr className="bg-slate-200 text-left dark:bg-meta-4 h-[60px]">
                 <th
-                  onClick={() => handleNumberSorting("id", number)}
                   className="table-td-head"
+                  onClick={() => handleSort("id")}
                 >
                   <span>
                     No
-                    {number === "ASC" ? (
-                      <FcNumericalSorting21 size={22} />
-                    ) : (
-                      <FcNumericalSorting12 size={22} />
-                    )}
+                    <NumberSorting order={sortConfig.key === "id" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("firstName", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("firstName")}
                 >
                   <span>
                     First Name
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "firstName" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("lastName", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("lastName")}
                 >
                   <span>
                     Last Name
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "lastName" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("username", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("username")}
                 >
                   <span>
                     Username
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "username" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("email", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("email")}
                 >
                   <span>
                     email
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "email" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("role", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("roleId")}
                 >
                   <span>
                     Role
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "roleId" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("contactNo", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("contactNo")}
                 >
                   <span>
                     Contact No
-                    {order === "ASC" ? (
-                      <FcNumericalSorting21 size={22} />
-                    ) : (
-                      <FcNumericalSorting12 size={22} />
-                    )}
+                    <NumberSorting order={sortConfig.key === "contactNo" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("officeLocation", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("officeLocation")}
                 >
                   <span>
                     Office location
-                    {order === "ASC" ? (
-                      <FcNumericalSorting21 size={22} />
-                    ) : (
-                      <FcNumericalSorting12 size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "officeLocation" ? sortConfig.direction : ""} />
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("status", order)}
                   className="table-td-head"
+                  onClick={() => handleSort("status")}
                 >
                   <span>
                     Status
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
+                    <StringSorting order={sortConfig.key === "status" ? sortConfig.direction : ""} />
                   </span>
                 </th>
 
@@ -262,60 +289,59 @@ const ManageUser = () => {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((packageItem, key) => (
+              {paginatedUsers.map((user, key) => (
                 <tr key={key} className="h-[60px]">
                   <td className="table-td-data">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.id}
+                      {user.id}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.firstName}
+                      {user.firstName}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.lastName}
+                      {user.lastName}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.username}
+                      {user.username}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.email}
+                      {user.email}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.role}
+                      {user.roleId}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.contactNo}
+                      {user.contactNo ?? "-"}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.officeLocation}
+                      {user.officeLocation ?? "-"}
                     </h5>
                   </td>
                   <td className="table-td-data">
                     <h5
-                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        packageItem.status === "Active"
-                          ? "bg-success text-success"
-                          : "bg-danger text-danger"
-                      }`}
+                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${user.status === "Active"
+                        ? "bg-success text-success"
+                        : "bg-danger text-danger"
+                        }`}
                     >
-                      {packageItem.status}
+                      {user.status}
                     </h5>
                   </td>
-                  
+
                   <td className="table-td-data px-4">
                     <div className="flex items-center space-x-3.5">
                       <button className="hover:text-primary">
@@ -325,7 +351,7 @@ const ManageUser = () => {
                         <button className="hover:text-primary">
                           <FaEye color="#000000" />
                         </button>
-                        
+
                       </div>
                       <button className="hover:text-primary">
                         <MdEdit color="#0000FF" />
@@ -337,40 +363,13 @@ const ManageUser = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
-          {/* Previous Button */}
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                    ${currentPage === 1 ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
 
-          {/* Pagination Buttons */}
-          {[...Array(Math.ceil(Data.length / itemsPerPage)).keys()].map(
-            (number) => (
-              <button
-                key={number}
-                onClick={() => paginate(number + 1)}
-                className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                      ${currentPage === number + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-700 hover:bg-opacity-90"}`}
-              >
-                {number + 1}
-              </button>
-            )
-          )}
-
-          {/* Next Button */}
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                    ${currentPage === Math.ceil(Data.length / itemsPerPage) ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
-            disabled={currentPage === Math.ceil(Data.length / itemsPerPage)}
-          >
-            Next
-          </button>
+        <div className="flex justify-center items-center mt-4">
+          <nav>
+            <ul className="inline-flex gap-4">
+              {...getPaginationButtons()}
+            </ul>
+          </nav>
         </div>
       </div>
     </DefaultLayout>
