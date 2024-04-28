@@ -22,6 +22,7 @@ import ManageUser from "./pages/User/ManageUser";
 import ManageRole from "./pages/Role/ManageRole";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import { PermissionGuard } from "./components/PermissionGuard";
+import SelectQuestionPage from "./pages/QPG/SelectQuestionPage";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -93,6 +94,15 @@ function App() {
           <>
             <PageTitle title="Add Subject" />
             <ManagePaper />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question"
+        element={
+          <>
+            <PageTitle title="Select Questions" />
+            <SelectQuestionPage />
           </>
         }
       />
