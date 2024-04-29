@@ -27,6 +27,7 @@ import ShowUserDetails from "./pages/User/ShowUserDetails";
 import UserContext, { UserProvider } from "./context/UserContext";
 import EditRole from "./pages/Role/EditRoleDetails";
 import { RoleProvider } from "./context/RoleContext";
+import SelectQuestionPage from "./pages/QPG/SelectQuestionPage";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -98,6 +99,15 @@ function App() {
           <>
             <PageTitle title="Add Subject" />
             <ManagePaper />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question"
+        element={
+          <>
+            <PageTitle title="Select Questions" />
+            <SelectQuestionPage />
           </>
         }
       />
