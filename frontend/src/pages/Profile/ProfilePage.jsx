@@ -19,24 +19,25 @@ const ProfilePage = () => {
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="flex flex-row justify-between border-b border-stroke py-10 px-6.5 dark:border-strokedark">
-              <span className="h-10 w-12 mb-10 rounded-full ">
+            <div className="flex flex-row border-b border-stroke py-10 px-6.5 dark:border-strokedark">
+              <span className="rounded-full ">
                 <GoPerson
                   size={110}
                   className="bg-primary rounded-full text-white"
                 />
               </span>
-              <div className="flex flex-col">
-                <span className="text-3xl">Namra Ravani</span>
-                <span className="text-xl text-primary">Admin</span>
-              </div>
-              <div
-                className="inline-flex gap-2 min-w-max justify-center items-center rounded-full bg-gray-200 border border-gray-400 px-3 py-1 text-sm font-medium bg-meta-2 dark:bg-meta-4"
-                onClick={handleClick}
-                style={{ cursor: "pointer" }} // Add pointer cursor
-              >
-                <MdEdit />
-                <span>Edit Profile</span>
+              <div className="w-full flex flex-row justify-between ml-4 items-center">
+                <div className="flex flex-col">
+                  <span className="text-3xl">Namra Ravani</span>
+                  <span className="text-xl text-primary">Admin</span>
+                </div>
+                <button
+                  className="inline-flex gap-2 justify-center items-center rounded-full bg-gray-200 border border-gray-400 px-3 py-1 text-sm font-medium bg-meta-2 dark:bg-meta-4 cursor-pointer"
+                  onClick={handleClick}
+                >
+                  <MdEdit />
+                  <span>Edit Profile</span>
+                </button>
               </div>
             </div>
             <div>

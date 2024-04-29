@@ -17,7 +17,7 @@ import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
 import _ from "lodash";
 
-const ManageUser = () => {
+const AllUsers = () => {
   const [userList, setUserList] = useState([]);
 
   useEffect(() => {
@@ -412,4 +412,4 @@ const ManageUser = () => {
   );
 };
 
-export default ManageUser;
+export default AllUsers;

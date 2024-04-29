@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
@@ -9,27 +9,59 @@ import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
 import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
 import { toLowerCase, toTitleCase } from "../../js/utils";
-import { json } from "react-router-dom";
+import UserContext from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
-const AddUser = () => {
+const EditUser = () => {
   const statusList = ["Active", "Disabled"];
   const [roleList, setRoleList] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
+  const { selectedUserData } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedUserData) {
+      navigate("/user/manage-users");
+    }
+  }, [selectedUserData, navigate]);
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    const getRoles = async () => {
-      const response = await axios.get(javaBaseUrl + "/api/roles/active");
-      if (response.status == 200) {
-        setRoleList(response.data);
-      }
-    };
+  // const getUserData = async () => {
+  //     const response = await axios.get(javaBaseUrl + `/api/auth/username/${selectedUserData.username}`);
+  //     if (response.status === 200) {
+  //         setUserData(response.data);
+  //     }
+  // };
 
+  const getRoles = async () => {
+    const response = await axios.get(javaBaseUrl + "/api/roles/active");
+    if (response.status === 200) {
+      setRoleList(response.data);
+    }
+  };
+
+  useEffect(() => {
     getRoles();
+    // getUserData();
   }, []);
+
+  // useEffect(() => {
+  //     if (userData) {
+  //         formik.setValues({
+  //             firstName: userData?.firstName ?? "",
+  //             lastName: userData?.lastName ?? "",
+  //             email: userData?.email ?? "",
+  //             password: "",
+  //             contactNo: userData?.contactNo ?? "",
+  //             officeLocation: userData?.officeLocation ?? "",
+  //             roleId: userData?.roleId ?? "",
+  //             status: userData?.status ?? statusList[0],
+  //         });
+  //     }
+  // }, [userData]);
 
   const validationSchema = yup.object({
     firstName: yup
@@ -54,38 +86,32 @@ const AddUser = () => {
         /^\w+$/,
         "Username should not contain spaces or special characters except '_'"
       ),
-    email: yup
-      .string()
-      .email("Invalid email address")
-      .required("Email is required")
-      .matches(/^\S+@\S+\.\S+$/, "Email should not contain spaces"),
     password: yup
       .string()
       .min(6, "Password must be at least 6 characters")
-      .required("Password is required")
       .matches(/^[^ ]+$/, "Password should not contain spaces"),
     contactNo: yup
       .string()
+      .required("Contact No is required")
       .matches(/^\d+$/, "Contact No should only contain digits")
       .min(10, "Contact No must be at least 10 characters")
-      .max(15, "Contact No can't exceed 15 characters")
-      .optional(),
-    officeLocation: yup.string().optional(),
+      .max(15, "Contact No can't exceed 15 characters"),
+    officeLocation: yup.string().required("Office Location is required"),
     roleId: yup.string().notOneOf([""]).required("Role is required"),
     status: yup.string().required("Status is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      username: "",
-      email: "",
+      firstName: selectedUserData?.firstName ?? "",
+      lastName: selectedUserData?.lastName ?? "",
+      username: selectedUserData?.username ?? "",
+      email: selectedUserData?.email ?? "",
       password: "",
-      contactNo: "",
-      officeLocation: "",
-      roleId: "",
-      status: statusList[0],
+      contactNo: selectedUserData?.contactNo ?? "",
+      officeLocation: selectedUserData?.officeLocation ?? "",
+      roleId: selectedUserData?.roleId ?? "",
+      status: selectedUserData?.status ?? statusList[0],
     },
     validationSchema,
     onSubmit: (values) => {
@@ -94,25 +120,28 @@ const AddUser = () => {
   });
 
   const handleSubmit = async (values) => {
-    const response = await axios.post(
-      javaBaseUrl + "/api/auth/register",
-      values
-    );
-    if (response.status == 200) {
+    const response = await axios.put(javaBaseUrl + `/api/auth`, {
+      ...values,
+      id: selectedUserData?.id,
+    });
+    if (response.status === 200) {
       console.log(response.data);
-      formik.resetForm();
     }
   };
 
+  if (!selectedUserData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Add User" />
+      <Breadcrumb pageName="Edit User" />
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add User
+                Edit User
               </h3>
             </div>
             <form onSubmit={formik.handleSubmit}>
@@ -186,6 +215,7 @@ const AddUser = () => {
                     ) : null}
                   </label>
                 </div>
+
                 <div className="w-full">
                   <label className="labelfield">
                     Email
@@ -218,7 +248,7 @@ const AddUser = () => {
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        placeholder="Enter Password here"
+                        placeholder="Enter New Password here"
                         className="inputfield"
                       />
                       <span className="absolute right-4 top-6">
@@ -314,7 +344,7 @@ const AddUser = () => {
                   type="submit"
                   disabled={!formik.isValid}
                 >
-                  Add
+                  Update
                 </button>
               </div>
             </form>
@@ -325,4 +355,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default EditUser;

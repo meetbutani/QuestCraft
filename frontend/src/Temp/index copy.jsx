@@ -300,22 +300,146 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               </li>
               {/* <!-- Menu Item Course --> */}
 
-              {/* <!-- Menu Item Course --> */}
-              <li>
-                <NavLink
-                  to="/role/manage-role"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("qsetting") &&
-                    "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  <div className="flex w-[22px] justify-center">
-                    <RiKey2Line size={22} />
-                  </div>
-                  User Permission
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Course --> */}
+              {/* <!-- Menu Item Forms --> */}
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname === "/user" || pathname.includes("user")
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <NavLink
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/forms" ||
+                            pathname.includes("users")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        <div className="flex w-[22px] justify-center">
+                          <FaUserAlt size={18} />
+                        </div>
+                        Users
+                        <FaChevronDown
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 ${open && "rotate-180"}`}
+                        />
+                      </NavLink>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && "hidden"}`}
+                      >
+                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <NavLink
+                              to="/user/add-user"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              <IoMdAdd size={22} />
+                              Add Users
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/user/manage-users"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              <IoMdSettings size={22} />
+                              Manage Users
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
+              {/* <!-- Menu Item Forms --> */}
+
+              {/* <!-- Menu Item Forms --> */}
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname === "/user-permission" ||
+                  pathname.includes("user-permission")
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <NavLink
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/forms" ||
+                            pathname.includes("role")) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        <div className="flex w-[22px] justify-center">
+                          <RiKey2Line size={22} />
+                        </div>
+                        User Permission
+                        <FaChevronDown
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 ${open && "rotate-180"}`}
+                        />
+                      </NavLink>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${
+                          !open && "hidden"
+                        }`}
+                      >
+                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <NavLink
+                              to="/role/add-role"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              <IoMdAdd size={22} />
+                              Add Role
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/role/manage-role"
+                              className={({ isActive }) =>
+                                "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
+                                (isActive && "!text-white")
+                              }
+                            >
+                              <IoMdSettings size={22} />
+                              Manage Role
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
+              {/* <!-- Menu Item Forms --> */}
 
               {/* <!-- Menu Item Course --> */}
               <li>

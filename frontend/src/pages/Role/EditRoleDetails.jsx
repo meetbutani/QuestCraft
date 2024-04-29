@@ -1,25 +1,22 @@
-import React, { useState } from "react";
-import { useFormik } from "formik";
-import * as yup from "yup";
+import React, { useState, useContext, useEffect } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
-import { toUpper } from "lodash";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
-import Checkbox from "../../components/Forms/Checkbox";
+import "../../css/AddUser.css";
+import * as yup from "yup";
+import { useFormik } from "formik";
 import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
+import { useNavigate } from "react-router-dom";
+import RoleContext from "../../context/RoleContext";
+import Checkbox from "../../components/Forms/Checkbox";
+import { toUpper } from "lodash";
 
-const AddRole = () => {
-  const [access, setAccess] = useState({
-    User: [],
-    Role: [],
-    Subject: [],
-    Unit: [],
-    Question: [],
-    Generate: [],
-  });
-
+const EditRole = () => {
+  const [access, setAccess] = useState({});
+  const { selectedRoleData } = useContext(RoleContext);
   const statusList = ["Active", "Disabled"];
+  const navigate = useNavigate();
 
   const optionsList = {
     User: "User Module",
@@ -30,18 +27,40 @@ const AddRole = () => {
     Generate: "Question Paper Generator Module",
   };
 
+  useEffect(() => {
+    if (!selectedRoleData) {
+      navigate("/role/manage-role"); // Redirect if no role is selected
+    } else {
+      setAccess(generateAccessState(selectedRoleData.accessList));
+    }
+  }, [selectedRoleData, navigate]);
+
+  const generateAccessState = (accessList) => {
+    const initialState = {
+      User: [],
+      Role: [],
+      Subject: [],
+      Unit: [],
+      Question: [],
+      Generate: [],
+    };
+    accessList.forEach((accessItem) => {
+      const [module, accessLevel] = accessItem.split(/(?=[A-Z])/); // Split access item into module and access level
+      initialState[module].push(accessLevel);
+    });
+    return initialState;
+  };
+
   const validationSchema = yup.object({
     roleId: yup.string().notOneOf([""]).required("Role ID is required"),
     status: yup.string().required("Status is required"),
   });
 
-  const initialValues = {
-    roleId: "",
-    status: statusList[0],
-  };
-
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      roleId: selectedRoleData?.roleId || "",
+      status: selectedRoleData?.status || statusList[0],
+    },
     validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
@@ -77,25 +96,25 @@ const AddRole = () => {
       []
     );
 
-    const response = await axios.post(javaBaseUrl + "/api/roles", {
+    const response = await axios.put(javaBaseUrl + `/api/roles`, {
       ...values,
       accessList: accessList,
+      id: selectedRoleData?.id,
     });
-    if (response.status == 200) {
+    if (response.status === 200) {
       console.log(response.data);
-      formik.resetForm();
     }
   };
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Add Role" />
+      <Breadcrumb pageName="Edit Role" />
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add Role
+                Edit Role
               </h3>
             </div>
             <form onSubmit={formik.handleSubmit}>
@@ -130,9 +149,7 @@ const AddRole = () => {
                       title={"Select Status"}
                       value={formik.values.status}
                       optionlist={statusList}
-                      onChange={(e) => {
-                        formik.setFieldValue("status", e.target.value);
-                      }}
+                      onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                     />
                     {formik.touched.status && formik.errors.status ? (
@@ -173,7 +190,7 @@ const AddRole = () => {
                   className="flex flex-row justify-center self-center mt-4.5 w-1/2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   disabled={!formik.isValid}
                 >
-                  Add
+                  Update
                 </button>
               </div>
             </form>
@@ -184,4 +201,4 @@ const AddRole = () => {
   );
 };
 
-export default AddRole;
+export default EditRole;

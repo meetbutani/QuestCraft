@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
@@ -12,13 +12,19 @@ import { javaBaseUrl } from "../../js/api.constatnt";
 import _ from "lodash";
 import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
+import DeleteDialog from "../../components/Modals/DeleteDialog";
+import UserContext from "../../context/UserContext";
 
-const ManageUser = () => {
+const ManageUsers = () => {
   const [userList, setUserList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState({ username: "", id: "" });
+
+  const { setSelectedUserData } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -32,14 +38,25 @@ const ManageUser = () => {
   };
 
   const getFilteredData = () => {
-    const filteredData = userList.filter((user) =>
-      (user.firstName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.lastName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.username ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.roleId ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.contactNo ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (user.officeLocation ?? "").toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredData = userList.filter(
+      (user) =>
+        (user.firstName ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (user.lastName ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (user.username ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (user.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.roleId ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (user.contactNo ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (user.officeLocation ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
     );
     return filteredData;
   };
@@ -61,7 +78,11 @@ const ManageUser = () => {
     return data.slice(startIndex, startIndex + itemsPerPage);
   };
 
-  const sortedUsers = _.orderBy(getFilteredData(), [sortConfig.key], [sortConfig.direction]);
+  const sortedUsers = _.orderBy(
+    getFilteredData(),
+    [sortConfig.key],
+    [sortConfig.direction]
+  );
 
   const paginatedUsers = getPaginatedData(sortedUsers);
 
@@ -69,9 +90,41 @@ const ManageUser = () => {
     const getAllUsers = async () => {
       const response = await axios.get(javaBaseUrl + "/api/auth");
       if (response.status == 200) {
-        console.log(response.data);
-        // setUserList(response.data);
-        setUserList([...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data, ...response.data]);
+        // setUserList(response.data.data);
+        setUserList([
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+          ...response.data.data,
+        ]);
       }
     };
 
@@ -157,10 +210,69 @@ const ManageUser = () => {
     return buttons;
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (event.target.id === "delete-dialog-backdrop") {
+        handleDeleteCancel();
+      }
+    };
+
+    if (isDeleteDialogOpen) {
+      document.addEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isDeleteDialogOpen]);
+
+  const handleDeleteClick = (id, username) => {
+    // Show the delete dialog
+    setIsDeleteDialogOpen(true);
+    setSelectedUser({ id: id, username: username });
+  };
+
+  const handleDeleteConfirm = async () => {
+    // Call the delete API here
+    // console.log(selectedUser)
+    try {
+      const response = await axios.delete(
+        javaBaseUrl + "/api/auth/" + selectedUser.id
+      );
+      if (response.status === 200) {
+        // Remove the deleted user from the user list
+        setUserList(
+          userList.filter((user) => user.username !== selectedUser.username)
+        );
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    setIsDeleteDialogOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    // Close the delete dialog
+    setIsDeleteDialogOpen(false);
+    setSelectedUser({ username: "", id: "" });
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manage Users" />
       <div className="flex justify-between items-center mb-4">
+        <DeleteDialog
+          isOpen={isDeleteDialogOpen}
+          title={"Delete User"}
+          description={
+            "Are you sure want to delete user with username <b>'" +
+            selectedUser.username +
+            "'</b>."
+          }
+          onConfirm={handleDeleteConfirm}
+          onCancel={handleDeleteCancel}
+        />
         <div>
           <button
             onClick={handleClick}
@@ -170,10 +282,15 @@ const ManageUser = () => {
             Add User
           </button>
         </div>
-        <form action="#" method="post" onSubmit={(e) => e.preventDefault()} className="flex items-center mx-8 relative">
+        <form
+          action="#"
+          method="post"
+          onSubmit={(e) => e.preventDefault()}
+          className="flex items-center mx-8 relative"
+        >
           <input
             type="text"
-            placeholder="Search by First Name.."
+            placeholder="Search"
             value={searchTerm}
             onChange={handleSearchChange}
             className="max-w-100 w-60 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" // Adjusted px value to accommodate the icon
@@ -186,7 +303,10 @@ const ManageUser = () => {
           <select
             className="border rounded-md border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
             value={itemsPerPage}
-            onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); }}
+            onChange={(e) => {
+              setItemsPerPage(Number(e.target.value));
+              setCurrentPage(1);
+            }}
           >
             <option value="10">10</option>
             <option value="15">15</option>
@@ -203,11 +323,17 @@ const ManageUser = () => {
               <tr className="bg-slate-200 text-left dark:bg-meta-4 h-[60px]">
                 <th
                   className="table-td-head"
-                  onClick={() => handleSort("id")}
+                  onClick={() => handleSort("serialNo")}
                 >
                   <span>
                     No
-                    <NumberSorting order={sortConfig.key === "id" ? sortConfig.direction : ""} />
+                    <NumberSorting
+                      order={
+                        sortConfig.key === "serialNo"
+                          ? sortConfig.direction
+                          : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -216,7 +342,13 @@ const ManageUser = () => {
                 >
                   <span>
                     First Name
-                    <StringSorting order={sortConfig.key === "firstName" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "firstName"
+                          ? sortConfig.direction
+                          : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -225,7 +357,13 @@ const ManageUser = () => {
                 >
                   <span>
                     Last Name
-                    <StringSorting order={sortConfig.key === "lastName" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "lastName"
+                          ? sortConfig.direction
+                          : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -234,7 +372,13 @@ const ManageUser = () => {
                 >
                   <span>
                     Username
-                    <StringSorting order={sortConfig.key === "username" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "username"
+                          ? sortConfig.direction
+                          : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -243,7 +387,11 @@ const ManageUser = () => {
                 >
                   <span>
                     email
-                    <StringSorting order={sortConfig.key === "email" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "email" ? sortConfig.direction : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -252,7 +400,11 @@ const ManageUser = () => {
                 >
                   <span>
                     Role
-                    <StringSorting order={sortConfig.key === "roleId" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "roleId" ? sortConfig.direction : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -261,7 +413,13 @@ const ManageUser = () => {
                 >
                   <span>
                     Contact No
-                    <NumberSorting order={sortConfig.key === "contactNo" ? sortConfig.direction : ""} />
+                    <NumberSorting
+                      order={
+                        sortConfig.key === "contactNo"
+                          ? sortConfig.direction
+                          : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -270,7 +428,13 @@ const ManageUser = () => {
                 >
                   <span>
                     Office location
-                    <StringSorting order={sortConfig.key === "officeLocation" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "officeLocation"
+                          ? sortConfig.direction
+                          : ""
+                      }
+                    />
                   </span>
                 </th>
                 <th
@@ -279,7 +443,11 @@ const ManageUser = () => {
                 >
                   <span>
                     Status
-                    <StringSorting order={sortConfig.key === "status" ? sortConfig.direction : ""} />
+                    <StringSorting
+                      order={
+                        sortConfig.key === "status" ? sortConfig.direction : ""
+                      }
+                    />
                   </span>
                 </th>
 
@@ -293,7 +461,7 @@ const ManageUser = () => {
                 <tr key={key} className="h-[60px]">
                   <td className="table-td-data">
                     <h5 className="font-medium text-black dark:text-white">
-                      {user.id}
+                      {user.serialNo}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
@@ -312,9 +480,7 @@ const ManageUser = () => {
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
-                    <h5 className="text-black dark:text-white">
-                      {user.email}
-                    </h5>
+                    <h5 className="text-black dark:text-white">{user.email}</h5>
                   </td>
                   <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
@@ -333,27 +499,42 @@ const ManageUser = () => {
                   </td>
                   <td className="table-td-data">
                     <h5
-                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${user.status === "Active"
-                        ? "bg-success text-success"
-                        : "bg-danger text-danger"
-                        }`}
+                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                        user.status === "Active"
+                          ? "bg-success text-success"
+                          : "bg-danger text-danger"
+                      }`}
                     >
                       {user.status}
                     </h5>
                   </td>
 
                   <td className="table-td-data px-4">
-                    <div className="flex items-center space-x-3.5">
-                      <button className="hover:text-primary">
+                    <div className="flex justify-center space-x-3.5">
+                      <button
+                        onClick={() =>
+                          handleDeleteClick(user.id, user.username)
+                        }
+                        className="hover:text-primary"
+                      >
                         <RiDeleteBinLine color="#FF5733" />
                       </button>
-                      <div className="flex items-center space-x-3.5">
-                        <button className="hover:text-primary">
-                          <FaEye color="#000000" />
-                        </button>
-
-                      </div>
-                      <button className="hover:text-primary">
+                      <button
+                        onClick={() => {
+                          setSelectedUserData(user);
+                          navigate(`/user/user-details`);
+                        }}
+                        className="hover:text-primary"
+                      >
+                        <FaEye color="#000000" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedUserData(user);
+                          navigate(`/user/edit-user-details`);
+                        }}
+                        className="hover:text-primary"
+                      >
                         <MdEdit color="#0000FF" />
                       </button>
                     </div>
@@ -366,9 +547,7 @@ const ManageUser = () => {
 
         <div className="flex justify-center items-center mt-4">
           <nav>
-            <ul className="inline-flex gap-4">
-              {...getPaginationButtons()}
-            </ul>
+            <ul className="inline-flex gap-4">{...getPaginationButtons()}</ul>
           </nav>
         </div>
       </div>
@@ -376,4 +555,4 @@ const ManageUser = () => {
   );
 };
 
-export default ManageUser;
+export default ManageUsers;

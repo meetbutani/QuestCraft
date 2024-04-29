@@ -1,10 +1,15 @@
 package org.example.questcraftapi.role;
 
+import org.example.questcraftapi.auth.UserDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class RoleService {
@@ -16,41 +21,45 @@ public class RoleService {
         return roleRepository.save(role);
     }
 
-    public RoleDocument findRoleById(String id) {
-        return roleRepository.findById(id).orElseThrow();
+    public Optional<RoleDocument> findRoleById(String id) {
+        return roleRepository.findById(id);
     }
 
-    public RoleDocument findRoleByRoleId(String roleId) {
-        return roleRepository.findByRoleId(roleId);
+    public Optional<RoleDocument> findRoleByRoleId(String roleId) {
+        return Optional.ofNullable(roleRepository.findByRoleId(roleId));
     }
 
     public List<String> findAllActiveRoleIds() {
         return roleRepository.findAll().stream()
-                .filter(role -> "active".equals(role.getStatus()))
+                .filter(role -> "Active".equals(role.getStatus()))
                 .map(RoleDocument::getRoleId)
                 .collect(Collectors.toList());
     }
 
-    public List<RoleDocument> findAllRoles() {
-        return roleRepository.findAll();
+    public List<Map<String, Object>> getAllRoles() {
+        List<RoleDocument> roles = roleRepository.findAll();
+        return IntStream.range(0, roles.size()).mapToObj(index -> {
+            RoleDocument role = roles.get(index);
+            Map<String, Object> roleMap = new HashMap<>();
+            roleMap.put("serialNo", index + 1);
+            roleMap.put("id", role.getId());
+            roleMap.put("roleId", role.getRoleId());
+            roleMap.put("accessList", role.getAccessList());
+            roleMap.put("status", role.getStatus());
+            return roleMap;
+        }).collect(Collectors.toList());
+//        return roleRepository.findAll();
     }
 
-    public RoleDocument updateRole(String roleId, RoleDocument updates) {
-        RoleDocument existingRole = roleRepository.findByRoleId(roleId);
-        if (existingRole == null) {
-            throw new RuntimeException("Role not found.");
-        }
-        // Update the role information
-        existingRole.setAccessList(updates.getAccessList());
-        existingRole.setStatus(updates.getStatus());
-        return roleRepository.save(existingRole);
+    public RoleDocument updateRole(RoleDocument updates) {
+        return roleRepository.save(updates);
     }
 
     public void deleteRole(String roleId) {
-        RoleDocument role = roleRepository.findByRoleId(roleId);
-        if (role == null) {
-            throw new RuntimeException("Role not found.");
-        }
-        roleRepository.delete(role);
+        roleRepository.deleteById(roleId);
+    }
+
+    public void deleteRoleByRoleId(String roleId) {
+        findRoleByRoleId(roleId).ifPresent(roleDocument -> deleteRole(roleDocument.getId()));
     }
 }

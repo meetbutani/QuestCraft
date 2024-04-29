@@ -18,10 +18,15 @@ import PreUnitPage from "./pages/Unit/PreUnitPage";
 import PreQuestionPage from "./pages/Question/PreQuestionPage";
 import AddUser from "./pages/User/AddUser";
 import AddRole from "./pages/Role/AddRole";
-import ManageUser from "./pages/User/ManageUser";
+import ManageUsers from "./pages/User/ManageUsers";
 import ManageRole from "./pages/Role/ManageRole";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import { PermissionGuard } from "./components/PermissionGuard";
+import EditUserDetails from "./pages/User/EditUserDetails";
+import ShowUserDetails from "./pages/User/ShowUserDetails";
+import UserContext, { UserProvider } from "./context/UserContext";
+import EditRole from "./pages/Role/EditRoleDetails";
+import { RoleProvider } from "./context/RoleContext";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -192,15 +197,38 @@ function App() {
         }
       />
       <Route
-        path="/user/manage-user"
+        path="/user/manage-users"
         element={
           <>
-            <PageTitle title="Manage User" />
-            <ManageUser />
+            <PageTitle title="Manage Users" />
+            <UserProvider>
+              <ManageUsers />
+            </UserProvider>
           </>
         }
       />
-
+      <Route
+        path="/user/user-details"
+        element={
+          <>
+            <PageTitle title="User Details" />
+            <UserProvider>
+              <ShowUserDetails />
+            </UserProvider>
+          </>
+        }
+      />
+      <Route
+        path="/user/edit-user-details"
+        element={
+          <>
+            <PageTitle title="Edit User Details" />
+            <UserProvider>
+              <EditUserDetails />
+            </UserProvider>
+          </>
+        }
+      />
       {/* // ------------------------------------ Role Routes ---------------------------- */}
       <Route
         path="/role/add-role"
@@ -216,7 +244,20 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Role" />
-            <ManageRole />
+            <RoleProvider>
+              <ManageRole />
+            </RoleProvider>
+          </>
+        }
+      />
+      <Route
+        path="/role/edit-role-details"
+        element={
+          <>
+            <PageTitle title="Edit Role Details" />
+            <RoleProvider>
+              <EditRole />
+            </RoleProvider>
           </>
         }
       />

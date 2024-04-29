@@ -1,7 +1,15 @@
 import React from "react";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
-const DynamicDropDown = ({ name, value, onChange, title, optionlist, onBlur }) => {
+const DynamicDropDown = ({
+  name,
+  value,
+  onChange,
+  title,
+  optionlist,
+  onBlur,
+  defaultOptionTitle,
+}) => {
   const [isDropDownOpen, setIsDropDownOpen] = React.useState(false);
 
   const toggleDropDown = () => {
@@ -23,6 +31,14 @@ const DynamicDropDown = ({ name, value, onChange, title, optionlist, onBlur }) =
             className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${value !== "" ? "text-black dark:text-white" : ""
               }`}
           >
+            {defaultOptionTitle ? (
+              <option value="">
+                {defaultOptionTitle}
+              </option>
+            ) : (
+              <></>
+            )}
+            {/* Default option */}
             {optionlist.map((option, index) => (
               <option
                 key={index}
