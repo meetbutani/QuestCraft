@@ -13,7 +13,7 @@ import _ from "lodash";
 import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
-import UserContext from "../../context/UserContext";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const ManageUsers = () => {
   const [userList, setUserList] = useState([]);
@@ -24,7 +24,7 @@ const ManageUsers = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState({ username: "", id: "" });
 
-  const { setSelectedUserData } = useContext(UserContext);
+  const { setSelectedUserData } = useContext(ContextProviderContext);
 
   const navigate = useNavigate();
 
@@ -451,7 +451,7 @@ const ManageUsers = () => {
                 </th>
 
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">Actions</span>
+                  <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>

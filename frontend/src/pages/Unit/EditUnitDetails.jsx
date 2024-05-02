@@ -9,11 +9,13 @@ import { decryptData } from "../../js/secureData";
 import "../../css/AddUser.css";
 import { useNavigate } from "react-router-dom";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
-import UnitContext from "../../context/UnitContext";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const EditUnit = () => {
   const statusList = ["Active", "Inactive"];
-  const { selectedUnitData, selectedSubjectData } = useContext(UnitContext);
+  const { selectedUnitData, selectedSubjectData } = useContext(
+    ContextProviderContext
+  );
   const navigate = useNavigate();
 
   useEffect(() => {

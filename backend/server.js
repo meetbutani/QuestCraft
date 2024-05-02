@@ -42,6 +42,7 @@ run().catch(console.dir);
 
 app.use("/api/subject", require("./src/subject/subject.routes"));
 app.use("/api/unit", require("./src/unit/unit.routes"));
+app.use("/api/question", require("./src/question/question.routes"));
 
 app.get("/", (req, res) => res.send("Hello World!"));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

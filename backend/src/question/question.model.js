@@ -6,8 +6,9 @@ const questionSchema = new Schema(
   {
     queType: {
       type: String,
-      enum: ["MCQ", "T/F", "NORMAL"],
+      enum: ["MCQ", "True/False", "Normal"],
       required: true,
+      default: "NORMAL",
     },
     queOrg: {
       type: String,
@@ -33,18 +34,18 @@ const questionSchema = new Schema(
       type: String,
       enum: ["EASY", "MEDIUM", "HARD"],
       required: true,
+      default: "EASY",
     },
     unitId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "Unit",
     },
-    // subjectCode: {
-    //     type: String,
-    //     required: true,
-    //     trim: true,
-    //     ref: 'Subject',
-    // },
+    subjectId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Subject",
+    },
     createdBy: {
       type: Schema.Types.ObjectId,
       required: true,

@@ -12,16 +12,16 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
-import UnitContext from "../../context/UnitContext";
+import ContextProviderContext from "../../context/ContextProvider";
 
-const SelectSubject = () => {
+const SelectSubjectUnit = () => {
   const [subjectList, setSubjectList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const { setSelectedSubjectData } = useContext(UnitContext);
+  const { setSelectedSubjectData } = useContext(ContextProviderContext);
 
   const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ const SelectSubject = () => {
           ...subjectsWithSerialNo,
         ]);
       } catch (error) {
-        console.error("Error fetching roles:", error);
+        console.error("Error fetching units:", error);
       }
     };
 
@@ -328,7 +328,7 @@ const SelectSubject = () => {
                   </span>
                 </th>
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">Actions</span>
+                  <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -389,4 +389,4 @@ const SelectSubject = () => {
   );
 };
 
-export default SelectSubject;
+export default SelectSubjectUnit;

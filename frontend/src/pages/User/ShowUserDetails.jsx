@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import "../../css/AddUser.css";
-import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const ShowUserDetails = () => {
-  const { selectedUserData } = useContext(UserContext);
+  const { selectedUserData } = useContext(ContextProviderContext);
   const navigate = useNavigate();
 
   useEffect(() => {

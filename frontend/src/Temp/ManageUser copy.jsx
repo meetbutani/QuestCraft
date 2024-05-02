@@ -297,7 +297,7 @@ const AllUsers = () => {
                 </th>
 
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">Actions</span>
+                  <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>
@@ -357,7 +357,7 @@ const AllUsers = () => {
                   </td>
 
                   <td className="table-td-data px-4">
-                    <div className="flex items-center space-x-3.5">
+                    <div className="flex justify-center space-x-3.5">
                       <button className="hover:text-primary">
                         <RiDeleteBinLine color="#FF5733" />
                       </button>

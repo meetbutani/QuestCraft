@@ -12,7 +12,7 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
-import SubjectContext from "../../context/SubjectContext";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const ManageSubject = () => {
   const [subjectList, setSubjectList] = useState([]);
@@ -26,7 +26,7 @@ const ManageSubject = () => {
     id: "",
   });
 
-  const { setSelectedSubjectData } = useContext(SubjectContext);
+  const { setSelectedSubjectData } = useContext(ContextProviderContext);
 
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ const ManageSubject = () => {
           ...subjectsWithSerialNo,
         ]);
       } catch (error) {
-        console.error("Error fetching roles:", error);
+        console.error("Error fetching subjects:", error);
       }
     };
 
@@ -442,7 +442,7 @@ const ManageSubject = () => {
                   </span>
                 </th>
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">Actions</span>
+                  <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>

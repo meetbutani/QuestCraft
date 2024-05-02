@@ -7,13 +7,13 @@ import { nodeBaseUrl } from "../../js/api.constatnt";
 import * as yup from "yup";
 import { decryptData } from "../../js/secureData";
 import "../../css/AddUser.css";
-import SubjectContext from "../../context/SubjectContext";
 import { useNavigate } from "react-router-dom";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const EditSubject = () => {
   const statusList = ["Active", "Inactive"];
-  const { selectedSubjectData } = useContext(SubjectContext);
+  const { selectedSubjectData } = useContext(ContextProviderContext);
   const navigate = useNavigate();
 
   useEffect(() => {

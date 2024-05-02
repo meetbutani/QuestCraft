@@ -9,14 +9,14 @@ import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
 import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
 import { toLowerCase, toTitleCase } from "../../js/utils";
-import UserContext from "../../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const EditUser = () => {
   const statusList = ["Active", "Inactive"];
   const [roleList, setRoleList] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
-  const { selectedUserData } = useContext(UserContext);
+  const { selectedUserData } = useContext(ContextProviderContext);
   const navigate = useNavigate();
 
   useEffect(() => {

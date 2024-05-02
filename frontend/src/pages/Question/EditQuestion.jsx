@@ -11,26 +11,31 @@ import ContextProviderContext from "../../context/ContextProvider";
 import "../../css/AddUser.css";
 import { useNavigate } from "react-router-dom";
 import { IoAdd, IoRemove } from "react-icons/io5";
-import { ChatGPTAPI } from "chatgpt"; // Import ChatGPTAPI
 
-const AddQuestion = () => {
-  const { selectedSubjectData, selectedUnitData } = useContext(
-    ContextProviderContext
-  );
-
+const EditQuestion = () => {
+  const { selectedQuestionData } = useContext(ContextProviderContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!selectedSubjectData || !selectedUnitData) {
+    if (!selectedQuestionData) {
       navigate("/question/select-subject");
     }
-  }, [selectedSubjectData, selectedUnitData, navigate]);
+  }, [selectedQuestionData, navigate]);
 
   const questionTypes = ["Normal", "MCQ", "True/False"];
   const questionLevels = ["EASY", "MEDIUM", "HARD"];
-  const [options, setOptions] = useState([""]);
-  const [translatedOptions, setTranslatedOptions] = useState([""]);
-  const [translatedQuestion, setTranslatedQuestion] = useState("");
+
+  const [options, setOptions] = useState(
+    selectedQuestionData?.mcqOptionsOrg || [""]
+  );
+
+  const [translatedOptions, setTranslatedOptions] = useState(
+    selectedQuestionData?.mcqOptionsTrans || [""]
+  );
+
+  const [translatedQuestion, setTranslatedQuestion] = useState(
+    selectedQuestionData?.queTrans || ""
+  );
 
   const validationSchema = yup.object({
     questionType: yup.string().required("Question Type is required"),
@@ -44,11 +49,11 @@ const AddQuestion = () => {
 
   const formik = useFormik({
     initialValues: {
-      questionType: "Normal",
-      question: "",
-      marks: "",
-      answer: "",
-      level: "",
+      questionType: selectedQuestionData?.queType || "Normal",
+      question: selectedQuestionData?.queOrg || "",
+      marks: selectedQuestionData?.marks || "",
+      answer: selectedQuestionData?.answer || "",
+      level: selectedQuestionData?.level || "",
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -58,23 +63,22 @@ const AddQuestion = () => {
 
   const handleSubmit = async (values) => {
     let user = decryptData();
-    const response = await axios.post(nodeBaseUrl + "/api/question", {
-      queType: values.questionType,
-      queOrg: values.question,
-      queTrans: translatedQuestion,
-      answer: values.answer,
-      mcqOptionsOrg: options,
-      mcqOptionsTrans: translatedOptions,
-      marks: values.marks,
-      level: values.level,
-      unitId: selectedUnitData?._id,
-      subjectId: selectedSubjectData?._id,
-      createdBy: user["id"],
-      updatedBy: user["id"],
-    });
+    const response = await axios.put(
+      nodeBaseUrl + `/api/question/${selectedQuestionData._id}`,
+      {
+        queType: values.questionType,
+        queOrg: values.question,
+        queTrans: translatedQuestion,
+        answer: values.answer,
+        mcqOptionsOrg: options,
+        mcqOptionsTrans: translatedOptions,
+        marks: values.marks,
+        level: values.level,
+        updatedBy: user["id"],
+      }
+    );
     if (response.status === 200) {
       console.log(response.data);
-      formik.resetForm();
     } else {
       console.log(response.data);
     }
@@ -94,16 +98,14 @@ const AddQuestion = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Add Question" />
+      <Breadcrumb pageName="Edit Question" />
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
-          {/* <!-- Create Question Form --> */}
+          {/* <!-- Edit Question Form --> */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add Question for unit {selectedUnitData?.unitName} of{" "}
-                {selectedSubjectData?.subjectName} (
-                {selectedSubjectData?.subjectCode})
+                Edit Question
               </h3>
             </div>
             <form onSubmit={formik.handleSubmit}>
@@ -197,7 +199,7 @@ const AddQuestion = () => {
                         <div className="flex flex-col">
                           {options.map((option, index) => (
                             <div
-                              key={index}
+                              key={index + "org"}
                               className="flex items-center mb-2 gap-4"
                             >
                               {/* Original Option */}
@@ -292,22 +294,14 @@ const AddQuestion = () => {
                   ) : null} */}
                 </div>
 
-                <div className="flex flex-row gap-4">
-                  <button
-                    type="button"
-                    onClick={() => translateText(formik.values.question, "gu")}
-                    className="flex flex-row justify-center self-center mt-4.5 w-1/2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
-                  >
-                    Translate
-                  </button>
-
+                <div className="flex flex-row justify-center gap-4">
                   {/* Submit Button */}
                   <button
                     className="flex flex-row justify-center self-center mt-4.5 w-1/2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                     type="submit"
                     disabled={!formik.isValid}
                   >
-                    Add
+                    Save
                   </button>
                 </div>
               </div>
@@ -319,4 +313,4 @@ const AddQuestion = () => {
   );
 };
 
-export default AddQuestion;
+export default EditQuestion;
