@@ -100,10 +100,15 @@ const SubjectPaper = () => {
       hideProgressBar: true,
     });
 
-    // Navigate after a short delay to ensure the toast message is displayed
-    setTimeout(() => {
-      navigate("/qpaper/set-subject-paper/select-question");
-    }, 1000);
+    paperType === "mid-sem-exam"
+      ? setTimeout(() => {
+          navigate("/qpaper/set-subject-paper/select-question-for-section-a");
+        }, 1000)
+      : setTimeout(() => {
+          navigate(
+            "/qpaper/set-subject-paper/select-question-for-section-a-final"
+          );
+        }, 1000);
   };
 
   const updateTotalMarks = () => {

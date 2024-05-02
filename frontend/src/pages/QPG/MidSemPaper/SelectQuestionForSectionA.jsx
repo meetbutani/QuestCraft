@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DefaultLayout from "../../layout/DefaultLayout";
+import DefaultLayout from "../../../layout/DefaultLayout";
 import _, { update } from "lodash";
-import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
+import Breadcrumb from "../../../components/BreadCrumb/BreadCrumb";
 import { CiSearch } from "react-icons/ci";
 import { IoAdd, IoFilter } from "react-icons/io5";
 import { RiSparkling2Fill } from "react-icons/ri";
 import { LiaRandomSolid } from "react-icons/lia";
-import NumberSorting from "../../components/Tables/NumberSorting";
-import StringSorting from "../../components/Tables/StringSorting";
-import { dataMap } from "./paperData";
+import NumberSorting from "../../../components/Tables/NumberSorting";
+import StringSorting from "../../../components/Tables/StringSorting";
+import { dataMap } from "../paperData";
 // import Checkbox from "../../components/Forms/CheckboxQue";
 import { FaCheck } from "react-icons/fa";
-import AddQuestionManually from "./AddQuestionManually";
-import ApplyFilterPage from "./ApplyFilterPage";
-import SelectQuestionRandomly from "./SelectQuestionRandomly";
+import AddQuestionManually from "../AddQuestionManually";
+import ApplyFilterPage from "../ApplyFilterPage";
+import SelectQuestionRandomly from "../SelectQuestionRandomly";
 
-const SelectQuestionPage = () => {
+const SelectQuestionForSectionA = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
@@ -257,6 +258,7 @@ const SelectQuestionPage = () => {
     // Now 'selectedQuestions' array contains all the selected questions
 
     console.log("Datamap:", dataMap);
+    navigate("/qpaper/set-subject-paper/select-question-for-section-b");
 
     // You can perform further actions with the selected questions here
   };
@@ -267,7 +269,7 @@ const SelectQuestionPage = () => {
       <div className="flex justify-center">
         <div className="relative h-2.5 w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark m-10">
           {/* Adjusted positioning for the parent container */}
-          <div className="absolute  h-full w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark">
+          <div className="absolute  h-full w-full xl:w-4/4 rounded-full bg-stroke dark:bg-strokedark">
             <div className="absolute left-0 h-full w-1/4 rounded-full bg-primary">
               {/* Adjusted positioning for the pointer */}
               <span className="absolute bottom-full -right-0.5 transform translate-x-1/2 z-10 mb-2 inline-block rounded-sm bg-primary px-2 py-1 text-xs font-bold text-white">
@@ -498,4 +500,4 @@ const SelectQuestionPage = () => {
   );
 };
 
-export default SelectQuestionPage;
+export default SelectQuestionForSectionA;

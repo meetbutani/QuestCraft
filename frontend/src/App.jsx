@@ -27,11 +27,21 @@ import ShowUserDetails from "./pages/User/ShowUserDetails";
 import { UserProvider } from "./context/UserContext";
 import EditRole from "./pages/Role/EditRoleDetails";
 import { RoleProvider } from "./context/RoleContext";
-import SelectQuestionPage from "./pages/QPG/SelectQuestionPage";
 import { SubjectProvider } from "./context/SubjectContext";
 import EditSubject from "./pages/Subject/EditSubjectDetails";
 import { UnitProvider } from "./context/UnitContext";
 import EditUnit from "./pages/Unit/EditUnitDetails";
+import SelectQuestionForSectionA from "./pages/QPG/MidSemPaper/SelectQuestionForSectionA";
+import SelectQuestionForSectionB from "./pages/QPG/MidSemPaper/SelectQuestionForSectionB";
+import SelectQuestionForSectionC from "./pages/QPG/MidSemPaper/SelectQuestionForSectionC";
+import MidSemPaper from "./pages/QPG/MidSemPaper/MidSemPaper";
+import SelectQuestionForSectionAFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionAFinal";
+import SelectQuestionForSectionBFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionBFinal";
+import SelectQuestionForSectionCFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionCFinal";
+import SelectQuestionForSectionDFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionDFinal";
+import SelectQuestionForSectionEFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionEFinal";
+import SelectQuestionForSectionFFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionFFinal";
+import SelectQuestionForSectionGFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionGFinal";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -106,15 +116,111 @@ function App() {
           </>
         }
       />
+      {/*------------------------------------ Mid Sem paper Route -------------------------- */}
       <Route
-        path="/qpaper/set-subject-paper/select-question"
+        path="/qpaper/set-subject-paper/select-question-for-section-a"
         element={
           <>
-            <PageTitle title="Select Questions" />
-            <SelectQuestionPage />
+            <PageTitle title="Select Questions For Section A" />
+            <SelectQuestionForSectionA />
           </>
         }
       />
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-b"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section B" />
+            <SelectQuestionForSectionB />
+          </>
+        }
+      />
+
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-c"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section C" />
+            <SelectQuestionForSectionC />
+          </>
+        }
+      />
+
+      <Route
+        path="/qpaper/set-subject-paper/generate-pdf"
+        element={
+          <>
+            <PageTitle title="Generate PDF" />
+            <MidSemPaper />
+          </>
+        }
+      />
+      {/*------------------------------------ Final Sem paper Route -------------------------- */}
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-a-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section A" />
+            <SelectQuestionForSectionAFinal />
+          </>
+        }
+      />
+
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-b-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section b" />
+            <SelectQuestionForSectionBFinal />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-c-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section C" />
+            <SelectQuestionForSectionCFinal />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-d-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section D" />
+            <SelectQuestionForSectionDFinal />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-e-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section E" />
+            <SelectQuestionForSectionEFinal />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-f-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section F" />
+            <SelectQuestionForSectionFFinal />
+          </>
+        }
+      />
+      <Route
+        path="/qpaper/set-subject-paper/select-question-for-section-g-final"
+        element={
+          <>
+            <PageTitle title="Select Questions For Section G" />
+            <SelectQuestionForSectionGFinal />
+          </>
+        }
+      />
+
       {/* // --------------------- Subject Route ----------------------- */}
 
       <Route
