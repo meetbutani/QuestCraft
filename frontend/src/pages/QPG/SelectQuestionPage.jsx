@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DefaultLayout from "../../layout/DefaultLayout";
-import _ from "lodash";
+import _, { update } from "lodash";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { CiSearch } from "react-icons/ci";
 import { IoAdd, IoFilter } from "react-icons/io5";
@@ -9,42 +9,59 @@ import { RiSparkling2Fill } from "react-icons/ri";
 import { LiaRandomSolid } from "react-icons/lia";
 import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
-import Checkbox from "../../components/Forms/CheckboxQue";
+import { dataMap } from "./paperData";
+// import Checkbox from "../../components/Forms/CheckboxQue";
+import { FaCheck } from "react-icons/fa";
+import AddQuestionManually from "./AddQuestionManually";
+import ApplyFilterPage from "./ApplyFilterPage";
+import SelectQuestionRandomly from "./SelectQuestionRandomly";
 
 const SelectQuestionPage = () => {
-  const [userList, setUserList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
+  const [showModal, setShowModal] = useState(false);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [showRandomModal, setShowRandomModal] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
   const [Data, setData] = useState([
     {
+      id: 1,
       questionName: "What is Machine Learning",
+      optionList: ["Hello", "hii", "hee", "asa"],
       difficulty: "Easy",
       unitName: "ML",
+      selected: false,
     },
     {
+      id: 2,
       questionName: "What is Machine Learning",
+      optionList: ["Hello", "hii", "hee", "asa"],
       difficulty: "Easy",
-      unitName: "ML",
+      unitName: "CN",
+      selected: false,
     },
     {
+      id: 3,
       questionName: "What is Machine Learning",
+      optionList: ["Hello", "hii", "hee", "asa"],
       difficulty: "Hard",
-      unitName: "ML",
+      unitName: "DSIP",
+      selected: false,
     },
     {
+      id: 4,
       questionName: "What is Machine Learning",
+      optionList: ["Hello", "hii", "hee", "asa"],
       difficulty: "Moderate",
       unitName: "ML",
+      selected: false,
     },
   ]);
 
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/user/add-user");
+  const addQuestion = (question) => {
+    setData([...Data, { ...question, id: Data.length + 1 }]);
   };
 
   const handleSearchChange = (e) => {
@@ -170,12 +187,78 @@ const SelectQuestionPage = () => {
     return buttons;
   };
 
-  const handleCheckboxToggle = (question, isChecked) => {
-    if (isChecked) {
-      setSelectedQuestions([...selectedQuestions, question]);
-    } else {
-      setSelectedQuestions(selectedQuestions.filter((q) => q !== question));
+  const [selectedCount, setSelectedCount] = useState(0);
+  const handleCloseModal = () => {
+    setShowModal(false); // Close the modal
+    setSelectedCount((prevCount) => prevCount + 1); // Increment selectedCount
+  };
+
+  const generateRandomQuestions = (numberOfQuestions) => {
+    const randomIndexes = [];
+    for (let i = 0; i < numberOfQuestions; i++) {
+      const randomIndex = Math.floor(Math.random() * Data.length);
+      randomIndexes.push(randomIndex);
     }
+
+    const updatedData = Data.map((item, index) => {
+      if (randomIndexes.includes(index)) {
+        return { ...item, selected: true };
+      }
+      return item;
+    });
+
+    setData(updatedData);
+
+    setShowRandomModal(false);
+    setSelectedCount((prevCount) => prevCount + parseInt(numberOfQuestions));
+  };
+
+  const handleCheckboxChange = (e, id) => {
+    setSelectedCount((prevCount) =>
+      e.target.checked ? prevCount + 1 : prevCount - 1
+    );
+    let res = [...Data];
+    res[id - 1].selected = e.target.checked;
+    setData(res);
+    console.log(Data);
+  };
+
+  const handleApplyFilter = (filterCriteria) => {
+    // Apply the filter logic here based on the filter criteria
+    const filteredData = Data.filter((item) => {
+      // Check if the unitName matches the selected unit in the filter criteria
+      const unitMatch =
+        filterCriteria.unit === "All" || item.unitName === filterCriteria.unit;
+      // Check if the difficulty matches the selected difficulty in the filter criteria
+      const difficultyMatch =
+        filterCriteria.difficulty === "All" ||
+        item.difficulty === filterCriteria.difficulty;
+      // Return true if both unit and difficulty match, otherwise false
+      return unitMatch && difficultyMatch;
+    });
+
+    setFilteredData(filteredData);
+    // Close the modal
+    setShowFilterModal(false);
+  };
+
+  const handleSubmit = () => {
+    const selectedQuestions = [];
+
+    Data.forEach((question) => {
+      if (question.selected) {
+        selectedQuestions.push(question);
+        question.selected = false;
+      }
+    });
+
+    dataMap.sectionA = selectedQuestions;
+
+    // Now 'selectedQuestions' array contains all the selected questions
+
+    console.log("Datamap:", dataMap);
+
+    // You can perform further actions with the selected questions here
   };
 
   return (
@@ -184,7 +267,7 @@ const SelectQuestionPage = () => {
       <div className="flex justify-center">
         <div className="relative h-2.5 w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark m-10">
           {/* Adjusted positioning for the parent container */}
-          <div className="absolute left-0.5 h-full w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark">
+          <div className="absolute  h-full w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark">
             <div className="absolute left-0 h-full w-1/4 rounded-full bg-primary">
               {/* Adjusted positioning for the pointer */}
               <span className="absolute bottom-full -right-0.5 transform translate-x-1/2 z-10 mb-2 inline-block rounded-sm bg-primary px-2 py-1 text-xs font-bold text-white">
@@ -196,7 +279,7 @@ const SelectQuestionPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex gap-4 justify-between items-center mb-4 flex-col xl:flex-row ">
         <form
           action="#"
           method="post"
@@ -213,16 +296,27 @@ const SelectQuestionPage = () => {
 
           <CiSearch className="h-6 w-6 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
         </form>
-        <div>
-          <label className="max-w-100 w-100 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-            Select 6 MCQ
-          </label>
+        <div className="flex justify-center items-center">
+          <div className="max-w-100 w-40 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+            {selectedCount == 0
+              ? "Select 6 MCQ"
+              : `${selectedCount} MCQ Selected `}
+          </div>
         </div>
 
-        <div className="flex flex-row gap-5 max-w-100 w-40 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+        <button
+          onClick={() => setShowFilterModal(true)}
+          className="flex flex-row gap-5 max-w-100 w-40 border rounded-md focus:outline-none border-stroke bg-transparent py-3 px-10 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+        >
           <label>Filter</label>
           <IoFilter size={22} />
-        </div>
+        </button>
+        {showFilterModal && (
+          <ApplyFilterPage
+            onClose={() => setShowFilterModal(false)}
+            onApplyFilter={handleApplyFilter}
+          />
+        )}
         <div className="flex">
           <label className="mr-2 mt-2">Show entries:</label>
           <select
@@ -294,41 +388,61 @@ const SelectQuestionPage = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedUsers.map((question, key) => (
-                <tr key={key} className="h-[60px]">
-                  <td className="table-td-data">
-                    <h5 className="font-medium text-black dark:text-white">
-                      <Checkbox
-                        question={question}
-                        onToggle={handleCheckboxToggle}
-                      />
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[200px]">
-                    <h5 className="font-medium text-black dark:text-white">
-                      {question.questionName}
-                    </h5>
-                  </td>
-                  <td className="table-td-data">
-                    <h5
-                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        question.difficulty === "Easy"
-                          ? "bg-success text-success"
-                          : question.difficulty === "Moderate"
-                            ? "bg-warning text-warning"
-                            : "bg-danger text-danger"
-                      }`}
-                    >
-                      {question.difficulty}
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[200px]">
-                    <h5 className="font-medium text-black dark:text-white">
-                      {question.unitName}
-                    </h5>
-                  </td>
-                </tr>
-              ))}
+              {(filteredData.length > 0 ? filteredData : paginatedUsers).map(
+                (question, key) => (
+                  <tr key={key} className="h-[60px]">
+                    <td className="table-td-data">
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          checked={question.selected}
+                          // className="sr-only"
+                          onChange={(e) => handleCheckboxChange(e, question.id)}
+                        />
+                      </div>
+                    </td>
+
+                    <td className="table-td-data max-w-[200px]">
+                      <div className="flex flex-col justify-items-start p-3">
+                        <h5 className="font-medium text-black dark:text-white">
+                          {question.questionName}
+                        </h5>
+                        {question.optionList &&
+                          question.optionList.length > 0 && (
+                            <ul className="list-disc ml-25">
+                              {question.optionList.map((option, index) => (
+                                <li
+                                  key={index}
+                                  className="text-gray-600 dark:text-gray-300"
+                                >
+                                  {option}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                      </div>
+                    </td>
+                    <td className="table-td-data">
+                      <h5
+                        className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                          question.difficulty === "Easy"
+                            ? "bg-success text-success"
+                            : question.difficulty === "Moderate"
+                              ? "bg-warning text-warning"
+                              : "bg-danger text-danger"
+                        }`}
+                      >
+                        {question.difficulty}
+                      </h5>
+                    </td>
+                    <td className="table-td-data max-w-[200px]">
+                      <h5 className="font-medium text-black dark:text-white">
+                        {question.unitName}
+                      </h5>
+                    </td>
+                  </tr>
+                )
+              )}
             </tbody>
           </table>
         </div>
@@ -341,32 +455,39 @@ const SelectQuestionPage = () => {
       </div>
       <div className="flex flex-row p-10 justify-evenly">
         <div>
-          <button className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
+          <button
+            onClick={() => setShowModal(true)}
+            className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+          >
             <IoAdd size={30} />
             Add Question Manually
           </button>
+          {showModal && (
+            <AddQuestionManually
+              onClose={handleCloseModal}
+              addQuestion={addQuestion}
+            />
+          )}
         </div>
-        {/* <div>
-          <button
-            // onClick={handleClick}
-            className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-          >
-            <RiSparkling2Fill size={30} />
-            Generate By AI
-          </button>
-        </div> */}
+
         <div>
           <button
-            // onClick={handleClick}
+            onClick={() => setShowRandomModal(true)}
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             <LiaRandomSolid size={30} />
             Add Question Randomly
           </button>
+          {showRandomModal && (
+            <SelectQuestionRandomly
+              onClose={() => setShowRandomModal(false)}
+              generateRandomQuestions={generateRandomQuestions}
+            />
+          )}
         </div>
         <div>
           <button
-            // onClick={handleClick}
+            onClick={handleSubmit}
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             Confirm

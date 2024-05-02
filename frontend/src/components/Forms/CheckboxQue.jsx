@@ -1,34 +1,26 @@
-import React, { useState } from "react";
-import { FaCheck } from "react-icons/fa";
+// import React, { useState } from "react";
 
-const Checkbox = ({ question, onToggle }) => {
-  const [isChecked, setIsChecked] = useState(false);
+// const CheckboxQue = ({ id, checked, onChange }) => {
+//   const [checked,setIsChecked] = useState(false);
+//   return (
+//     <div>
+//       <input
+//         type="checkbox"
+//         checked={checked}
+//         className="sr-only"
+//         onChange={onChange}
+//       />
+//       <div
+//         className={`mr-4 flex h-5 w-5 items-center justify-center rounded border ${
+//           checked && "border-primary bg-gray dark:bg-transparent"
+//         }`}
+//       >
+//         <span className={`opacity-0 ${checked && "!opacity-100"}`}>
+//           <FaCheck size={12} color="#3056D3" />
+//         </span>
+//       </div>
+//     </div>
+//   );
+// };
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-    onToggle(question, !isChecked);
-  };
-
-  return (
-    <div className="flex justify-center items-center">
-      <input
-        type="checkbox"
-        id="checkboxLabelTwo"
-        className="sr-only"
-        checked={isChecked}
-        onChange={handleCheckboxChange}
-      />
-      <div
-        className={`mr-4 flex h-5 w-5 items-center justify-center rounded border ${
-          isChecked
-            ? "border-primary bg-gray"
-            : "border-gray dark:bg-transparent"
-        }`}
-      >
-        <FaCheck />
-      </div>
-    </div>
-  );
-};
-
-export default Checkbox;
+// export default CheckboxQue;

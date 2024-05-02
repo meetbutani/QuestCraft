@@ -12,22 +12,13 @@ import { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import SelectSwitch from "../../components/Forms/SelectSwitch";
 import { useNavigate } from "react-router-dom";
+import { dataMap } from "./paperData";
 
 const SubjectPaper = () => {
   const navigate = useNavigate();
-  const notify = (e) => {
-    e.preventDefault();
 
-    toast.success("Header submitted successfully", {
-      position: "bottom-right",
-      hideProgressBar: true,
-      onClose: () => {
-        navigate("/qpaper/set-subject-paper/select-question");
-      },
-    });
-  };
-  const [enabled, setEnabled] = useState(false);
-  const [value, setValue] = useState("");
+  const [paperType, setPaperType] = useState(false);
+
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
@@ -62,23 +53,20 @@ const SubjectPaper = () => {
   const subjectList = ["Machine Learning", "Compuer Network"];
 
   const validationSchema = yup.object({
-    timeAllowance: yup
-      .string()
-      .required("Time Allowance is required")
-      .test(
-        "is-valid-time",
-        "Time should be less than 6 hours",
-        function (value) {
-          // Custom validation to check if time is more than 6 hours
-          const parsedTime = value.split(":").map(Number);
-          const totalMinutes = parsedTime[0] * 60 + parsedTime[1];
-          return totalMinutes < 360; // 6 hours = 360 minutes
-        }
-      ),
     paperdate: yup
       .date()
       .required("Paper Date is required")
-      .min(new Date(), "Paper Date should be today or later"), // Ensure paper date is not before today
+      .min(new Date(), "Paper Date should be today or later"),
+    timeAllowance: yup
+      .string()
+      .required("Time Allowance is required")
+      .test("Time should be less than 6 hours", function (value) {
+        // Custom validation to check if time is more than 6 hours
+        const parsedTime = value.split(":").map(Number);
+        const totalMinutes = parsedTime[0] * 60 + parsedTime[1];
+        return totalMinutes < 360; // 6 hours = 360 minutes
+      }),
+    // Ensure paper date is not before today
   });
 
   const formik = useFormik({
@@ -90,12 +78,43 @@ const SubjectPaper = () => {
       timeAllowance: "",
       subject: subjectList[0],
       status: statusList[0],
+      totalMarks: "30",
+      paperType: false,
+      enableTranslation: true,
+      paperDescription: "",
     },
     validationSchema,
     onSubmit: (values) => {
       handleSubmit(values);
     },
   });
+
+  const handleSubmit = async (values) => {
+    values.paperType = values.paperType ? "final-sem-exam" : "mid-sem-exam";
+    values.enableTranslation = values.enableTranslation ? "yes" : "no";
+
+    dataMap.header = values;
+
+    toast.success("Header submitted successfully", {
+      position: "bottom-right",
+      hideProgressBar: true,
+    });
+
+    // Navigate after a short delay to ensure the toast message is displayed
+    setTimeout(() => {
+      navigate("/qpaper/set-subject-paper/select-question");
+    }, 1000);
+  };
+
+  const updateTotalMarks = () => {
+    const totalMarks = paperType ? 30 : 100; // Set total marks based on switch state
+    formik.setFieldValue("totalMarks", totalMarks);
+  };
+
+  const handleSetPaperType = (value) => {
+    setPaperType(value);
+    updateTotalMarks(); // Call updateTotalMarks whenever paperType changes
+  };
 
   return (
     <DefaultLayout>
@@ -104,8 +123,8 @@ const SubjectPaper = () => {
       <div className="flex justify-center">
         <div className="relative h-2.5 w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark m-10">
           {/* Adjusted positioning for the parent container */}
-          <div className="absolute left-0.5 h-full w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark">
-            <div className="absolute left-0 h-full w-0.5 rounded-full bg-primary">
+          <div className="absolute  h-full w-full xl:w-3/4 rounded-full bg-stroke dark:bg-strokedark">
+            <div className="absolute  h-full w-1 rounded-full bg-primary">
               {/* Adjusted positioning for the pointer */}
               <span className="absolute bottom-full -right-0.5 transform translate-x-1/2 z-10 mb-2 inline-block rounded-sm bg-primary px-2 py-1 text-xs font-bold text-white">
                 {/* Adjusted positioning for the triangle */}
@@ -126,7 +145,7 @@ const SubjectPaper = () => {
                 Create Question Paper
               </h3>
             </div>
-            <form action="#">
+            <form onSubmit={formik.handleSubmit}>
               <div className="p-6.5">
                 <div className="mb-4.5 flex flex-col gap-6 xl:flex-row">
                   <div className="w-full xl:w-1/2">
@@ -244,26 +263,42 @@ const SubjectPaper = () => {
                     </label>
                     <input
                       type="text"
+                      value={formik.values.totalMarks}
                       placeholder="Total Marks Will Be Displayed Here"
                       className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                       disabled
                     />
                   </div>
                 </div>
-
-                <div className="flex flex-col items-center justify-center gap-4 xl:flex-row mt-10">
-                  <div className="flex items-center">
-                    <span
-                      className={`labelfield mr-5 ${!enabled ? "text-primary dark:text-primary" : ""}`}
-                    >
-                      Mid Sem Exam
-                    </span>
-                    <SelectSwitch enabled={enabled} setEnabled={setEnabled} />
-                    <span
-                      className={`labelfield ml-5 ${enabled ? "text-primary dark:text-primary" : ""}`}
-                    >
-                      Final Sem Exam
-                    </span>
+                <div className="flex flex-col gap-30 justify-start  xl:flex-row mt-5">
+                  <div className="flex flex-row items-center">
+                    <label className="w-40 text-black dark:text-white">
+                      Paper type :-
+                    </label>
+                    <SelectSwitch
+                      enabled={formik.values.paperType}
+                      setEnabled={(value) => {
+                        formik.setFieldValue("paperType", value);
+                        handleSetPaperType(value);
+                      }}
+                      option1={"Mid sem exam"}
+                      option2={"Final sem exam"}
+                      id="paper-type-switch"
+                    />
+                  </div>
+                  <div className="flex flex-row items-center">
+                    <label className="w-60 text-black dark:text-white">
+                      Translate paper in gujarati :-
+                    </label>
+                    <SelectSwitch
+                      enabled={formik.values.enableTranslation}
+                      setEnabled={(value) => {
+                        formik.setFieldValue("enableTranslation", value);
+                      }}
+                      option1={"yes"}
+                      option2={"no"}
+                      id="translation-switch"
+                    />
                   </div>
                 </div>
 
@@ -274,14 +309,18 @@ const SubjectPaper = () => {
                   className="h-50 mb-30"
                   modules={module}
                   theme="snow"
-                  value={value}
-                  onChange={setValue}
+                  value={formik.values.paperDescription}
+                  onChange={(content, delta, source, editor) => {
+                    const value = editor.getContents(); // Get the updated content
+                    formik.setFieldValue("paperDescription", value);
+                  }}
                 />
 
                 <div className="flex justify-center mt-4.5">
                   {" "}
                   <button
-                    onClick={notify}
+                    type="submit"
+                    disabled={!formik.isValid}
                     className="flex flex-row items-center self-center justify-center w-1/2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   >
                     Confirm
