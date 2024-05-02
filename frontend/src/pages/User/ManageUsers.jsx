@@ -88,7 +88,7 @@ const ManageUsers = () => {
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const response = await axios.get(javaBaseUrl + "/api/auth");
+      const response = await axios.get(javaBaseUrl + "/api/user");
       if (response.status == 200) {
         // setUserList(response.data.data);
         setUserList([
@@ -234,10 +234,9 @@ const ManageUsers = () => {
 
   const handleDeleteConfirm = async () => {
     // Call the delete API here
-    // console.log(selectedUser)
     try {
       const response = await axios.delete(
-        javaBaseUrl + "/api/auth/" + selectedUser.id
+        javaBaseUrl + "/api/user/" + selectedUser.id
       );
       if (response.status === 200) {
         // Remove the deleted user from the user list

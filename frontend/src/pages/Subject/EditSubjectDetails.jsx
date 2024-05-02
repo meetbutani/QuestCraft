@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useFormik } from "formik";
 import axios from "axios";
 import { nodeBaseUrl } from "../../js/api.constatnt";
 import * as yup from "yup";
-import "../../css/AddUser.css";
 import { decryptData } from "../../js/secureData";
+import "../../css/AddUser.css";
+import SubjectContext from "../../context/SubjectContext";
+import { useNavigate } from "react-router-dom";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
 
-const AddSubject = () => {
+const EditSubject = () => {
   const statusList = ["Active", "Inactive"];
+  const { selectedSubjectData } = useContext(SubjectContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!selectedSubjectData) {
+      navigate("/subject/manage-subject");
+    }
+  }, [selectedSubjectData, navigate]);
 
   const validationSchema = yup.object({
     subjectName: yup.string().required("Subject Name is required"),
@@ -29,11 +39,11 @@ const AddSubject = () => {
 
   const formik = useFormik({
     initialValues: {
-      subjectName: "",
-      subjectCode: "",
-      courseName: "",
-      semester: "",
-      status: statusList[0],
+      subjectName: selectedSubjectData?.subjectName ?? "",
+      subjectCode: selectedSubjectData?.subjectCode ?? "",
+      courseName: selectedSubjectData?.courseName ?? "",
+      semester: selectedSubjectData?.semester ?? "",
+      status: selectedSubjectData?.status ?? statusList[0],
     },
     validationSchema,
     onSubmit: async (values) => {
@@ -43,27 +53,34 @@ const AddSubject = () => {
 
   const handleSubmit = async (values) => {
     let user = decryptData();
-    const response = await axios.post(nodeBaseUrl + "/api/subject", {
-      ...values,
-      createdBy: user["id"],
-      updatedBy: user["id"],
-    });
+    const response = await axios.put(
+      `${nodeBaseUrl}/api/subject/${selectedSubjectData._id}`,
+      {
+        ...values,
+        updatedBy: user["id"],
+      }
+    );
     if (response.status === 200) {
-      formik.resetForm();
+      console.log(response.data);
+      // console.log(response.data.message);
     } else {
       console.log(response.data);
     }
   };
 
+  if (!selectedSubjectData) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Add Subject" />
+      <Breadcrumb pageName="Edit Subject" />
       <div className="grid grid-cols-1 gap-9 sm:grid-cols-1 p-15">
         <div className="flex flex-col gap-9">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Add Subject
+                Edit Subject
               </h3>
             </div>
             <form onSubmit={formik.handleSubmit}>
@@ -81,38 +98,31 @@ const AddSubject = () => {
                         placeholder="Enter Subject Name"
                         className="inputfield"
                       />
+                      {formik.touched.subjectName &&
+                      formik.errors.subjectName ? (
+                        <div className="error">{formik.errors.subjectName}</div>
+                      ) : null}
                     </label>
-
-                    {formik.touched.subjectName && formik.errors.subjectName ? (
-                      <div className="error">{formik.errors.subjectName}</div>
-                    ) : null}
                   </div>
-
                   <div className="w-1/2">
                     <label className="labelfield">
                       Subject Code <span className="text-meta-1">*</span>
                       <input
                         name="subjectCode"
                         value={formik.values.subjectCode}
-                        onChange={(e) => {
-                          formik.setFieldValue(
-                            "subjectCode",
-                            e.target.value.toUpperCase()
-                          );
-                        }}
+                        onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         type="text"
                         placeholder="Enter Subject Code"
                         className="inputfield"
                       />
+                      {formik.touched.subjectCode &&
+                      formik.errors.subjectCode ? (
+                        <div className="error">{formik.errors.subjectCode}</div>
+                      ) : null}
                     </label>
-
-                    {formik.touched.subjectCode && formik.errors.subjectCode ? (
-                      <div className="error">{formik.errors.subjectCode}</div>
-                    ) : null}
                   </div>
                 </div>
-
                 <div className="flex flex-row gap-4">
                   <div className="w-1/2">
                     <label className="labelfield">
@@ -126,13 +136,11 @@ const AddSubject = () => {
                         placeholder="Enter Course"
                         className="inputfield"
                       />
+                      {formik.touched.courseName && formik.errors.courseName ? (
+                        <div className="error">{formik.errors.courseName}</div>
+                      ) : null}
                     </label>
-
-                    {formik.touched.courseName && formik.errors.courseName ? (
-                      <div className="error">{formik.errors.courseName}</div>
-                    ) : null}
                   </div>
-
                   <div className="w-1/2">
                     <label className="labelfield">
                       Semester <span className="text-meta-1">*</span>
@@ -147,14 +155,12 @@ const AddSubject = () => {
                         max="10" // Set maximum value to 10
                         className="inputfield"
                       />
+                      {formik.touched.semester && formik.errors.semester ? (
+                        <div className="error">{formik.errors.semester}</div>
+                      ) : null}
                     </label>
-
-                    {formik.touched.semester && formik.errors.semester ? (
-                      <div className="error">{formik.errors.semester}</div>
-                    ) : null}
                   </div>
                 </div>
-
                 <div className="w-full mb-6">
                   <DynamicDropDown
                     name="status"
@@ -175,7 +181,7 @@ const AddSubject = () => {
                   type="submit"
                   disabled={!formik.isValid}
                 >
-                  Add
+                  Update
                 </button>
               </div>
             </form>
@@ -186,4 +192,4 @@ const AddSubject = () => {
   );
 };
 
-export default AddSubject;
+export default EditSubject;

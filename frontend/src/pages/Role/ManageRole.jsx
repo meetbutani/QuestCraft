@@ -30,7 +30,7 @@ const ManageRole = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await axios.get(javaBaseUrl + "/api/roles");
+        const response = await axios.get(javaBaseUrl + "/api/role");
         const rolesData = response.data.data;
         if (rolesData) {
           const rolesArray = Object.values(rolesData);
@@ -38,7 +38,7 @@ const ManageRole = () => {
             ...role,
             accessStr: role.accessList.join(", "),
           }));
-          console.log(rolesWithAccessStr);
+          // console.log(rolesWithAccessStr);
           // setRoleList(rolesWithAccessStr);
           setRoleList([
             ...rolesWithAccessStr,
@@ -114,7 +114,7 @@ const ManageRole = () => {
     [sortConfig.direction]
   );
 
-  const paginatedUsers = getPaginatedData(sortedRoles);
+  const paginatedRoles = getPaginatedData(sortedRoles);
 
   const getPaginationButtons = () => {
     const totalPages = Math.ceil(sortedRoles.length / itemsPerPage);
@@ -221,7 +221,7 @@ const ManageRole = () => {
     // console.log(selectedRole)
     try {
       const response = await axios.delete(
-        javaBaseUrl + "/api/roles/" + selectedRole.id
+        javaBaseUrl + "/api/role/" + selectedRole.id
       );
       if (response.status === 200) {
         // Remove the deleted user from the user list
@@ -368,7 +368,7 @@ const ManageRole = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedUsers.map((role, key) => (
+              {paginatedRoles.map((role, key) => (
                 <tr key={key} className="h-[60px]">
                   <td className="table-td-data">
                     <h5 className="font-medium text-black dark:text-white">

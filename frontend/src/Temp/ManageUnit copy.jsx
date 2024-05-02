@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import {
   FcAlphabeticalSortingAz,
@@ -8,81 +8,80 @@ import {
 } from "react-icons/fc";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
-import DefaultLayout from "../../layout/DefaultLayout";
-import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
+import DefaultLayout from "../layout/DefaultLayout";
+import Breadcrumb from "../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { FaEye } from "react-icons/fa6";
-import axios from "axios";
-import { javaBaseUrl } from "../../js/api.constatnt";
-import _ from "lodash";
-
-const AllUsers = () => {
-  const [userList, setUserList] = useState([]);
-
-  useEffect(() => {
-    const getAllUsers = async () => {
-      const response = await axios.get(javaBaseUrl + "/api/user");
-      if (response.status == 200) {
-        console.log(response.data);
-        setUserList(response.data);
-      }
-    };
-
-    getAllUsers();
-  }, []);
-
+const ManageUnit = () => {
+  const [Data, setData] = useState([
+    {
+      id: 1,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
+      status: "Active",
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani",
+    },
+    {
+      id: 2,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
+      status: "Active",
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani",
+    },
+    {
+      id: 3,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
+      status: "Active",
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani",
+    },
+    {
+      id: 4,
+      unitName: "Machine Learning",
+      subjectCode: "01AICT",
+      status: "Active",
+      createdBy: "Namra Ravani",
+      updatedBy: "Meet Butani",
+    },
+  ]);
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const handleItemsPerPageChange = (e) => {
     setItemsPerPage(parseInt(e.target.value, 10));
     setCurrentPage(1);
   };
 
-  const [order, setOrder] = useState("DSC");
-  const [number, setNumber] = useState("DSC");
-
-  // const handleSorting = (col, sortOrder) => {
-  //   const sortedData = [...userList].sort((a, b) => {
-  //     if (sortOrder === "ASC") {
-  //       return a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1;
-  //     } else {
-  //       return a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1;
-  //     }
-  //   });
-  //   setUserList(sortedData);
-  //   setOrder(sortOrder === "ASC" ? "DSC" : "ASC");
-  // };
-
-  // const handleNumberSorting = (col, sortOrder) => {
-  //   const sortedData = [...userList].sort((a, b) => {
-  //     if (sortOrder === "ASC") {
-  //       return a[col] - b[col];
-  //     } else {
-  //       return b[col] - a[col];
-  //     }
-  //   });
-  //   setUserList(sortedData);
-  //   setNumber(sortOrder === "ASC" ? "DSC" : "ASC");
-  // };
+  const [order, setOrder] = useState("ASC");
+  const [number, setNumber] = useState("ASC");
 
   const handleSorting = (col, sortOrder) => {
-    const sortedData = _.orderBy(userList, [col], [sortOrder]);
-    setUserList(sortedData);
+    const sortedData = [...Data].sort((a, b) => {
+      if (sortOrder === "ASC") {
+        return a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1;
+      } else {
+        return a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1;
+      }
+    });
+    setData(sortedData);
     setOrder(sortOrder === "ASC" ? "DSC" : "ASC");
   };
 
   const handleNumberSorting = (col, sortOrder) => {
-    const sortedData = _.orderBy(
-      userList,
-      [col],
-      [sortOrder === "ASC" ? "asc" : "desc"]
-    );
-    setUserList(sortedData);
+    const sortedData = [...Data].sort((a, b) => {
+      if (sortOrder === "ASC") {
+        return a[col] - b[col];
+      } else {
+        return b[col] - a[col];
+      }
+    });
+    setData(sortedData);
     setNumber(sortOrder === "ASC" ? "DSC" : "ASC");
   };
 
@@ -91,52 +90,25 @@ const AllUsers = () => {
   };
 
   const handleClick = () => {
-    navigate("/user/add-user");
+    navigate("/unit/add-unit");
   };
 
-  const [filteredData, setFilteredData] = useState([]);
-
-  useEffect(() => {
-    const result = userList.filter((user) => {
-      const searchTerm = search.toLowerCase();
-      return (
-        searchTerm === "" ||
-        user.firstName.toLowerCase().includes(searchTerm) ||
-        user.lastName.toLowerCase().includes(searchTerm) ||
-        user.username.toLowerCase().includes(searchTerm) ||
-        user.email.toLowerCase().includes(searchTerm) ||
-        user.role.toLowerCase().includes(searchTerm) ||
-        user.contactNo.toLowerCase().includes(searchTerm) ||
-        user.officeLocation.toLowerCase().includes(searchTerm) ||
-        user.status.toLowerCase().includes(searchTerm)
-      );
-    });
-    setFilteredData(result);
-    setCurrentPage(1);
-  }, [search, userList]);
-
-  // const filteredData = userList.filter((item) => {
-  //   const searchTerm = search.toLowerCase();
-  //   return (
-  //     searchTerm === "" ||
-  //     item.firstName.toLowerCase().includes(searchTerm) ||
-  //     item.lastName.toLowerCase().includes(searchTerm) ||
-  //     item.username.toLowerCase().includes(searchTerm) ||
-  //     item.email.toLowerCase().includes(searchTerm) ||
-  //     item.role.toLowerCase().includes(searchTerm) ||
-  //     item.contactNo.toLowerCase().includes(searchTerm) ||
-  //     item.officeLocation.toLowerCase().includes(searchTerm) ||
-  //     item.status.toLowerCase().includes(searchTerm)
-  //   );
-  // });
+  const filteredData = Data.filter((item) => {
+    const searchTerm = search.toLowerCase();
+    return (
+      searchTerm === "" ||
+      item.unitName.toLowerCase().includes(searchTerm) ||
+      item.subjectCode.toLowerCase().includes(searchTerm) ||
+      item.status.toLowerCase().includes(searchTerm)
+    );
+  });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Manage Users" />
+      <Breadcrumb pageName="Manage Unit" />
       <div className="flex justify-between items-center mb-4">
         <div>
           <button
@@ -144,7 +116,7 @@ const AllUsers = () => {
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             <IoAdd size={30} />
-            Add User
+            Add Unit
           </button>
         </div>
         <form className="flex items-center mx-8 relative">
@@ -192,11 +164,11 @@ const AllUsers = () => {
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("firstName", order)}
+                  onClick={() => handleSorting("unitName", order)}
                   className="table-td-head"
                 >
                   <span>
-                    First Name
+                    Unit
                     {order === "ASC" ? (
                       <FcAlphabeticalSortingZa size={22} />
                     ) : (
@@ -205,11 +177,11 @@ const AllUsers = () => {
                   </span>
                 </th>
                 <th
-                  onClick={() => handleSorting("lastName", order)}
+                  onClick={() => handleSorting("subjectCode", order)}
                   className="table-td-head"
                 >
                   <span>
-                    Last Name
+                    Subject Code
                     {order === "ASC" ? (
                       <FcAlphabeticalSortingZa size={22} />
                     ) : (
@@ -217,71 +189,7 @@ const AllUsers = () => {
                     )}
                   </span>
                 </th>
-                <th
-                  onClick={() => handleSorting("username", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    Username
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleSorting("email", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    email
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleSorting("role", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    Role
-                    {order === "ASC" ? (
-                      <FcAlphabeticalSortingZa size={22} />
-                    ) : (
-                      <FcAlphabeticalSortingAz size={22} />
-                    )}
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleSorting("contactNo", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    Contact No
-                    {order === "ASC" ? (
-                      <FcNumericalSorting21 size={22} />
-                    ) : (
-                      <FcNumericalSorting12 size={22} />
-                    )}
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleSorting("officeLocation", order)}
-                  className="table-td-head"
-                >
-                  <span>
-                    Office location
-                    {order === "ASC" ? (
-                      <FcNumericalSorting21 size={22} />
-                    ) : (
-                      <FcNumericalSorting12 size={22} />
-                    )}
-                  </span>
-                </th>
+
                 <th
                   onClick={() => handleSorting("status", order)}
                   className="table-td-head"
@@ -295,7 +203,32 @@ const AllUsers = () => {
                     )}
                   </span>
                 </th>
-
+                <th
+                  onClick={() => handleSorting("createdBy", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    Created By
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa size={22} />
+                    ) : (
+                      <FcAlphabeticalSortingAz size={22} />
+                    )}
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSorting("updatedBy", order)}
+                  className="table-td-head"
+                >
+                  <span>
+                    Updated By
+                    {order === "ASC" ? (
+                      <FcAlphabeticalSortingZa size={22} />
+                    ) : (
+                      <FcAlphabeticalSortingAz size={22} />
+                    )}
+                  </span>
+                </th>
                 <th className="table-td-head">
                   <span className="flex items-center gap-1">Actions</span>
                 </th>
@@ -311,39 +244,15 @@ const AllUsers = () => {
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="font-medium text-black dark:text-white">
-                      {packageItem.firstName}
+                      {packageItem.unitName}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {packageItem.lastName}
+                      {packageItem.subjectCode}
                     </h5>
                   </td>
-                  <td className="table-td-data max-w-[200px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.username}
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[200px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.email}
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[100px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.roleId}
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[100px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.contactNo ?? "-"}
-                    </h5>
-                  </td>
-                  <td className="table-td-data max-w-[100px]">
-                    <h5 className="text-black dark:text-white">
-                      {packageItem.officeLocation ?? "-"}
-                    </h5>
-                  </td>
+
                   <td className="table-td-data">
                     <h5
                       className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
@@ -355,16 +264,26 @@ const AllUsers = () => {
                       {packageItem.status}
                     </h5>
                   </td>
-
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.createdBy}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="text-black dark:text-white">
+                      {packageItem.updatedBy}
+                    </h5>
+                  </td>
                   <td className="table-td-data px-4">
                     <div className="flex items-center space-x-3.5">
                       <button className="hover:text-primary">
                         <RiDeleteBinLine color="#FF5733" />
                       </button>
-                      <div className="flex items-center space-x-3.5">
+                      <div className="inline-flex min-w-max justify-center items-center rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium">
                         <button className="hover:text-primary">
-                          <FaEye color="#000000" />
+                          <IoAdd color="#000000" />
                         </button>
+                        <span className="ml-2">Manage Question</span>
                       </div>
                       <button className="hover:text-primary">
                         <MdEdit color="#0000FF" />
@@ -381,20 +300,20 @@ const AllUsers = () => {
           <button
             onClick={() => paginate(currentPage - 1)}
             className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                    ${currentPage === 1 ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
+                ${currentPage === 1 ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
             disabled={currentPage === 1}
           >
             Previous
           </button>
 
           {/* Pagination Buttons */}
-          {[...Array(Math.ceil(userList.length / itemsPerPage)).keys()].map(
+          {[...Array(Math.ceil(Data.length / itemsPerPage)).keys()].map(
             (number) => (
               <button
                 key={number}
                 onClick={() => paginate(number + 1)}
                 className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                      ${currentPage === number + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-700 hover:bg-opacity-90"}`}
+                  ${currentPage === number + 1 ? "bg-primary text-white" : "bg-gray-300 text-gray-700 hover:bg-opacity-90"}`}
               >
                 {number + 1}
               </button>
@@ -405,8 +324,8 @@ const AllUsers = () => {
           <button
             onClick={() => paginate(currentPage + 1)}
             className={`mx-1 px-3 py-1 rounded-full focus:outline-none 
-                    ${currentPage === Math.ceil(userList.length / itemsPerPage) ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
-            disabled={currentPage === Math.ceil(userList.length / itemsPerPage)}
+                ${currentPage === Math.ceil(Data.length / itemsPerPage) ? "bg-gray-300 text-gray-700 cursor-not-allowed" : "bg-primary text-white hover:bg-opacity-90"}`}
+            disabled={currentPage === Math.ceil(Data.length / itemsPerPage)}
           >
             Next
           </button>
@@ -416,4 +335,4 @@ const AllUsers = () => {
   );
 };
 
-export default AllUsers;
+export default ManageUnit;

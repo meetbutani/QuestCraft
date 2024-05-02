@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
@@ -37,10 +38,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserDocument user) {
-        Optional<UserDocument> existingUser;
+        Optional<UserDocument> existingUser = Optional.empty();
         if (user.getUsername() != null) {
             existingUser = userService.findUserByUsername(user.getUsername());
-        } else {
+        } else if (user.getEmail() != null) {
             existingUser = userService.findUserByEmail(user.getEmail());
         }
 
@@ -50,8 +51,10 @@ public class UserController {
             responseBody.put("accessList", userDocument.getRole().getAccessList());
             responseBody.put("roleStatus", userDocument.getRole().getStatus());
             return ResponseEntity.ok().body(Collections.singletonMap("data", responseBody));
+        } else if (existingUser.isPresent()) {
+            return ResponseEntity.status(201).body(Collections.singletonMap("message", "Password is incorrect."));
         } else {
-            return ResponseEntity.ok().body(Collections.singletonMap("message", "Password is incorrect."));
+            return ResponseEntity.status(201).body(Collections.singletonMap("message", "User not found."));
         }
     }
 
@@ -62,7 +65,7 @@ public class UserController {
             UserDocument userDocument = user.get();
             return ResponseEntity.ok().body(Collections.singletonMap("data", getUserResponse(userDocument)));
         } else {
-            return ResponseEntity.status(204).body(Collections.singletonMap("message", "User not found."));
+            return ResponseEntity.status(201).body(Collections.singletonMap("message", "User not found."));
         }
     }
 
@@ -73,7 +76,7 @@ public class UserController {
             UserDocument userDocument = user.get();
             return ResponseEntity.ok().body(Collections.singletonMap("data", getUserResponse(userDocument)));
         } else {
-            return ResponseEntity.status(204).body(Collections.singletonMap("message", "User not found."));
+            return ResponseEntity.status(201).body(Collections.singletonMap("message", "User not found."));
         }
     }
 
@@ -126,7 +129,7 @@ public class UserController {
             userService.updateUser(existingUserData);
             return ResponseEntity.ok().body(Collections.singletonMap("message", "User updated successfully."));
         } else {
-            return ResponseEntity.status(204).body(Collections.singletonMap("message", "User not found."));
+            return ResponseEntity.status(201).body(Collections.singletonMap("message", "User not found."));
         }
     }
 

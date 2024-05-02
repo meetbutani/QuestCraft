@@ -1,20 +1,29 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const unitController = require('./unit.controller'); // Importing the unit controller
+const unitController = require("./unit.controller");
 
-// Route for creating a new unit
-router.post('/units', unitController.createUnit);
+// Create a new unit
+router.post("/", unitController.createUnit);
 
-// Route for finding units by subject code
-router.get('/units/subject/:subjectCode', unitController.findUnitsBySubjectCode);
+// Get unit by ID
+router.get("/:id", unitController.getUnitById);
 
-// Route for finding all units
-router.get('/units', unitController.findAllUnits);
+// Get unit by unit name
+router.get("/unitName/:unitName", unitController.getUnitByUnitName);
 
-// Route for updating a unit
-router.put('/units/:id', unitController.updateUnit);
+// Get all units
+router.get("/", unitController.getAllUnits);
 
-// Route for deleting a unit
-router.delete('/units/:id', unitController.deleteUnit);
+// Get all units for a given subjectId
+router.get("/subjectId/:subjectId", unitController.getUnitsBySubjectId);
+
+// Update unit by ID
+router.put("/:id", unitController.updateUnit);
+
+// Delete unit by ID
+router.delete("/:id", unitController.deleteUnitById);
+
+// Delete unit by unit name
+router.delete("/unitName/:unitName", unitController.deleteUnitByUnitName);
 
 module.exports = router;

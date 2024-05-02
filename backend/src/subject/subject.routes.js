@@ -1,20 +1,32 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const subjectController = require('./subject.controller'); // Importing the subject controller
+const subjectController = require("./subject.controller");
 
-// Route for creating a new subject
-router.post('/subjects', subjectController.createSubject);
+// Route to create a new subject
+router.post("/", subjectController.createSubject);
 
-// Route for finding a subject by subjectCode
-router.get('/subjects/:code', subjectController.findSubject);
+// Route to get subject by subject code
+router.get(
+  "/subjectCode/:subjectCode",
+  subjectController.getSubjectBySubjectCode
+);
 
-// Route for finding all subjects
-router.get('/subjects', subjectController.findAllSubjects);
+// Route to get subject by ID
+router.get("/:id", subjectController.getSubjectById);
 
-// Route for updating a subject
-router.put('/subjects/:id', subjectController.updateSubject);
+// Route to get all subjects
+router.get("/", subjectController.getAllSubjects);
 
-// Route for deleting a subject
-router.delete('/subjects/:id', subjectController.deleteSubject);
+// Route to update subject by ID
+router.put("/:id", subjectController.updateSubject);
+
+// Route to delete subject by ID
+router.delete("/:id", subjectController.deleteSubjectById);
+
+// Route to delete subject by subject code
+router.delete(
+  "/subjectCode/:subjectCode",
+  subjectController.deleteSubjectBySubjectCode
+);
 
 module.exports = router;

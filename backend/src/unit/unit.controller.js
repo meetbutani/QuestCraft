@@ -1,69 +1,115 @@
-const unitService = require('./unit.service'); // Importing the unit service
+const unitService = require("./unit.service");
 
-// Controller function to handle unit creation
-async function createUnit(req, res) {
-    const { unitName, subjectCode, createdBy, updatedBy } = req.body;
-    try {
-        // Create a new unit
-        const unit = await unitService.createUnit(unitName, subjectCode, createdBy, updatedBy);
-        res.status(201).json({ message: "Unit created successfully", unit });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.createUnit = async (req, res) => {
+  try {
+    const unit = await unitService.createUnit(req.body);
+    res.status(200).json({ message: "Unit Created Successfully" });
+  } catch (error) {
+    console.error(error);
+    if (error.code === 11000 && error.keyValue?.unitName) {
+      const unitName = error.keyValue.unitName;
+      res
+        .status(201)
+        .json({ message: `Unit name '${unitName}' already exists` });
+    } else {
+      res.status(201).json({ message: "Internal server error" });
     }
-}
+  }
+};
 
-// Controller function to find units by subject code
-async function findUnitsBySubjectCode(req, res) {
-    const { subjectCode } = req.params;
-    try {
-        // Find units by subject code
-        const units = await unitService.findUnitsBySubjectCode(subjectCode);
-        res.status(200).json({ units });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getUnitById = async (req, res) => {
+  try {
+    const unit = await unitService.findUnitById(req.params.id);
+    if (!unit) {
+      return res.status(201).json({ message: "Unit not found" });
     }
-}
+    res.json({ data: unit });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to find all units
-async function findAllUnits(req, res) {
-    try {
-        // Find all units
-        const units = await unitService.findAllUnits();
-        res.status(200).json({ units });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getUnitByUnitName = async (req, res) => {
+  try {
+    const unit = await unitService.findUnitByUnitName(req.params.unitName);
+    if (!unit) {
+      return res.status(201).json({ message: "Unit not found" });
     }
-}
+    res.json({ data: unit });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to update a unit
-async function updateUnit(req, res) {
-    const { id } = req.params;
-    const updates = req.body;
-    try {
-        // Update the unit
-        const updatedUnit = await unitService.updateUnit(id, updates);
-        res.status(200).json({ message: "Unit updated successfully", unit: updatedUnit });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getAllUnits = async (req, res) => {
+  try {
+    const units = await unitService.findAllUnits();
+    res.json({ data: units });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.getUnitsBySubjectId = async (req, res) => {
+  try {
+    const units = await unitService.findUnitsBySubjectId(req.params.subjectId);
+    res.json({ data: units });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.updateUnit = async (req, res) => {
+  try {
+    const updatedUnit = await unitService.updateUnitById(
+      req.params.id,
+      req.body
+    );
+    if (!updatedUnit) {
+      return res.status(201).json({ message: "Unit not found" });
     }
-}
-
-// Controller function to delete a unit
-async function deleteUnit(req, res) {
-    const { id } = req.params;
-    try {
-        // Delete the unit
-        const deletedUnit = await unitService.deleteUnit(id);
-        res.status(200).json({ message: "Unit deleted successfully", unit: deletedUnit });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+    res.status(200).json({ message: "Unit Updated Successfully" });
+  } catch (error) {
+    console.error(error);
+    if (error.code === 11000 && error.keyValue?.unitName) {
+      const unitName = error.keyValue.unitName;
+      res
+        .status(201)
+        .json({ message: `Unit name '${unitName}' already exists` });
+    } else {
+      res.status(201).json({ message: "Internal server error" });
     }
-}
+  }
+};
 
-module.exports = {
-    createUnit,
-    findUnitsBySubjectCode,
-    findAllUnits,
-    updateUnit,
-    deleteUnit,
+exports.deleteUnitById = async (req, res) => {
+  try {
+    const deletedUnit = await unitService.deleteUnitById(req.params.id);
+    if (!deletedUnit) {
+      return res.status(201).json({ message: "Unit not found" });
+    }
+    res.json({ message: "Unit deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.deleteUnitByUnitName = async (req, res) => {
+  try {
+    const deletedUnit = await unitService.deleteUnitByUnitName(
+      req.params.unitName
+    );
+    if (!deletedUnit) {
+      return res.status(201).json({ message: "Unit not found" });
+    }
+    res.json({ message: "Unit deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
 };

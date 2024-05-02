@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/api/role")
 public class RoleController {
 
     @Autowired
@@ -78,7 +78,7 @@ public class RoleController {
             roleService.updateRole(existingRoleData);
             return ResponseEntity.ok().body(Collections.singletonMap("message", "Role updated successfully."));
         } else {
-            return ResponseEntity.status(204).body(Collections.singletonMap("message", "Role not found."));
+            return ResponseEntity.status(201).body(Collections.singletonMap("message", "Role not found."));
         }
     }
 

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import MobileLogo from '../../images/loginimage/MobileLogo';
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import MobileLogo from "../../images/loginimage/MobileLogo";
 import { GoMail } from "react-icons/go";
-import PasswordShowHideBtn from './PasswordShowHideBtn';
+import PasswordShowHideBtn from "./PasswordShowHideBtn";
 import axios from "axios";
-import { javaBaseUrl } from '../../js/api.constatnt';
-import { encryptData } from '../../js/secureData';
+import { javaBaseUrl } from "../../js/api.constatnt";
+import { encryptData } from "../../js/secureData";
 import * as yup from "yup";
 import { useFormik } from "formik";
 
@@ -14,13 +14,29 @@ const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const validationSchema = yup.object({
-    email: yup.string().email("Invalid email address").required("Email is required"),
-    password: yup.string().min(5, "Password must be at least 5 characters").required("Password is required"),
+    emailOrUsername: yup
+      .string()
+      .required("Email or Username is required")
+      .test("is-email", "Invalid email address", function (value) {
+        // Check if the input value is in email format
+        if (/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/.test(value)) {
+          return true; // Pass the test if it's an email
+        }
+        // Check if the input value is a valid username
+        if (/^\w+$/.test(value)) {
+          return true; // Pass the test if it's a valid username
+        }
+        return false; // Fail the test if it's neither email nor valid username
+      }),
+    password: yup
+      .string()
+      .min(5, "Password must be at least 5 characters")
+      .required("Password is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      email: "",
+      emailOrUsername: "",
       password: "",
     },
     validationSchema,
@@ -30,10 +46,23 @@ const SignIn = () => {
   });
 
   const handleSubmit = async (values) => {
-    const response = await axios.post(javaBaseUrl + "/api/auth/login", { ...values, "username": values.email });
-    if (response.status == 200) {
-      localStorage.setItem("user", encryptData(response.data));
-      navigate("/")
+    let loginData = { password: values.password };
+    if (/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,}$/.test(values.emailOrUsername)) {
+      loginData.email = values.emailOrUsername;
+    } else {
+      loginData.username = values.emailOrUsername;
+    }
+
+    // Submit login data
+    const response = await axios.post(
+      javaBaseUrl + "/api/user/login",
+      loginData
+    );
+    if (response.status === 200) {
+      localStorage.setItem("user", encryptData(response.data.data));
+      navigate("/");
+    } else {
+      console.log(response.data);
     }
   };
 
@@ -47,7 +76,9 @@ const SignIn = () => {
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center">
             <NavLink className="mb-5.5 inline-block" to="/">
-              <h1 className='flex text-title-xl font-bold text-black'>Questcraft</h1>
+              <h1 className="flex text-title-xl font-bold text-black">
+                Questcraft
+              </h1>
             </NavLink>
 
             <p className="2xl:px-20">
@@ -72,20 +103,21 @@ const SignIn = () => {
                   Username or Email
                   <div className="mt-2.5 relative">
                     <input
-                      placeholder="Enter your email"
-                      name='email'
-                      value={formik.values.email}
+                      placeholder="Enter username or email"
+                      name="emailOrUsername"
+                      value={formik.values.emailOrUsername}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
-                    <span className="absolute right-4 top-4">
-                      <GoMail size={22} fill='#b1b9c5' />
-                    </span>
+                    {/* <span className="absolute right-4 top-4">
+                      <GoMail size={22} fill="#b1b9c5" />
+                    </span> */}
                   </div>
-                  {formik.touched.email && formik.errors.email ? (
-                    <div className="error">{formik.errors.email}</div>
+                  {formik.touched.emailOrUsername &&
+                  formik.errors.emailOrUsername ? (
+                    <div className="error">{formik.errors.emailOrUsername}</div>
                   ) : null}
                 </label>
               </div>
@@ -97,7 +129,7 @@ const SignIn = () => {
                     <input
                       type={showPassword ? "text" : "password"}
                       placeholder="6+ Characters, 1 Capital letter"
-                      name='password'
+                      name="password"
                       value={formik.values.password}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -130,7 +162,7 @@ const SignIn = () => {
 
               <div className="mt-6 text-center">
                 <p>
-                  Don't have any account?{' '}
+                  Don't have any account?{" "}
                   <Link to="/auth/signup" className="text-primary">
                     Sign Up
                   </Link>

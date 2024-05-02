@@ -15,7 +15,7 @@ import { toUpper } from "lodash";
 const EditRole = () => {
   const [access, setAccess] = useState({});
   const { selectedRoleData } = useContext(RoleContext);
-  const statusList = ["Active", "Disabled"];
+  const statusList = ["Active", "Inactive"];
   const navigate = useNavigate();
 
   const optionsList = {
@@ -96,7 +96,7 @@ const EditRole = () => {
       []
     );
 
-    const response = await axios.put(javaBaseUrl + `/api/roles`, {
+    const response = await axios.put(javaBaseUrl + `/api/role`, {
       ...values,
       accessList: accessList,
       id: selectedRoleData?.id,

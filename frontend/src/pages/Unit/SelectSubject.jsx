@@ -14,73 +14,62 @@ import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
 import UnitContext from "../../context/UnitContext";
 
-const ManageUnit = () => {
-  const { selectedSubjectData, setSelectedUnitData } = useContext(UnitContext);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // console.log(selectedSubjectData);
-    if (!selectedSubjectData) {
-      navigate("/unit/select-subject");
-    } else {
-      const fetchUnits = async () => {
-        try {
-          // console.log(selectedSubjectData);
-          const response = await axios.get(
-            nodeBaseUrl + "/api/unit/subjectId/" + selectedSubjectData?._id
-          );
-          // console.log(response.data);
-          const unitsWithSerialNo = response.data.data.map((unit, index) => ({
-            ...unit,
-            serialNo: index + 1,
-          }));
-          // console.log(unitsWithSerialNo);
-          // setSubjectList(unitsWithSerialNo);
-          setUnitList([
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-            ...unitsWithSerialNo,
-          ]);
-        } catch (error) {
-          console.error("Error fetching roles:", error);
-        }
-      };
-
-      fetchUnits();
-    }
-  }, [selectedSubjectData, navigate]);
-
-  const [unitList, setUnitList] = useState([]);
+const SelectSubject = () => {
+  const [subjectList, setSubjectList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedUnit, setSelectedUnit] = useState({
-    unitName: "",
-    id: "",
-  });
+
+  const { setSelectedSubjectData } = useContext(UnitContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get(nodeBaseUrl + "/api/subject");
+        const subjectsWithSerialNo = response.data.data.map(
+          (subject, index) => ({
+            ...subject,
+            serialNo: index + 1,
+          })
+        );
+        // console.log(subjectsWithSerialNo);
+        // setSubjectList(subjectsWithSerialNo);
+        setSubjectList([
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+          ...subjectsWithSerialNo,
+        ]);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
+    fetchSubjects();
+  }, []);
 
   // Functions for pagination, sorting, and searching
 
-  const handleAddUnit = () => {
-    navigate("/unit/add-unit");
+  const handleAddSubject = () => {
+    navigate("/subject/add-subject");
   };
 
   const handleSearchChange = (e) => {
@@ -89,18 +78,18 @@ const ManageUnit = () => {
   };
 
   const getFilteredData = () => {
-    const filteredData = unitList.filter(
+    const filteredData = subjectList.filter(
       (subject) =>
-        (subject.unitName ?? "")
+        (subject.subjectName ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        (subject.unitNo.toString() ?? "")
+        (subject.subjectCode ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        (subject.createdBy.username ?? "")
+        (subject.courseName ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        (subject.updatedBy.username ?? "")
+        (subject.semester.toString() ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
     );
@@ -124,16 +113,16 @@ const ManageUnit = () => {
     return data.slice(startIndex, startIndex + itemsPerPage);
   };
 
-  const sortedUnits = _.orderBy(
+  const sortedSubjects = _.orderBy(
     getFilteredData(),
     [sortConfig.key],
     [sortConfig.direction]
   );
 
-  const paginatedUnits = getPaginatedData(sortedUnits);
+  const paginatedSubjects = getPaginatedData(sortedSubjects);
 
   const getPaginationButtons = () => {
-    const totalPages = Math.ceil(sortedUnits.length / itemsPerPage);
+    const totalPages = Math.ceil(sortedSubjects.length / itemsPerPage);
     const buttons = [];
 
     // Show first button
@@ -211,78 +200,17 @@ const ManageUnit = () => {
     return buttons;
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (event.target.id === "delete-dialog-backdrop") {
-        handleDeleteCancel();
-      }
-    };
-
-    if (isDeleteDialogOpen) {
-      document.addEventListener("click", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isDeleteDialogOpen]);
-
-  const handleDeleteClick = (id, unitName) => {
-    // Show the delete dialog
-    setIsDeleteDialogOpen(true);
-    setSelectedUnit({ id: id, unitName: unitName });
-  };
-
-  const handleDeleteConfirm = async () => {
-    // console.log(selectedRole)
-    try {
-      const response = await axios.delete(
-        nodeBaseUrl + "/api/unit/" + selectedUnit.id
-      );
-      if (response.status === 200) {
-        // Remove the deleted user from the user list
-        console.log(response.data);
-        setUnitList(
-          unitList.filter(
-            (subject) => subject.unitName !== selectedUnit.unitName
-          )
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    setIsDeleteDialogOpen(false);
-  };
-
-  const handleDeleteCancel = () => {
-    // Close the delete dialog
-    setIsDeleteDialogOpen(false);
-    setSelectedUnit({ unitName: "", id: "" });
-  };
-
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Manage Unit" />
+      <Breadcrumb pageName="Select Subject" />
       <div className="flex justify-between items-center mb-4">
-        <DeleteDialog
-          isOpen={isDeleteDialogOpen}
-          title={"Delete Unit"}
-          description={
-            "Are you sure want to delete unit with unit name <b>'" +
-            selectedUnit.unitName +
-            "'</b>."
-          }
-          onConfirm={handleDeleteConfirm}
-          onCancel={handleDeleteCancel}
-        />
         <div>
           <button
-            onClick={handleAddUnit}
+            onClick={handleAddSubject}
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             <IoAdd size={30} />
-            Add Unit
+            Add Subject
           </button>
         </div>
         <form
@@ -341,33 +269,20 @@ const ManageUnit = () => {
                 </th>
                 <th
                   className="table-td-head"
-                  onClick={() => handleSort("unitNo")}
+                  onClick={() => handleSort("subjectName")}
                 >
                   <span>
-                    Unit No.
-                    <NumberSorting
-                      order={
-                        sortConfig.key === "unitNo" ? sortConfig.direction : ""
-                      }
-                    />
-                  </span>
-                </th>
-                <th
-                  className="table-td-head"
-                  onClick={() => handleSort("unitName")}
-                >
-                  <span>
-                    Unit Name
+                    Subject Name
                     <StringSorting
                       order={
-                        sortConfig.key === "unitName"
+                        sortConfig.key === "subjectName"
                           ? sortConfig.direction
                           : ""
                       }
                     />
                   </span>
                 </th>
-                {/* <th
+                <th
                   className="table-td-head"
                   onClick={() => handleSort("subjectCode")}
                 >
@@ -381,29 +296,16 @@ const ManageUnit = () => {
                       }
                     />
                   </span>
-                </th> */}
-                <th
-                  className="table-td-head"
-                  onClick={() => handleSort("status")}
-                >
-                  <span>
-                    Status
-                    <StringSorting
-                      order={
-                        sortConfig.key === "status" ? sortConfig.direction : ""
-                      }
-                    />
-                  </span>
                 </th>
                 <th
                   className="table-td-head"
-                  onClick={() => handleSort("createdBy")}
+                  onClick={() => handleSort("courseName")}
                 >
                   <span>
-                    Created By
+                    Course
                     <StringSorting
                       order={
-                        sortConfig.key === "createdBy"
+                        sortConfig.key === "courseName"
                           ? sortConfig.direction
                           : ""
                       }
@@ -412,13 +314,13 @@ const ManageUnit = () => {
                 </th>
                 <th
                   className="table-td-head"
-                  onClick={() => handleSort("updatedBy")}
+                  onClick={() => handleSort("semester")}
                 >
                   <span>
-                    Updated By
-                    <StringSorting
+                    Semester
+                    <NumberSorting
                       order={
-                        sortConfig.key === "updatedBy"
+                        sortConfig.key === "semester"
                           ? sortConfig.direction
                           : ""
                       }
@@ -431,71 +333,44 @@ const ManageUnit = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedUnits.map((unit, key) => (
+              {paginatedSubjects.map((subject, key) => (
                 <tr key={key} className="h-[60px]">
                   <td className="table-td-data">
                     <h5 className="font-medium text-black dark:text-white">
-                      {unit.serialNo}
-                    </h5>
-                  </td>
-                  <td className="table-td-data">
-                    <h5 className="font-medium text-black dark:text-white">
-                      {unit.unitNo}
+                      {subject.serialNo}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="font-medium text-black dark:text-white">
-                      {unit.unitName}
+                      {subject.subjectName}
                     </h5>
                   </td>
-                  {/* <td className="table-td-data max-w-[200px]">
+                  <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
                       {subject.subjectCode}
                     </h5>
-                  </td> */}
-                  <td className="table-td-data">
-                    <h5
-                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        unit.status === "Active"
-                          ? "bg-success text-success"
-                          : "bg-danger text-danger"
-                      }`}
-                    >
-                      {unit.status}
-                    </h5>
                   </td>
                   <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {unit.createdBy.username}
+                      {subject.courseName}
                     </h5>
                   </td>
-                  <td className="table-td-data max-w-[200px]">
+                  <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
-                      {unit.updatedBy.username}
+                      {subject.semester}
                     </h5>
                   </td>
                   <td className="table-td-data px-4">
                     <div className="flex justify-center space-x-3.5">
                       <button
-                        onClick={() =>
-                          handleDeleteClick(unit._id, unit.unitName)
-                        }
-                        className="hover:text-primary"
+                        className="hover:text-primary inline-flex items-center min-w-max justify-center  rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium"
+                        onClick={() => {
+                          setSelectedSubjectData(subject);
+                          navigate("/unit/manage-unit");
+                        }}
                       >
-                        <RiDeleteBinLine color="#FF5733" />
-                      </button>
-                      {/* <button className="hover:text-primary inline-flex items-center min-w-max justify-center  rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium">
                         <MdEdit size={16} />
                         <span className="ml-2">Unit</span>
-                      </button> */}
-                      <button
-                        onClick={() => {
-                          setSelectedUnitData(unit);
-                          navigate(`/unit/edit-unit-details`);
-                        }}
-                        className="hover:text-primary"
-                      >
-                        <MdEdit color="#0000FF" />
                       </button>
                     </div>
                   </td>
@@ -514,4 +389,4 @@ const ManageUnit = () => {
   );
 };
 
-export default ManageUnit;
+export default SelectSubject;

@@ -8,6 +8,7 @@ import DynamicDropDown from "../../components/Forms/DynamicDropDown";
 import Checkbox from "../../components/Forms/Checkbox";
 import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
+import "../../css/AddUser.css";
 
 const AddRole = () => {
   const [access, setAccess] = useState({
@@ -19,7 +20,7 @@ const AddRole = () => {
     Generate: [],
   });
 
-  const statusList = ["Active", "Disabled"];
+  const statusList = ["Active", "Inactive"];
 
   const optionsList = {
     User: "User Module",
@@ -77,7 +78,7 @@ const AddRole = () => {
       []
     );
 
-    const response = await axios.post(javaBaseUrl + "/api/roles", {
+    const response = await axios.post(javaBaseUrl + "/api/role", {
       ...values,
       accessList: accessList,
     });

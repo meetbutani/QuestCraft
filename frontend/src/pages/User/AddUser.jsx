@@ -12,7 +12,7 @@ import { toLowerCase, toTitleCase } from "../../js/utils";
 import { json } from "react-router-dom";
 
 const AddUser = () => {
-  const statusList = ["Active", "Disabled"];
+  const statusList = ["Active", "Inactive"];
   const [roleList, setRoleList] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -22,7 +22,7 @@ const AddUser = () => {
 
   useEffect(() => {
     const getRoles = async () => {
-      const response = await axios.get(javaBaseUrl + "/api/roles/active");
+      const response = await axios.get(javaBaseUrl + "/api/role/active");
       if (response.status == 200) {
         setRoleList(response.data);
       }
@@ -95,7 +95,7 @@ const AddUser = () => {
 
   const handleSubmit = async (values) => {
     const response = await axios.post(
-      javaBaseUrl + "/api/auth/register",
+      javaBaseUrl + "/api/user/register",
       values
     );
     if (response.status == 200) {
@@ -178,7 +178,7 @@ const AddUser = () => {
                       }}
                       onBlur={formik.handleBlur}
                       type="text"
-                      placeholder="Enter Username here"
+                      placeholder="Enter Username"
                       className="inputfield"
                     />
                     {formik.touched.username && formik.errors.username ? (
@@ -200,7 +200,7 @@ const AddUser = () => {
                       }}
                       onBlur={formik.handleBlur}
                       type="text"
-                      placeholder="Enter Email here"
+                      placeholder="Enter Email"
                       className="inputfield"
                     />
                     {formik.touched.email && formik.errors.email ? (
@@ -218,7 +218,7 @@ const AddUser = () => {
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        placeholder="Enter Password here"
+                        placeholder="Enter Password"
                         className="inputfield"
                       />
                       <span className="absolute right-4 top-6">
@@ -246,7 +246,7 @@ const AddUser = () => {
                       }}
                       onBlur={formik.handleBlur}
                       type="text"
-                      placeholder="Enter contact number here"
+                      placeholder="Enter Contact Number"
                       className="inputfield"
                     />
                     {formik.touched.contactNo && formik.errors.contactNo ? (
@@ -265,7 +265,7 @@ const AddUser = () => {
                       }}
                       onBlur={formik.handleBlur}
                       type="text"
-                      placeholder="Enter office location here"
+                      placeholder="Enter Office Location"
                       className="inputfield"
                     />
                     {formik.touched.officeLocation &&

@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import SubjectPaper from "./pages/QPG/SubjectPaper";
 import ManageSubject from "./pages/Subject/ManageSubject";
 import AddSubject from "./pages/Subject/AddSubject";
-import AddUnitPage from "./pages/Unit/AddUnitPage";
+import AddUnit from "./pages/Unit/AddUnit";
 import ManageQuestion from "./pages/Question/ManageQuestion";
 import AddQuestion from "./pages/Question/AddQuestion";
 import SetUnitPaper from "./pages/QPG/SetUnitPaper";
@@ -14,7 +14,7 @@ import ManagePaper from "./pages/QPG/ManagePaper";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/SignUp";
 import ManageUnit from "./pages/Unit/ManageUnit";
-import PreUnitPage from "./pages/Unit/PreUnitPage";
+import SelectSubject from "./pages/Unit/SelectSubject";
 import PreQuestionPage from "./pages/Question/PreQuestionPage";
 import AddUser from "./pages/User/AddUser";
 import AddRole from "./pages/Role/AddRole";
@@ -24,10 +24,14 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import { PermissionGuard } from "./components/PermissionGuard";
 import EditUserDetails from "./pages/User/EditUserDetails";
 import ShowUserDetails from "./pages/User/ShowUserDetails";
-import UserContext, { UserProvider } from "./context/UserContext";
+import { UserProvider } from "./context/UserContext";
 import EditRole from "./pages/Role/EditRoleDetails";
 import { RoleProvider } from "./context/RoleContext";
 import SelectQuestionPage from "./pages/QPG/SelectQuestionPage";
+import { SubjectProvider } from "./context/SubjectContext";
+import EditSubject from "./pages/Subject/EditSubjectDetails";
+import { UnitProvider } from "./context/UnitContext";
+import EditUnit from "./pages/Unit/EditUnitDetails";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -55,7 +59,7 @@ function App() {
           </>
         }
       />
-      <Route
+      {/* <Route
         path="/auth/signup"
         element={
           <>
@@ -63,7 +67,7 @@ function App() {
             <SignUp />
           </>
         }
-      />
+      /> */}
       {/* // --------------------- Dashboard Route ----------------------- */}
       <Route
         index
@@ -124,11 +128,24 @@ function App() {
       />
 
       <Route
-        path="/subject/manage_subject"
+        path="/subject/manage-subject"
         element={
           <>
             <PageTitle title="Manage Subject" />
-            <ManageSubject />
+            <SubjectProvider>
+              <ManageSubject />
+            </SubjectProvider>
+          </>
+        }
+      />
+      <Route
+        path="/subject/edit-subject-details"
+        element={
+          <>
+            <PageTitle title="Edit Subject Details" />
+            <SubjectProvider>
+              <EditSubject />
+            </SubjectProvider>
           </>
         }
       />
@@ -140,26 +157,43 @@ function App() {
         element={
           <>
             <PageTitle title="Add Unit" />
-            <AddUnitPage />
+            <UnitProvider>
+              <AddUnit />
+            </UnitProvider>
           </>
         }
       />
 
       <Route
-        path="/unit/manage_unit"
+        path="/unit/manage-unit"
         element={
           <>
             <PageTitle title="Manage Unit" />
-            <ManageUnit />
+            <UnitProvider>
+              <ManageUnit />
+            </UnitProvider>
           </>
         }
       />
       <Route
-        path="/unit/pre-unit-page"
+        path="/unit/select-subject"
         element={
           <>
-            <PageTitle title="Pre Unit Page" />
-            <PreUnitPage />
+            <PageTitle title="Select Subject" />
+            <UnitProvider>
+              <SelectSubject />
+            </UnitProvider>
+          </>
+        }
+      />
+      <Route
+        path="/unit/edit-unit-details"
+        element={
+          <>
+            <PageTitle title="Edit Unit Details" />
+            <UnitProvider>
+              <EditUnit />
+            </UnitProvider>
           </>
         }
       />

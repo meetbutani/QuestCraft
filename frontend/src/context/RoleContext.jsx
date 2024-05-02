@@ -6,12 +6,7 @@ export const RoleProvider = ({ children }) => {
   const [selectedRoleData, setSelectedRoleData] = useState(null);
 
   return (
-    <RoleContext.Provider
-      value={{
-        selectedRoleData: selectedRoleData,
-        setSelectedRoleData: setSelectedRoleData,
-      }}
-    >
+    <RoleContext.Provider value={{ selectedRoleData, setSelectedRoleData }}>
       {children}
     </RoleContext.Provider>
   );

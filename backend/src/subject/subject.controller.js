@@ -1,77 +1,117 @@
-const subjectService = require('./subject.service'); // Importing the subject service
+const subjectService = require("./subject.service");
 
-// Controller function to handle subject creation
-async function createSubject(req, res) {
-    const { subjectName, subjectCode, courseName, semester, createdBy, updatedBy } = req.body;
-    try {
-        // Check if the subject code already exists
-        const existingSubject = await subjectService.findSubjectByCode(subjectCode);
-        if (existingSubject) {
-            return res.status(400).json({ message: "Subject code already exists." });
-        }
-        // Create a new subject
-        const subject = await subjectService.createSubject(subjectName, subjectCode, courseName, semester, createdBy, updatedBy);
-        res.status(201).json({ message: "Subject created successfully", subject });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+// Create a new subject
+exports.createSubject = async (req, res) => {
+  try {
+    const subject = await subjectService.createSubject(req.body);
+    res.status(200).json({ message: "Subject Created Successfully" });
+  } catch (error) {
+    console.error(error);
+    if (error.code === 11000 && error.keyValue?.subjectCode) {
+      const subjectCode = error.keyValue.subjectCode;
+      res
+        .status(201)
+        .json({ message: `Subject code '${subjectCode}' already exists` });
+    } else {
+      res.status(201).json({ message: "Internal server error" });
     }
-}
+  }
+};
 
-// Controller function to find a subject by subject code
-async function findSubject(req, res) {
-    const subjectCode = req.params.code;
-    try {
-        // Find the subject by subject code
-        const subject = await subjectService.findSubjectByCode(subjectCode);
-        if (!subject) {
-            return res.status(404).json({ message: "Subject not found." });
-        }
-        res.status(200).json({ subject });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+// Get subject by subject code
+exports.getSubjectBySubjectCode = async (req, res) => {
+  try {
+    const subject = await subjectService.findSubjectBySubjectCode(
+      req.params.subjectCode
+    );
+    if (!subject) {
+      return res.status(201).json({ message: "Subject not found" });
     }
-}
+    res.json({ data: subject });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to find all subjects
-async function findAllSubjects(req, res) {
-    try {
-        // Find all subjects
-        const subjects = await subjectService.findAllSubjects();
-        res.status(200).json({ subjects });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+// Get subject by ID
+exports.getSubjectById = async (req, res) => {
+  try {
+    const subject = await subjectService.findSubjectById(req.params.id);
+    if (!subject) {
+      return res.status(201).json({ message: "Subject not found" });
     }
-}
+    res.json({ data: subject });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to update a subject
-async function updateSubject(req, res) {
-    const subjectId = req.params.id;
-    const updates = req.body;
-    try {
-        // Update the subject
-        const updatedSubject = await subjectService.updateSubject(subjectId, updates);
-        res.status(200).json({ message: "Subject updated successfully", subject: updatedSubject });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+// Get all subjects
+exports.getAllSubjects = async (req, res) => {
+  try {
+    const subjects = await subjectService.findAllSubjects();
+    res.json({ data: subjects });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+// Update subject by ID
+exports.updateSubject = async (req, res) => {
+  try {
+    const updatedSubject = await subjectService.updateSubjectById(
+      req.params.id,
+      req.body
+    );
+    if (!updatedSubject) {
+      return res.status(201).json({ message: "Subject not found" });
     }
-}
-
-// Controller function to delete a subject
-async function deleteSubject(req, res) {
-    const subjectId = req.params.id;
-    try {
-        // Delete the subject
-        const deletedSubject = await subjectService.deleteSubject(subjectId);
-        res.status(200).json({ message: "Subject deleted successfully", subject: deletedSubject });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+    // res.json(updatedSubject);
+    res.status(200).json({ message: "Subject Updated Successfully" });
+  } catch (error) {
+    console.error(error);
+    if (error.code === 11000 && error.keyValue?.subjectCode) {
+      const subjectCode = error.keyValue.subjectCode;
+      res
+        .status(201)
+        .json({ message: `Subject code '${subjectCode}' already exists` });
+    } else {
+      res.status(201).json({ message: "Internal server error" });
     }
-}
+  }
+};
 
-module.exports = {
-    createSubject,
-    findSubject,
-    findAllSubjects,
-    updateSubject,
-    deleteSubject,
+// Delete subject by ID
+exports.deleteSubjectById = async (req, res) => {
+  try {
+    const deletedSubject = await subjectService.deleteSubjectById(
+      req.params.id
+    );
+    if (!deletedSubject) {
+      return res.status(201).json({ message: "Subject not found" });
+    }
+    res.json({ message: "Subject deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+// Delete subject by subject code
+exports.deleteSubjectBySubjectCode = async (req, res) => {
+  try {
+    const deletedSubject = await subjectService.deleteSubjectBySubjectCode(
+      req.params.subjectCode
+    );
+    if (!deletedSubject) {
+      return res.status(201).json({ message: "Subject not found" });
+    }
+    res.json({ message: "Subject deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
 };

@@ -1,14 +1,14 @@
 import React from "react";
 
-import DynamicDropDown from "../../components/Forms/DynamicDropDown";
-import DefaultLayout from "../../layout/DefaultLayout";
+import DynamicDropDown from "../components/Forms/DynamicDropDown";
+import DefaultLayout from "../layout/DefaultLayout";
 import { useNavigate } from "react-router-dom";
 
-const PreUnitPage = () => {
+const SelectSubjectPage = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/unit/manage_unit");
+    navigate("/unit/manage-unit");
   };
 
   const subjectList = ["AI", "AWT", "AJ"];
@@ -55,4 +55,4 @@ const PreUnitPage = () => {
   );
 };
 
-export default PreUnitPage;
+export default SelectSubjectPage;
