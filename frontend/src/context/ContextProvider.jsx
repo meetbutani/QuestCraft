@@ -1,14 +1,16 @@
 import { createContext, useState } from "react";
 
-const QuestionContext = createContext();
+const ContextProviderContext = createContext();
 
-export const QuestionProvider = ({ children }) => {
+export const ContextProvider = ({ children }) => {
   const [selectedQuestionData, setSelectedQuestionData] = useState(null);
   const [selectedUnitData, setSelectedUnitData] = useState(null);
   const [selectedSubjectData, setSelectedSubjectData] = useState(null);
+  const [selectedUserData, setSelectedUserData] = useState(null);
+  const [selectedRoleData, setSelectedRoleData] = useState(null);
 
   return (
-    <QuestionContext.Provider
+    <ContextProviderContext.Provider
       value={{
         selectedQuestionData,
         setSelectedQuestionData,
@@ -16,11 +18,15 @@ export const QuestionProvider = ({ children }) => {
         setSelectedUnitData,
         selectedSubjectData,
         setSelectedSubjectData,
+        selectedUserData,
+        setSelectedUserData,
+        selectedRoleData,
+        setSelectedRoleData,
       }}
     >
       {children}
-    </QuestionContext.Provider>
+    </ContextProviderContext.Provider>
   );
 };
 
-export default QuestionContext;
+export default ContextProviderContext;

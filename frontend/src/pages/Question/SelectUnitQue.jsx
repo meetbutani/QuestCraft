@@ -1,80 +1,83 @@
 import React, { useContext, useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { MdEdit } from "react-icons/md";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 import { useNavigate } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { javaBaseUrl } from "../../js/api.constatnt";
-import DeleteDialog from "../../components/Modals/DeleteDialog";
 import _ from "lodash";
+import { nodeBaseUrl } from "../../js/api.constatnt";
 import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
 
-const ManageRole = () => {
-  const [roleList, setRoleList] = useState([]);
+const SelectUnitQue = () => {
+  const [unitList, setUnitList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState({ roleId: "", id: "" });
 
-  const { setSelectedRoleData } = useContext(ContextProviderContext);
+  const { selectedSubjectData, setSelectedUnitData } = useContext(
+    ContextProviderContext
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchRoles = async () => {
+    if (!selectedSubjectData) {
+      navigate("/question/select-subject");
+    }
+  }, [selectedSubjectData, navigate]);
+
+  useEffect(() => {
+    const fetchUnits = async () => {
+      // console.log(selectedSubjectData);
       try {
-        const response = await axios.get(javaBaseUrl + "/api/role");
-        const rolesData = response.data.data;
-        if (rolesData) {
-          const rolesArray = Object.values(rolesData);
-          const rolesWithAccessStr = rolesArray.map((role) => ({
-            ...role,
-            accessStr: role.accessList.join(", "),
-          }));
-          // console.log(rolesWithAccessStr);
-          // setRoleList(rolesWithAccessStr);
-          setRoleList([
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-            ...rolesWithAccessStr,
-          ]);
-        }
+        const response = await axios.get(
+          nodeBaseUrl + "/api/unit/subjectId/" + selectedSubjectData?._id
+        );
+        // console.log(response.data);
+        const unitsWithSerialNo = response.data.data.map((unit, index) => ({
+          ...unit,
+          serialNo: index + 1,
+        }));
+        // console.log(subjectsWithSerialNo);
+        // setSubjectList(subjectsWithSerialNo);
+        setUnitList([
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+          ...unitsWithSerialNo,
+        ]);
       } catch (error) {
-        console.error("Error fetching roles:", error);
+        console.error("Error fetching units:", error);
       }
     };
 
-    fetchRoles();
+    fetchUnits();
   }, []);
 
   // Functions for pagination, sorting, and searching
 
-  const handleAddRole = () => {
-    navigate("/role/add-role");
+  const handleAddUnit = () => {
+    navigate("/unit/add-unit");
   };
 
   const handleSearchChange = (e) => {
@@ -83,10 +86,14 @@ const ManageRole = () => {
   };
 
   const getFilteredData = () => {
-    const filteredData = roleList.filter(
-      (role) =>
-        (role.roleId ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (role.accessStr ?? "").toLowerCase().includes(searchTerm.toLowerCase())
+    const filteredData = unitList.filter(
+      (unit) =>
+        (unit.unitName ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        (unit.unitNo.toString() ?? "")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
     );
     return filteredData;
   };
@@ -108,16 +115,16 @@ const ManageRole = () => {
     return data.slice(startIndex, startIndex + itemsPerPage);
   };
 
-  const sortedRoles = _.orderBy(
+  const sortedUnits = _.orderBy(
     getFilteredData(),
     [sortConfig.key],
     [sortConfig.direction]
   );
 
-  const paginatedRoles = getPaginatedData(sortedRoles);
+  const paginatedUnits = getPaginatedData(sortedUnits);
 
   const getPaginationButtons = () => {
-    const totalPages = Math.ceil(sortedRoles.length / itemsPerPage);
+    const totalPages = Math.ceil(sortedUnits.length / itemsPerPage);
     const buttons = [];
 
     // Show first button
@@ -195,75 +202,24 @@ const ManageRole = () => {
     return buttons;
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (event.target.id === "delete-dialog-backdrop") {
-        handleDeleteCancel();
-      }
-    };
-
-    if (isDeleteDialogOpen) {
-      document.addEventListener("click", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [isDeleteDialogOpen]);
-
-  const handleDeleteClick = (id, roleId) => {
-    // Show the delete dialog
-    setIsDeleteDialogOpen(true);
-    setSelectedRole({ id: id, roleId: roleId });
-  };
-
-  const handleDeleteConfirm = async () => {
-    // console.log(selectedRole)
-    try {
-      const response = await axios.delete(
-        javaBaseUrl + "/api/role/" + selectedRole.id
-      );
-      if (response.status === 200) {
-        // Remove the deleted user from the user list
-        setRoleList(
-          roleList.filter((role) => role.roleId !== selectedRole.roleId)
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    setIsDeleteDialogOpen(false);
-  };
-
-  const handleDeleteCancel = () => {
-    // Close the delete dialog
-    setIsDeleteDialogOpen(false);
-    setSelectedRole({ roleId: "", id: "" });
-  };
-
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Manage Role" />
+      <Breadcrumb pageName="Select Unit" />
+      <div className="mb-5">
+        <span className="font-bold text-title-sm">Selected Subject :</span>{" "}
+        <span className="text-title-sm">
+          {selectedSubjectData?.subjectName} ({selectedSubjectData?.subjectCode}
+          )
+        </span>
+      </div>
       <div className="flex justify-between items-center mb-4">
-        <DeleteDialog
-          isOpen={isDeleteDialogOpen}
-          title={"Delete User"}
-          description={
-            "Are you sure want to delete user with Role ID <b>'" +
-            selectedRole.roleId +
-            "'</b>."
-          }
-          onConfirm={handleDeleteConfirm}
-          onCancel={handleDeleteCancel}
-        />
         <div>
           <button
-            onClick={handleAddRole}
+            onClick={handleAddUnit}
             className="inline-flex items-center justify-center gap-2.5 rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
           >
             <IoAdd size={30} />
-            Add Role
+            Add Unit
           </button>
         </div>
         <form
@@ -304,7 +260,7 @@ const ManageRole = () => {
         <div className="max-w-full overflow-x-auto">
           <table className="w-full table-auto">
             <thead>
-              <tr className="bg-slate-200 text-left dark:bg-meta-4 h-[60px]">
+              <tr className="bg-gray-2 text-left dark:bg-meta-4 h-[60px]">
                 <th
                   className="table-td-head"
                   onClick={() => handleSort("serialNo")}
@@ -322,100 +278,66 @@ const ManageRole = () => {
                 </th>
                 <th
                   className="table-td-head"
-                  onClick={() => handleSort("roleId")}
+                  onClick={() => handleSort("unitNo")}
                 >
                   <span>
-                    Role ID
-                    <StringSorting
+                    Unit No.
+                    <NumberSorting
                       order={
-                        sortConfig.key === "roleId" ? sortConfig.direction : ""
+                        sortConfig.key === "unitNo" ? sortConfig.direction : ""
                       }
                     />
                   </span>
                 </th>
                 <th
                   className="table-td-head"
-                  onClick={() => handleSort("accessStr")}
+                  onClick={() => handleSort("unitName")}
                 >
                   <span>
-                    Access List
+                    Unit Name
                     <StringSorting
                       order={
-                        sortConfig.key === "accessStr"
+                        sortConfig.key === "unitName"
                           ? sortConfig.direction
                           : ""
                       }
                     />
                   </span>
                 </th>
-                <th
-                  className="table-td-head"
-                  onClick={() => handleSort("status")}
-                >
-                  <span>
-                    Status
-                    <StringSorting
-                      order={
-                        sortConfig.key === "status" ? sortConfig.direction : ""
-                      }
-                    />
-                  </span>
-                </th>
-
                 <th className="table-td-head">
                   <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {paginatedRoles.map((role, key) => (
+              {paginatedUnits.map((unit, key) => (
                 <tr key={key} className="h-[60px]">
                   <td className="table-td-data">
                     <h5 className="font-medium text-black dark:text-white">
-                      {role.serialNo}
+                      {unit.serialNo}
                     </h5>
                   </td>
-                  <td className="table-td-data max-w-[100px]">
+                  <td className="table-td-data max-w-[200px]">
+                    <h5 className="font-medium text-black dark:text-white">
+                      {unit.unitNo}
+                    </h5>
+                  </td>
+                  <td className="table-td-data max-w-[200px]">
                     <h5 className="text-black dark:text-white">
-                      {role.roleId}
+                      {unit.unitName}
                     </h5>
                   </td>
-                  <td className="table-td-data max-w-[250px] py-4">
-                    <h5
-                      className="text-black dark:text-white"
-                      style={{ whiteSpace: "wrap" }}
-                    >
-                      {role.accessStr}
-                    </h5>
-                  </td>
-                  <td className="table-td-data">
-                    <h5
-                      className={`flex w-fit m-auto rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                        role.status === "Active"
-                          ? "bg-success text-success"
-                          : "bg-danger text-danger"
-                      }`}
-                    >
-                      {role.status}
-                    </h5>
-                  </td>
-
                   <td className="table-td-data px-4">
                     <div className="flex justify-center space-x-3.5">
                       <button
-                        onClick={() => handleDeleteClick(role.id, role.roleId)}
-                        className="hover:text-primary"
-                      >
-                        <RiDeleteBinLine color="#FF5733" />
-                      </button>
-                      <button
+                        className="hover:text-primary inline-flex items-center min-w-max justify-center  rounded-full bg-gray-200 border border-gray-400 py-1 px-3 text-sm font-medium"
                         onClick={() => {
-                          setSelectedRoleData(role);
-                          navigate(`/role/edit-role-details`);
+                          setSelectedUnitData(unit);
+                          navigate("/question/manage-question");
                         }}
-                        className="hover:text-primary"
                       >
-                        <MdEdit color="#0000FF" />
+                        <MdEdit size={16} />
+                        <span className="ml-2">Question</span>
                       </button>
                     </div>
                   </td>
@@ -424,7 +346,6 @@ const ManageRole = () => {
             </tbody>
           </table>
         </div>
-
         <div className="flex justify-center items-center mt-4">
           <nav>
             <ul className="inline-flex gap-4">{...getPaginationButtons()}</ul>
@@ -435,4 +356,4 @@ const ManageRole = () => {
   );
 };
 
-export default ManageRole;
+export default SelectUnitQue;

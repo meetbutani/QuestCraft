@@ -1,33 +1,42 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Loader from "./common/Loader";
-import PageTitle from "./components/PageTitle";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import SubjectPaper from "./pages/QPG/SubjectPaper";
-import ManageSubject from "./pages/Subject/ManageSubject";
-import AddSubject from "./pages/Subject/AddSubject";
-import AddUnit from "./pages/Unit/AddUnit";
-import ManageQuestion from "./pages/Question/ManageQuestion";
-import AddQuestion from "./pages/Question/AddQuestion";
-import SetUnitPaper from "./pages/QPG/SetUnitPaper";
-import ManagePaper from "./pages/QPG/ManagePaper";
-import SignIn from "./pages/auth/SignIn";
-import ManageUnit from "./pages/Unit/ManageUnit";
-import SelectSubjectUnit from "./pages/Unit/SelectSubjectUnit";
-import AddUser from "./pages/User/AddUser";
-import AddRole from "./pages/Role/AddRole";
-import ManageUsers from "./pages/User/ManageUsers";
-import ManageRole from "./pages/Role/ManageRole";
-import ProfilePage from "./pages/Profile/ProfilePage";
-import { PermissionGuard } from "./components/PermissionGuard";
-import EditUserDetails from "./pages/User/EditUserDetails";
-import ShowUserDetails from "./pages/User/ShowUserDetails";
-import EditRole from "./pages/Role/EditRoleDetails";
-import { RoleProvider } from "./context/RoleContext";
-import SelectQuestionPage from "./pages/QPG/SelectQuestionPage";
-import { SubjectProvider } from "./context/SubjectContext";
-import EditSubject from "./pages/Subject/EditSubjectDetails";
-import EditUnit from "./pages/Unit/EditUnitDetails";
+import Loader from "../common/Loader";
+import PageTitle from "../components/PageTitle";
+import Dashboard from "../pages/Dashboard/Dashboard";
+import SubjectPaper from "../pages/QPG/SubjectPaper";
+import ManageSubject from "../pages/Subject/ManageSubject";
+import AddSubject from "../pages/Subject/AddSubject";
+import AddUnit from "../pages/Unit/AddUnit";
+import ManageQuestion from "../pages/Question/ManageQuestion";
+import AddQuestion from "../pages/Question/AddQuestion";
+import SetUnitPaper from "../pages/QPG/SetUnitPaper";
+import ManagePaper from "../pages/QPG/ManagePaper";
+import SignIn from "../pages/auth/SignIn";
+import SignUp from "../pages/auth/SignUp";
+import ManageUnit from "../pages/Unit/ManageUnit";
+import SelectSubjectUnit from "../pages/Unit/SelectSubjectUnit";
+import PreQuestionPage from "../pages/Question/PreQuestionPage";
+import AddUser from "../pages/User/AddUser";
+import AddRole from "../pages/Role/AddRole";
+import ManageUsers from "../pages/User/ManageUsers";
+import ManageRole from "../pages/Role/ManageRole";
+import ProfilePage from "../pages/Profile/ProfilePage";
+import { PermissionGuard } from "../components/PermissionGuard";
+import EditUserDetails from "../pages/User/EditUserDetails";
+import ShowUserDetails from "../pages/User/ShowUserDetails";
+import { UserProvider } from "../context/UserContext";
+import EditRole from "../pages/Role/EditRoleDetails";
+import { RoleProvider } from "../context/RoleContext";
+import SelectQuestionPage from "../pages/QPG/SelectQuestionPage";
+import { SubjectProvider } from "../context/SubjectContext";
+import EditSubject from "../pages/Subject/EditSubjectDetails";
+import { UnitProvider } from "../context/UnitContext";
+import EditUnit from "../pages/Unit/EditUnitDetails";
+import SelectSubjectQue from "../pages/Question/SelectSubjectQue";
+import SelectUnitQue from "../pages/Question/SelectUnitQue";
+import ShowQuestion from "../pages/Question/ShowQuestion";
+import EditQuestion from "../pages/Question/EditQuestion";
+import { QuestionProvider } from "../context/QuestionContext";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -102,111 +111,15 @@ function App() {
           </>
         }
       />
-      {/*------------------------------------ Mid Sem paper Route -------------------------- */}
       <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-a"
+        path="/qpaper/set-subject-paper/select-question"
         element={
           <>
-            <PageTitle title="Select Questions For Section A" />
-            <SelectQuestionForSectionA />
+            <PageTitle title="Select Questions" />
+            <SelectQuestionPage />
           </>
         }
       />
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-b"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section B" />
-            <SelectQuestionForSectionB />
-          </>
-        }
-      />
-
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-c"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section C" />
-            <SelectQuestionForSectionC />
-          </>
-        }
-      />
-
-      <Route
-        path="/qpaper/set-subject-paper/generate-pdf"
-        element={
-          <>
-            <PageTitle title="Generate PDF" />
-            <MidSemPaper />
-          </>
-        }
-      />
-      {/*------------------------------------ Final Sem paper Route -------------------------- */}
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-a-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section A" />
-            <SelectQuestionForSectionAFinal />
-          </>
-        }
-      />
-
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-b-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section b" />
-            <SelectQuestionForSectionBFinal />
-          </>
-        }
-      />
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-c-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section C" />
-            <SelectQuestionForSectionCFinal />
-          </>
-        }
-      />
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-d-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section D" />
-            <SelectQuestionForSectionDFinal />
-          </>
-        }
-      />
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-e-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section E" />
-            <SelectQuestionForSectionEFinal />
-          </>
-        }
-      />
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-f-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section F" />
-            <SelectQuestionForSectionFFinal />
-          </>
-        }
-      />
-      <Route
-        path="/qpaper/set-subject-paper/select-question-for-section-g-final"
-        element={
-          <>
-            <PageTitle title="Select Questions For Section G" />
-            <SelectQuestionForSectionGFinal />
-          </>
-        }
-      />
-
       {/* // --------------------- Subject Route ----------------------- */}
 
       <Route
@@ -224,9 +137,9 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Subject" />
-            <ContextProvider>
+            <SubjectProvider>
               <ManageSubject />
-            </ContextProvider>
+            </SubjectProvider>
           </>
         }
       />
@@ -235,9 +148,9 @@ function App() {
         element={
           <>
             <PageTitle title="Edit Subject Details" />
-            <ContextProvider>
+            <SubjectProvider>
               <EditSubject />
-            </ContextProvider>
+            </SubjectProvider>
           </>
         }
       />
@@ -249,9 +162,9 @@ function App() {
         element={
           <>
             <PageTitle title="Add Unit" />
-            <ContextProvider>
+            <UnitProvider>
               <AddUnit />
-            </ContextProvider>
+            </UnitProvider>
           </>
         }
       />
@@ -261,9 +174,9 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Unit" />
-            <ContextProvider>
+            <UnitProvider>
               <ManageUnit />
-            </ContextProvider>
+            </UnitProvider>
           </>
         }
       />
@@ -272,9 +185,9 @@ function App() {
         element={
           <>
             <PageTitle title="Select Subject" />
-            <ContextProvider>
+            <UnitProvider>
               <SelectSubjectUnit />
-            </ContextProvider>
+            </UnitProvider>
           </>
         }
       />
@@ -283,9 +196,9 @@ function App() {
         element={
           <>
             <PageTitle title="Edit Unit Details" />
-            <ContextProvider>
+            <UnitProvider>
               <EditUnit />
-            </ContextProvider>
+            </UnitProvider>
           </>
         }
       />
@@ -297,9 +210,9 @@ function App() {
         element={
           <>
             <PageTitle title="Add Question" />
-            <ContextProvider>
+            <QuestionProvider>
               <AddQuestion />
-            </ContextProvider>
+            </QuestionProvider>
           </>
         }
       />
@@ -309,9 +222,9 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Question" />
-            <ContextProvider>
+            <QuestionProvider>
               <ManageQuestion />
-            </ContextProvider>
+            </QuestionProvider>
           </>
         }
       />
@@ -320,9 +233,9 @@ function App() {
         element={
           <>
             <PageTitle title="Select Subject" />
-            <ContextProvider>
+            <QuestionProvider>
               <SelectSubjectQue />
-            </ContextProvider>
+            </QuestionProvider>
           </>
         }
       />
@@ -331,9 +244,9 @@ function App() {
         element={
           <>
             <PageTitle title="Select Unit" />
-            <ContextProvider>
+            <QuestionProvider>
               <SelectUnitQue />
-            </ContextProvider>
+            </QuestionProvider>
           </>
         }
       />
@@ -342,9 +255,9 @@ function App() {
         element={
           <>
             <PageTitle title="Show Question Details" />
-            <ContextProvider>
+            <QuestionProvider>
               <ShowQuestion />
-            </ContextProvider>
+            </QuestionProvider>
           </>
         }
       />
@@ -353,9 +266,9 @@ function App() {
         element={
           <>
             <PageTitle title="Edit Question Details" />
-            <ContextProvider>
+            <QuestionProvider>
               <EditQuestion />
-            </ContextProvider>
+            </QuestionProvider>
           </>
         }
       />
@@ -376,9 +289,9 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Users" />
-            <ContextProvider>
+            <UserProvider>
               <ManageUsers />
-            </ContextProvider>
+            </UserProvider>
           </>
         }
       />
@@ -387,9 +300,9 @@ function App() {
         element={
           <>
             <PageTitle title="User Details" />
-            <ContextProvider>
+            <UserProvider>
               <ShowUserDetails />
-            </ContextProvider>
+            </UserProvider>
           </>
         }
       />
@@ -398,9 +311,9 @@ function App() {
         element={
           <>
             <PageTitle title="Edit User Details" />
-            <ContextProvider>
+            <UserProvider>
               <EditUserDetails />
-            </ContextProvider>
+            </UserProvider>
           </>
         }
       />
@@ -419,9 +332,9 @@ function App() {
         element={
           <>
             <PageTitle title="Manage Role" />
-            <ContextProvider>
+            <RoleProvider>
               <ManageRole />
-            </ContextProvider>
+            </RoleProvider>
           </>
         }
       />
@@ -430,9 +343,9 @@ function App() {
         element={
           <>
             <PageTitle title="Edit Role Details" />
-            <ContextProvider>
+            <RoleProvider>
               <EditRole />
-            </ContextProvider>
+            </RoleProvider>
           </>
         }
       />

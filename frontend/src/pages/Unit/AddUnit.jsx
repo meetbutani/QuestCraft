@@ -3,7 +3,6 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
 
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
-import UnitContext from "../../context/UnitContext";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -11,9 +10,10 @@ import axios from "axios";
 import { nodeBaseUrl } from "../../js/api.constatnt";
 import "../../css/AddUser.css";
 import { decryptData } from "../../js/secureData";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const AddUnit = () => {
-  const { selectedSubjectData } = useContext(UnitContext);
+  const { selectedSubjectData } = useContext(ContextProviderContext);
   const navigate = useNavigate();
 
   useEffect(() => {

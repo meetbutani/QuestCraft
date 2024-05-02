@@ -1,42 +1,77 @@
-const questionService = require('./question.service'); // Importing the question service
+const questionService = require("./question.service");
 
-// Controller function to handle question creation
-async function createQuestion(req, res) {
-    const questionData = req.body;
-    try {
-        // Create a new question
-        const question = await questionService.createQuestion(questionData);
-        res.status(201).json({ message: "Question created successfully", question });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.createQuestion = async (req, res) => {
+  try {
+    const question = await questionService.createQuestion(req.body);
+    res.status(200).json({ message: "Question Created Successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.getQuestionById = async (req, res) => {
+  try {
+    const question = await questionService.findQuestionById(req.params.id);
+    if (!question) {
+      return res.status(201).json({ message: "Question not found" });
     }
-}
+    res.json({ data: question });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to find questions by unit ID
-async function findQuestionsByUnitId(req, res) {
-    const { unitId } = req.params;
-    try {
-        // Find questions by unit ID
-        const questions = await questionService.findQuestionsByUnitId(unitId);
-        res.status(200).json({ questions });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getQuestionsByUnitId = async (req, res) => {
+  try {
+    const questions = await questionService.findQuestionsByUnitId(
+      req.params.unitId
+    );
+    res.json({ data: questions });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.getAllQuestions = async (req, res) => {
+  try {
+    const questions = await questionService.findAllQuestions();
+    res.json({ data: questions });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.updateQuestion = async (req, res) => {
+  try {
+    const updatedQuestion = await questionService.updateQuestionById(
+      req.params.id,
+      req.body
+    );
+    if (!updatedQuestion) {
+      return res.status(201).json({ message: "Question not found" });
     }
-}
+    res.status(200).json({ message: "Question Updated Successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to find all questions
-async function findAllQuestions(req, res) {
-    try {
-        // Find all questions
-        const questions = await questionService.findAllQuestions();
-        res.status(200).json({ questions });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.deleteQuestionById = async (req, res) => {
+  try {
+    const deletedQuestion = await questionService.deleteQuestionById(
+      req.params.id
+    );
+    if (!deletedQuestion) {
+      return res.status(201).json({ message: "Question not found" });
     }
-}
-
-module.exports = {
-    createQuestion,
-    findQuestionsByUnitId,
-    findAllQuestions,
+    res.json({ message: "Question deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
 };

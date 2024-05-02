@@ -230,7 +230,7 @@ const ManageUnit = () => {
                   </span>
                 </th>
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">Actions</span>
+                  <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>

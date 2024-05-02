@@ -8,13 +8,13 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
 import { useNavigate } from "react-router-dom";
-import RoleContext from "../../context/RoleContext";
 import Checkbox from "../../components/Forms/Checkbox";
 import { toUpper } from "lodash";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const EditRole = () => {
   const [access, setAccess] = useState({});
-  const { selectedRoleData } = useContext(RoleContext);
+  const { selectedRoleData } = useContext(ContextProviderContext);
   const statusList = ["Active", "Inactive"];
   const navigate = useNavigate();
 

@@ -1,14 +1,23 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const questionController = require('./question.controller'); // Importing the question controller
+const questionController = require("./question.controller");
 
-// Route for creating a new question
-router.post('/questions', questionController.createQuestion);
+// Create a new question
+router.post("/", questionController.createQuestion);
 
-// Route for finding questions by unit ID
-router.get('/questions/unit/:unitId', questionController.findQuestionsByUnitId);
+// Retrieve a question by ID
+router.get("/:id", questionController.getQuestionById);
 
-// Route for finding all questions
-router.get('/questions', questionController.findAllQuestions);
+// Retrieve questions by unit ID
+router.get("/unitId/:unitId", questionController.getQuestionsByUnitId);
+
+// Retrieve all questions
+router.get("/", questionController.getAllQuestions);
+
+// Update a question by ID
+router.put("/:id", questionController.updateQuestion);
+
+// Delete a question by ID
+router.delete("/:id", questionController.deleteQuestionById);
 
 module.exports = router;

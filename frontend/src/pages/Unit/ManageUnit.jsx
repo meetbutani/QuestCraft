@@ -12,10 +12,12 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
-import UnitContext from "../../context/UnitContext";
+import ContextProviderContext from "../../context/ContextProvider";
 
 const ManageUnit = () => {
-  const { selectedSubjectData, setSelectedUnitData } = useContext(UnitContext);
+  const { selectedSubjectData, setSelectedUnitData } = useContext(
+    ContextProviderContext
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const ManageUnit = () => {
             ...unitsWithSerialNo,
           ]);
         } catch (error) {
-          console.error("Error fetching roles:", error);
+          console.error("Error fetching units:", error);
         }
       };
 
@@ -90,17 +92,17 @@ const ManageUnit = () => {
 
   const getFilteredData = () => {
     const filteredData = unitList.filter(
-      (subject) =>
-        (subject.unitName ?? "")
+      (unit) =>
+        (unit.unitName ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        (subject.unitNo.toString() ?? "")
+        (unit.unitNo.toString() ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        (subject.createdBy.username ?? "")
+        (unit.createdBy.username ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase()) ||
-        (subject.updatedBy.username ?? "")
+        (unit.updatedBy.username ?? "")
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
     );
@@ -426,7 +428,7 @@ const ManageUnit = () => {
                   </span>
                 </th>
                 <th className="table-td-head">
-                  <span className="flex items-center gap-1">Actions</span>
+                  <span className="flex justify-center gap-1">Actions</span>
                 </th>
               </tr>
             </thead>
