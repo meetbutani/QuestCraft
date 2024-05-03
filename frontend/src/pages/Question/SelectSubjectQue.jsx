@@ -11,6 +11,7 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const SelectSubjectQue = () => {
   const [subjectList, setSubjectList] = useState([]);
@@ -27,37 +28,42 @@ const SelectSubjectQue = () => {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(nodeBaseUrl + "/api/subject");
-        const subjectsWithSerialNo = response.data.data.map(
-          (subject, index) => ({
-            ...subject,
-            serialNo: index + 1,
-          })
-        );
-        // console.log(subjectsWithSerialNo);
-        // setSubjectList(subjectsWithSerialNo);
-        setSubjectList([
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-        ]);
+        if (response.status == 200) {
+          const subjectsWithSerialNo = response.data.data.map(
+            (subject, index) => ({
+              ...subject,
+              serialNo: index + 1,
+            })
+          );
+          // console.log(subjectsWithSerialNo);
+          // setSubjectList(subjectsWithSerialNo);
+          setSubjectList([
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+          ]);
+        } else {
+          toast.error(response.data.message);
+        }
       } catch (error) {
         console.error("Error fetching subjects:", error);
+        toast.error("Error fetching subjects:" + error);
       }
     };
 

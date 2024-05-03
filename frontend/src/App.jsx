@@ -24,13 +24,12 @@ import { PermissionGuard } from "./components/PermissionGuard";
 import EditUserDetails from "./pages/User/EditUserDetails";
 import ShowUserDetails from "./pages/User/ShowUserDetails";
 import EditRole from "./pages/Role/EditRoleDetails";
-import { RoleProvider } from "./context/RoleContext";
-import { SubjectProvider } from "./context/SubjectContext";
 import EditSubject from "./pages/Subject/EditSubjectDetails";
 import EditUnit from "./pages/Unit/EditUnitDetails";
 import SelectQuestionForSectionA from "./pages/QPG/MidSemPaper/SelectQuestionForSectionA";
 import SelectQuestionForSectionB from "./pages/QPG/MidSemPaper/SelectQuestionForSectionB";
 import SelectQuestionForSectionC from "./pages/QPG/MidSemPaper/SelectQuestionForSectionC";
+import MidSemPaper from "./pages/QPG/MidSemPaper/MidSemPaper";
 import SelectQuestionForSectionAFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionAFinal";
 import SelectQuestionForSectionBFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionBFinal";
 import SelectQuestionForSectionCFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionCFinal";
@@ -38,7 +37,12 @@ import SelectQuestionForSectionDFinal from "./pages/QPG/FinalSemPaper/SelectQues
 import SelectQuestionForSectionEFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionEFinal";
 import SelectQuestionForSectionFFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionFFinal";
 import SelectQuestionForSectionGFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionGFinal";
-import MidSemPaper from "./pages/QPG/MidSemPaper/MidSemPaper";
+import { ContextProvider } from "./context/ContextProvider";
+import SelectSubjectQue from "./pages/Question/SelectSubjectQue";
+import SelectUnitQue from "./pages/Question/SelectUnitQue";
+import ShowQuestion from "./pages/Question/ShowQuestion";
+import EditQuestion from "./pages/Question/EditQuestion";
+import Logout from "./pages/auth/Logout";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -63,6 +67,15 @@ function App() {
           <>
             <PageTitle title="Sign In" />
             <SignIn />
+          </>
+        }
+      />
+      <Route
+        path="/logout"
+        element={
+          <>
+            <PageTitle title="Logout" />
+            <Logout />
           </>
         }
       />

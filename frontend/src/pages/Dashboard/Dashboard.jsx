@@ -28,13 +28,13 @@ const Dashboard = () => {
           total={114}
           title={"Total Units"}
           icon={HiMiniDocumentDuplicate}
-          navigateTo={"/subject/manage-subject"}
+          navigateTo={"/unit/manage-unit"}
         />
         <CardDataStats
           total={256}
           title={"Total Questions"}
           icon={FaRegListAlt}
-          navigateTo={"/subject/manage-subject"}
+          navigateTo={"/question/manage-question"}
         />
       </div>
     </DefaultLayout>

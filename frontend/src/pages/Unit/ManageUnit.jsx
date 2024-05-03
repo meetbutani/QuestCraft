@@ -13,6 +13,7 @@ import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const ManageUnit = () => {
   const { selectedSubjectData, setSelectedUnitData } = useContext(
@@ -243,15 +244,19 @@ const ManageUnit = () => {
       );
       if (response.status === 200) {
         // Remove the deleted user from the user list
-        console.log(response.data);
+        // console.log(response.data);
+        toast.success(response.data.message);
         setUnitList(
           unitList.filter(
             (subject) => subject.unitName !== selectedUnit.unitName
           )
         );
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);
+      toast.error(error);
     }
 
     setIsDeleteDialogOpen(false);

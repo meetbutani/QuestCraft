@@ -23,13 +23,13 @@ public class UserController {
         if (user.getEmail() != null) {
             existingUser = userService.findUserByEmail(user.getEmail());
             if (existingUser.isPresent()) {
-                return ResponseEntity.ok().body(Collections.singletonMap("message", "Email already exists"));
+                return ResponseEntity.status(201).body(Collections.singletonMap("message", "Email already exists"));
             }
         }
         if (user.getUsername() != null) {
             existingUser = userService.findUserByUsername(user.getUsername());
             if (existingUser.isPresent()) {
-                return ResponseEntity.ok().body(Collections.singletonMap("message", "Username already exists"));
+                return ResponseEntity.status(201).body(Collections.singletonMap("message", "Username already exists"));
             }
         }
         userService.createUser(user);
@@ -94,14 +94,14 @@ public class UserController {
             if (updates.getEmail() != null && !updates.getEmail().equals(existingUserData.getEmail())) {
                 Optional<UserDocument> existingUserByEmail = userService.findUserByEmail(updates.getEmail());
                 if (existingUserByEmail.isPresent()) {
-                    return ResponseEntity.ok().body(Collections.singletonMap("message", "Email already exists"));
+                    return ResponseEntity.status(201).body(Collections.singletonMap("message", "Email already exists"));
                 }
                 existingUserData.setEmail(updates.getEmail());
             }
             if (updates.getUsername() != null && !updates.getUsername().equals(existingUserData.getUsername())) {
                 Optional<UserDocument> existingUserByUsername = userService.findUserByUsername(updates.getUsername());
                 if (existingUserByUsername.isPresent()) {
-                    return ResponseEntity.ok().body(Collections.singletonMap("message", "Username already exists"));
+                    return ResponseEntity.status(201).body(Collections.singletonMap("message", "Username already exists"));
                 }
                 existingUserData.setUsername(updates.getUsername());
             }

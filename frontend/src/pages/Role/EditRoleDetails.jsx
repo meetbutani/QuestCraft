@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Checkbox from "../../components/Forms/Checkbox";
 import { toUpper } from "lodash";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const EditRole = () => {
   const [access, setAccess] = useState({});
@@ -102,7 +103,10 @@ const EditRole = () => {
       id: selectedRoleData?.id,
     });
     if (response.status === 200) {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
     }
   };
 

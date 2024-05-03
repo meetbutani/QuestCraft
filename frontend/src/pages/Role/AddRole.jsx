@@ -9,6 +9,7 @@ import Checkbox from "../../components/Forms/Checkbox";
 import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
 import "../../css/AddUser.css";
+import { toast } from "react-toastify";
 
 const AddRole = () => {
   const [access, setAccess] = useState({
@@ -83,8 +84,11 @@ const AddRole = () => {
       accessList: accessList,
     });
     if (response.status == 200) {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message);
       formik.resetForm();
+    } else {
+      toast.error(response.data.message);
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import DefaultLayout from "../../layout/DefaultLayout";
-import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
+import DefaultLayout from "../layout/DefaultLayout";
+import Breadcrumb from "../components/BreadCrumb/BreadCrumb";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 const AddQuestion = () => {
@@ -100,7 +100,6 @@ const AddQuestion = () => {
                   </div>
                 </div>
                 <div className="w-full mb-6">
-                
                   {selectedQuestionType === "MCQ" && (
                     <div className="w-full flex items-center">
                       <div className="w-full">

@@ -13,6 +13,7 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const ManageRole = () => {
   const [roleList, setRoleList] = useState([]);
@@ -31,8 +32,8 @@ const ManageRole = () => {
     const fetchRoles = async () => {
       try {
         const response = await axios.get(javaBaseUrl + "/api/role");
-        const rolesData = response.data.data;
-        if (rolesData) {
+        if (response.status == 200) {
+          const rolesData = response.data.data;
           const rolesArray = Object.values(rolesData);
           const rolesWithAccessStr = rolesArray.map((role) => ({
             ...role,
@@ -62,9 +63,12 @@ const ManageRole = () => {
             ...rolesWithAccessStr,
             ...rolesWithAccessStr,
           ]);
+        } else {
+          toast.error(response.data.message);
         }
       } catch (error) {
         console.error("Error fetching roles:", error);
+        toast.error("Error fetching roles:" + error);
       }
     };
 
@@ -228,6 +232,8 @@ const ManageRole = () => {
         setRoleList(
           roleList.filter((role) => role.roleId !== selectedRole.roleId)
         );
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);

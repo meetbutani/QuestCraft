@@ -11,6 +11,7 @@ import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
 import { toLowerCase, toTitleCase } from "../../js/utils";
 import { useNavigate } from "react-router-dom";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const EditUser = () => {
   const statusList = ["Active", "Inactive"];
@@ -40,6 +41,8 @@ const EditUser = () => {
     const response = await axios.get(javaBaseUrl + "/api/role/active");
     if (response.status === 200) {
       setRoleList(response.data);
+    } else {
+      toast.error("Error fetching roles.");
     }
   };
 
@@ -92,11 +95,11 @@ const EditUser = () => {
       .matches(/^[^ ]+$/, "Password should not contain spaces"),
     contactNo: yup
       .string()
-      .required("Contact No is required")
       .matches(/^\d+$/, "Contact No should only contain digits")
       .min(10, "Contact No must be at least 10 characters")
-      .max(15, "Contact No can't exceed 15 characters"),
-    officeLocation: yup.string().required("Office Location is required"),
+      .max(15, "Contact No can't exceed 15 characters")
+      .optional(),
+    officeLocation: yup.string().optional(),
     roleId: yup.string().notOneOf([""]).required("Role is required"),
     status: yup.string().required("Status is required"),
   });
@@ -125,7 +128,10 @@ const EditUser = () => {
       id: selectedUserData?.id,
     });
     if (response.status === 200) {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
     }
   };
 

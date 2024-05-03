@@ -14,6 +14,7 @@ import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const ManageQuestion = () => {
   const { selectedSubjectData, selectedUnitData, setSelectedQuestionData } =
@@ -32,37 +33,42 @@ const ManageQuestion = () => {
             nodeBaseUrl + "/api/question/unitId/" + selectedUnitData?._id
           );
           // console.log(response.data);
-          const questionsWithSerialNo = response.data.data.map(
-            (question, index) => ({
-              ...question,
-              serialNo: index + 1,
-            })
-          );
-          // console.log(questionsWithSerialNo);
-          // setQuestionList(questionsWithSerialNo);
-          setQuestionList([
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-            ...questionsWithSerialNo,
-          ]);
+          if (response.status == 200) {
+            const questionsWithSerialNo = response.data.data.map(
+              (question, index) => ({
+                ...question,
+                serialNo: index + 1,
+              })
+            );
+            // console.log(questionsWithSerialNo);
+            // setQuestionList(questionsWithSerialNo);
+            setQuestionList([
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+              ...questionsWithSerialNo,
+            ]);
+          } else {
+            toast.error(response.data.message);
+          }
         } catch (error) {
           console.error("Error fetching units:", error);
+          toast.error("Error fetching units:" + error);
         }
       };
 
@@ -251,15 +257,19 @@ const ManageQuestion = () => {
       );
       if (response.status === 200) {
         // Remove the deleted user from the user list
-        console.log(response.data);
+        // console.log(response.data);
+        toast.success(response.data.message);
         setQuestionList(
           questionList.filter(
             (question) => question.queOrg !== selectedQuestion.queOrg
           )
         );
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);
+      toast.error(error);
     }
 
     setIsDeleteDialogOpen(false);
