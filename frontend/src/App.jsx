@@ -237,7 +237,9 @@ function App() {
         element={
           <>
             <PageTitle title="Add Subject" />
-            <AddSubject />
+            <PermissionGuard requiredPermission={"SubjectCreate"}>
+              <AddSubject />
+            </PermissionGuard>
           </>
         }
       />
@@ -248,7 +250,9 @@ function App() {
           <>
             <PageTitle title="Manage Subject" />
             <ContextProvider>
-              <ManageSubject />
+              <PermissionGuard requiredPermission={"SubjectRead"}>
+                <ManageSubject />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -259,7 +263,9 @@ function App() {
           <>
             <PageTitle title="Edit Subject Details" />
             <ContextProvider>
-              <EditSubject />
+              <PermissionGuard requiredPermission={"SubjectUpdate"}>
+                <EditSubject />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -273,7 +279,9 @@ function App() {
           <>
             <PageTitle title="Add Unit" />
             <ContextProvider>
-              <AddUnit />
+              <PermissionGuard requiredPermission={"UnitCreate"}>
+                <AddUnit />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -285,7 +293,9 @@ function App() {
           <>
             <PageTitle title="Manage Unit" />
             <ContextProvider>
-              <ManageUnit />
+              <PermissionGuard requiredPermission={"UnitRead"}>
+                <ManageUnit />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -296,7 +306,9 @@ function App() {
           <>
             <PageTitle title="Select Subject" />
             <ContextProvider>
-              <SelectSubjectUnit />
+              <PermissionGuard requiredPermission={"SubjectRead"}>
+                <SelectSubjectUnit />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -307,7 +319,9 @@ function App() {
           <>
             <PageTitle title="Edit Unit Details" />
             <ContextProvider>
-              <EditUnit />
+              <PermissionGuard requiredPermission={"UnitUpdate"}>
+                <EditUnit />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -321,7 +335,9 @@ function App() {
           <>
             <PageTitle title="Add Question" />
             <ContextProvider>
-              <AddQuestion />
+              <PermissionGuard requiredPermission={"QuestionCreate"}>
+                <AddQuestion />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -333,7 +349,9 @@ function App() {
           <>
             <PageTitle title="Manage Question" />
             <ContextProvider>
-              <ManageQuestion />
+              <PermissionGuard requiredPermission={"QuestionRead"}>
+                <ManageQuestion />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -344,7 +362,9 @@ function App() {
           <>
             <PageTitle title="Select Subject" />
             <ContextProvider>
-              <SelectSubjectQue />
+              <PermissionGuard requiredPermission={"SubjectRead"}>
+                <SelectSubjectQue />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -355,7 +375,9 @@ function App() {
           <>
             <PageTitle title="Select Unit" />
             <ContextProvider>
-              <SelectUnitQue />
+              <PermissionGuard requiredPermission={"UnitRead"}>
+                <SelectUnitQue />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -366,7 +388,9 @@ function App() {
           <>
             <PageTitle title="Show Question Details" />
             <ContextProvider>
-              <ShowQuestion />
+              <PermissionGuard requiredPermission={"QuestionRead"}>
+                <ShowQuestion />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -377,7 +401,9 @@ function App() {
           <>
             <PageTitle title="Edit Question Details" />
             <ContextProvider>
-              <EditQuestion />
+              <PermissionGuard requiredPermission={"QuestionUpdate"}>
+                <EditQuestion />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -388,7 +414,7 @@ function App() {
         element={
           <>
             <PageTitle title="Add User" />
-            <PermissionGuard requiredPermission={"createUser"}>
+            <PermissionGuard requiredPermission={"UserCreate"}>
               <AddUser />
             </PermissionGuard>
           </>
@@ -400,7 +426,9 @@ function App() {
           <>
             <PageTitle title="Manage Users" />
             <ContextProvider>
-              <ManageUsers />
+              <PermissionGuard requiredPermission={"UserRead"}>
+                <ManageUsers />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -411,7 +439,9 @@ function App() {
           <>
             <PageTitle title="User Details" />
             <ContextProvider>
-              <ShowUserDetails />
+              <PermissionGuard requiredPermission={"UserRead"}>
+                <ShowUserDetails />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -422,7 +452,9 @@ function App() {
           <>
             <PageTitle title="Edit User Details" />
             <ContextProvider>
-              <EditUserDetails />
+              <PermissionGuard requiredPermission={"UserUpdate"}>
+                <EditUserDetails />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -433,7 +465,9 @@ function App() {
         element={
           <>
             <PageTitle title="Add User" />
-            <AddRole />
+            <PermissionGuard requiredPermission={"RoleCreate"}>
+              <AddRole />
+            </PermissionGuard>
           </>
         }
       />
@@ -443,7 +477,9 @@ function App() {
           <>
             <PageTitle title="Manage Role" />
             <ContextProvider>
-              <ManageRole />
+              <PermissionGuard requiredPermission={"RoleRead"}>
+                <ManageRole />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }
@@ -454,7 +490,9 @@ function App() {
           <>
             <PageTitle title="Edit Role Details" />
             <ContextProvider>
-              <EditRole />
+              <PermissionGuard requiredPermission={"RoleUpdate"}>
+                <EditRole />
+              </PermissionGuard>
             </ContextProvider>
           </>
         }

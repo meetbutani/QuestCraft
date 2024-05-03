@@ -14,6 +14,7 @@ import StringSorting from "../../components/Tables/StringSorting";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
 import { toast } from "react-toastify";
+import { PermissionGuard } from "../../components/PermissionGuard";
 
 const ManageRole = () => {
   const [roleList, setRoleList] = useState([]);
@@ -248,10 +249,16 @@ const ManageRole = () => {
     setSelectedRole({ roleId: "", id: "" });
   };
 
+  const [deletePermission, setDeletePermission] = useState(false);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manage Role" />
       <div className="flex justify-between items-center mb-4">
+        <PermissionGuard
+          requiredPermission={"RoleDelete"}
+          setVariable={setDeletePermission}
+        />
         <DeleteDialog
           isOpen={isDeleteDialogOpen}
           title={"Delete User"}
@@ -408,12 +415,16 @@ const ManageRole = () => {
 
                   <td className="table-td-data px-4">
                     <div className="flex justify-center space-x-3.5">
-                      <button
-                        onClick={() => handleDeleteClick(role.id, role.roleId)}
-                        className="hover:text-primary"
-                      >
-                        <RiDeleteBinLine color="#FF5733" />
-                      </button>
+                      {deletePermission && (
+                        <button
+                          onClick={() =>
+                            handleDeleteClick(role.id, role.roleId)
+                          }
+                          className="hover:text-primary"
+                        >
+                          <RiDeleteBinLine color="#FF5733" />
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           setSelectedRoleData(role);

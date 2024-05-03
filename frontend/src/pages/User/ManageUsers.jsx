@@ -15,6 +15,7 @@ import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import ContextProviderContext from "../../context/ContextProvider";
 import { toast } from "react-toastify";
+import { PermissionGuard } from "../../components/PermissionGuard";
 
 const ManageUsers = () => {
   const [userList, setUserList] = useState([]);
@@ -268,10 +269,16 @@ const ManageUsers = () => {
     setSelectedUser({ username: "", id: "" });
   };
 
+  const [deletePermission, setDeletePermission] = useState(false);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manage Users" />
       <div className="flex justify-between items-center mb-4">
+        <PermissionGuard
+          requiredPermission={"UserDelete"}
+          setVariable={setDeletePermission}
+        />
         <DeleteDialog
           isOpen={isDeleteDialogOpen}
           title={"Delete User"}
@@ -521,14 +528,16 @@ const ManageUsers = () => {
 
                   <td className="table-td-data px-4">
                     <div className="flex justify-center space-x-3.5">
-                      <button
-                        onClick={() =>
-                          handleDeleteClick(user.id, user.username)
-                        }
-                        className="hover:text-primary"
-                      >
-                        <RiDeleteBinLine color="#FF5733" />
-                      </button>
+                      {deletePermission && (
+                        <button
+                          onClick={() =>
+                            handleDeleteClick(user.id, user.username)
+                          }
+                          className="hover:text-primary"
+                        >
+                          <RiDeleteBinLine color="#FF5733" />
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           setSelectedUserData(user);

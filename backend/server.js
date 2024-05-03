@@ -40,6 +40,8 @@ async function run() {
 
 run().catch(console.dir);
 
+app.use("/api/count", require("./src/dashboard/count.routes"));
+
 app.use("/api/subject", require("./src/subject/subject.routes"));
 app.use("/api/unit", require("./src/unit/unit.routes"));
 app.use("/api/question", require("./src/question/question.routes"));

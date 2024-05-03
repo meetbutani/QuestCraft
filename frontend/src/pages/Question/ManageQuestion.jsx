@@ -15,6 +15,7 @@ import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
 import { toast } from "react-toastify";
+import { PermissionGuard } from "../../components/PermissionGuard";
 
 const ManageQuestion = () => {
   const { selectedSubjectData, selectedUnitData, setSelectedQuestionData } =
@@ -281,10 +282,16 @@ const ManageQuestion = () => {
     setSelectedUnit({ queOrg: "", id: "" });
   };
 
+  const [deletePermission, setDeletePermission] = useState(false);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manage Question" />
       <div className="flex justify-between items-center mb-4">
+        <PermissionGuard
+          requiredPermission={"QuestionDelete"}
+          setVariable={setDeletePermission}
+        />
         <DeleteDialog
           isOpen={isDeleteDialogOpen}
           title={"Delete Question"}
@@ -489,14 +496,16 @@ const ManageQuestion = () => {
 
                   <td className="table-td-data px-4">
                     <div className="flex justify-center space-x-3.5">
-                      <button
-                        onClick={() =>
-                          handleDeleteClick(question._id, question.queOrg)
-                        }
-                        className="hover:text-primary"
-                      >
-                        <RiDeleteBinLine color="#FF5733" />
-                      </button>
+                      {deletePermission && (
+                        <button
+                          onClick={() =>
+                            handleDeleteClick(question._id, question.queOrg)
+                          }
+                          className="hover:text-primary"
+                        >
+                          <RiDeleteBinLine color="#FF5733" />
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           setSelectedQuestionData(question);
