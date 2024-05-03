@@ -11,6 +11,7 @@ import { nodeBaseUrl } from "../../js/api.constatnt";
 import "../../css/AddUser.css";
 import { decryptData } from "../../js/secureData";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const AddUnit = () => {
   const { selectedSubjectData } = useContext(ContextProviderContext);
@@ -55,10 +56,12 @@ const AddUnit = () => {
       updatedBy: user["id"],
     });
     if (response.status === 200) {
-      console.log(response.data);
+      toast.success(response.data.message);
+      // console.log(response.data);
       formik.resetForm();
     } else {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.error(response.data.message);
     }
   };
 

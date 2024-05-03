@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import Header from '../components/Header/index';
-import Sidebar from '../components/Sidebar/index';
+import React, { useState } from "react";
+import Header from "../components/Header/index";
+import Sidebar from "../components/Sidebar/index";
+import { ToastContainer } from "react-toastify";
 
 const DefaultLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
+      <ToastContainer position="bottom-right" hideProgressBar={true} />
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}

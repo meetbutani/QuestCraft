@@ -10,6 +10,7 @@ import "../../css/AddUser.css";
 import { useNavigate } from "react-router-dom";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const EditSubject = () => {
   const statusList = ["Active", "Inactive"];
@@ -61,10 +62,12 @@ const EditSubject = () => {
       }
     );
     if (response.status === 200) {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message);
       // console.log(response.data.message);
     } else {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.error(response.data.message);
     }
   };
 

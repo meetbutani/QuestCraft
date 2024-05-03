@@ -8,6 +8,7 @@ import * as yup from "yup";
 import "../../css/AddUser.css";
 import { decryptData } from "../../js/secureData";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
+import { toast } from "react-toastify";
 
 const AddSubject = () => {
   const statusList = ["Active", "Inactive"];
@@ -49,9 +50,11 @@ const AddSubject = () => {
       updatedBy: user["id"],
     });
     if (response.status === 200) {
+      toast.success(response.data.message);
       formik.resetForm();
     } else {
-      console.log(response.data);
+      toast.error(response.data.message);
+      // console.log(response.data);
     }
   };
 

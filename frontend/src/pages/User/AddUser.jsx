@@ -10,6 +10,7 @@ import { javaBaseUrl } from "../../js/api.constatnt";
 import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
 import { toLowerCase, toTitleCase } from "../../js/utils";
 import { json } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddUser = () => {
   const statusList = ["Active", "Inactive"];
@@ -25,6 +26,8 @@ const AddUser = () => {
       const response = await axios.get(javaBaseUrl + "/api/role/active");
       if (response.status == 200) {
         setRoleList(response.data);
+      } else {
+        toast.error("Error fetching roles.");
       }
     };
 
@@ -99,8 +102,11 @@ const AddUser = () => {
       values
     );
     if (response.status == 200) {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message);
       formik.resetForm();
+    } else {
+      toast.error(response.data.message);
     }
   };
 

@@ -13,6 +13,7 @@ import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const ManageSubject = () => {
   const [subjectList, setSubjectList] = useState([]);
@@ -34,37 +35,42 @@ const ManageSubject = () => {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(nodeBaseUrl + "/api/subject");
-        const subjectsWithSerialNo = response.data.data.map(
-          (subject, index) => ({
-            ...subject,
-            serialNo: index + 1,
-          })
-        );
-        // console.log(subjectsWithSerialNo);
-        // setSubjectList(subjectsWithSerialNo);
-        setSubjectList([
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-          ...subjectsWithSerialNo,
-        ]);
+        if (response.status == 200) {
+          const subjectsWithSerialNo = response.data.data.map(
+            (subject, index) => ({
+              ...subject,
+              serialNo: index + 1,
+            })
+          );
+          // console.log(subjectsWithSerialNo);
+          // setSubjectList(subjectsWithSerialNo);
+          setSubjectList([
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+            ...subjectsWithSerialNo,
+          ]);
+        } else {
+          toast.error(response.data.message);
+        }
       } catch (error) {
         console.error("Error fetching subjects:", error);
+        toast.error("Error fetching subjects:" + error);
       }
     };
 
@@ -241,11 +247,14 @@ const ManageSubject = () => {
       );
       if (response.status === 200) {
         // Remove the deleted user from the user list
+        toast.success(response.data.message);
         setSubjectList(
           subjectList.filter(
             (subject) => subject.subjectCode !== selectedSubject.subjectCode
           )
         );
+      } else {
+        toast.error(response.data.message);
       }
     } catch (error) {
       console.error(error);

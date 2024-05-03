@@ -11,6 +11,7 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import axios from "axios";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const SelectUnitQue = () => {
   const [unitList, setUnitList] = useState([]);
@@ -39,35 +40,40 @@ const SelectUnitQue = () => {
           nodeBaseUrl + "/api/unit/subjectId/" + selectedSubjectData?._id
         );
         // console.log(response.data);
-        const unitsWithSerialNo = response.data.data.map((unit, index) => ({
-          ...unit,
-          serialNo: index + 1,
-        }));
-        // console.log(subjectsWithSerialNo);
-        // setSubjectList(subjectsWithSerialNo);
-        setUnitList([
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-          ...unitsWithSerialNo,
-        ]);
+        if (response.status == 200) {
+          const unitsWithSerialNo = response.data.data.map((unit, index) => ({
+            ...unit,
+            serialNo: index + 1,
+          }));
+          // console.log(subjectsWithSerialNo);
+          // setSubjectList(subjectsWithSerialNo);
+          setUnitList([
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+            ...unitsWithSerialNo,
+          ]);
+        } else {
+          toast.error(response.data.message);
+        }
       } catch (error) {
         console.error("Error fetching units:", error);
+        toast.error("Error fetching units:" + error);
       }
     };
 

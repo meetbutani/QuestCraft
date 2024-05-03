@@ -14,6 +14,7 @@ import NumberSorting from "../../components/Tables/NumberSorting";
 import StringSorting from "../../components/Tables/StringSorting";
 import DeleteDialog from "../../components/Modals/DeleteDialog";
 import ContextProviderContext from "../../context/ContextProvider";
+import { toast } from "react-toastify";
 
 const ManageUsers = () => {
   const [userList, setUserList] = useState([]);
@@ -88,43 +89,49 @@ const ManageUsers = () => {
 
   useEffect(() => {
     const getAllUsers = async () => {
-      const response = await axios.get(javaBaseUrl + "/api/user");
-      if (response.status == 200) {
-        // setUserList(response.data.data);
-        setUserList([
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-          ...response.data.data,
-        ]);
+      try {
+        const response = await axios.get(javaBaseUrl + "/api/user");
+        if (response.status == 200) {
+          // setUserList(response.data.data);
+          setUserList([
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+            ...response.data.data,
+          ]);
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error(error);
       }
     };
 
@@ -240,12 +247,16 @@ const ManageUsers = () => {
       );
       if (response.status === 200) {
         // Remove the deleted user from the user list
+        toast.success(response.data.message);
         setUserList(
           userList.filter((user) => user.username !== selectedUser.username)
         );
+      } else {
+        toast.error(error);
       }
     } catch (error) {
       console.error(error);
+      toast.error(error);
     }
 
     setIsDeleteDialogOpen(false);
@@ -488,12 +499,12 @@ const ManageUsers = () => {
                   </td>
                   <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
-                      {user.contactNo ?? "-"}
+                      {user.contactNo || "-"}
                     </h5>
                   </td>
                   <td className="table-td-data max-w-[100px]">
                     <h5 className="text-black dark:text-white">
-                      {user.officeLocation ?? "-"}
+                      {user.officeLocation || "-"}
                     </h5>
                   </td>
                   <td className="table-td-data">

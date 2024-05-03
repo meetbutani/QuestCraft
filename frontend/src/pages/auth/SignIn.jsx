@@ -8,6 +8,7 @@ import { javaBaseUrl } from "../../js/api.constatnt";
 import { encryptData } from "../../js/secureData";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -61,8 +62,10 @@ const SignIn = () => {
     if (response.status === 200) {
       localStorage.setItem("user", encryptData(response.data.data));
       navigate("/");
+      toast.success("Login Successfully.");
     } else {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.error(response.data.message);
     }
   };
 
@@ -72,7 +75,7 @@ const SignIn = () => {
 
   return (
     <div className="h-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="flex h-full flex-wrap items-center">
+      <div className="flex h-full justify-center flex-wrap items-center">
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center">
             <NavLink className="mb-5.5 inline-block" to="/">
@@ -91,7 +94,7 @@ const SignIn = () => {
           </div>
         </div>
 
-        <div className="w-full h-full flex items-center border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="w-1/2 h-full flex items-center border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
               Sign In to QuestCraft

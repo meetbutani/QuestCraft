@@ -1,7 +1,7 @@
 import React from "react";
 
-import DynamicDropDown from "../../components/Forms/DynamicDropDown";
-import DefaultLayout from "../../layout/DefaultLayout";
+import DynamicDropDown from "../components/Forms/DynamicDropDown";
+import DefaultLayout from "../layout/DefaultLayout";
 import { useNavigate } from "react-router-dom";
 
 const PreQuestionPage = () => {

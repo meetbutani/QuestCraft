@@ -11,6 +11,7 @@ import ContextProviderContext from "../../context/ContextProvider";
 import "../../css/AddUser.css";
 import { useNavigate } from "react-router-dom";
 import { IoAdd, IoRemove } from "react-icons/io5";
+import { toast } from "react-toastify";
 
 const EditQuestion = () => {
   const { selectedQuestionData } = useContext(ContextProviderContext);
@@ -78,9 +79,11 @@ const EditQuestion = () => {
       }
     );
     if (response.status === 200) {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.success(response.data.message);
     } else {
-      console.log(response.data);
+      // console.log(response.data);
+      toast.error(response.data.message);
     }
   };
 
