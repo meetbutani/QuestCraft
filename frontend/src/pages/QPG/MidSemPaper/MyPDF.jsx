@@ -19,7 +19,12 @@ const MyPDF = ({ displayText }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View>
-        <Text style={styles.text}>{displayText}</Text>
+        <div className="flex flex-row">
+          <img
+            src={frontend / src / images / Marwadi_University_logo.png}
+            alt="My Image"
+          />
+        </div>
       </View>
     </Page>
   </Document>

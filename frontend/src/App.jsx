@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import ContextProvider from "../../context/ContextProvider";
 import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -24,10 +25,20 @@ import EditUserDetails from "./pages/User/EditUserDetails";
 import ShowUserDetails from "./pages/User/ShowUserDetails";
 import EditRole from "./pages/Role/EditRoleDetails";
 import { RoleProvider } from "./context/RoleContext";
-import SelectQuestionPage from "./pages/QPG/SelectQuestionPage";
 import { SubjectProvider } from "./context/SubjectContext";
 import EditSubject from "./pages/Subject/EditSubjectDetails";
 import EditUnit from "./pages/Unit/EditUnitDetails";
+import SelectQuestionForSectionA from "./pages/QPG/MidSemPaper/SelectQuestionForSectionA";
+import SelectQuestionForSectionB from "./pages/QPG/MidSemPaper/SelectQuestionForSectionB";
+import SelectQuestionForSectionC from "./pages/QPG/MidSemPaper/SelectQuestionForSectionC";
+import SelectQuestionForSectionAFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionAFinal";
+import SelectQuestionForSectionBFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionBFinal";
+import SelectQuestionForSectionCFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionCFinal";
+import SelectQuestionForSectionDFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionDFinal";
+import SelectQuestionForSectionEFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionEFinal";
+import SelectQuestionForSectionFFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionFFinal";
+import SelectQuestionForSectionGFinal from "./pages/QPG/FinalSemPaper/SelectQuestionForSectionGFinal";
+import MidSemPaper from "./pages/QPG/MidSemPaper/MidSemPaper";
 
 function App() {
   const [loading, setLoading] = useState(true);

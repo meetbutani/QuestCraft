@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { PDFViewer, PDFDownloadLink } from "@react-pdf/renderer";
 import MyPDF from "./MyPDF";
 
-function App() {
+function MidSemPaper() {
   // State to hold the text and table data
 
   return (
@@ -23,4 +23,4 @@ function App() {
   );
 }
 
-export default App;
+export default MidSemPaper;
