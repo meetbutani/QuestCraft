@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import ContextProvider from "../../context/ContextProvider";
 import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import Dashboard from "./pages/Dashboard/Dashboard";
