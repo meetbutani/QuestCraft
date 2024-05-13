@@ -60,12 +60,7 @@ const SubjectPaper = () => {
     timeAllowance: yup
       .string()
       .required("Time Allowance is required")
-      .test("Time should be less than 6 hours", function (value) {
-        // Custom validation to check if time is more than 6 hours
-        const parsedTime = value.split(":").map(Number);
-        const totalMinutes = parsedTime[0] * 60 + parsedTime[1];
-        return totalMinutes < 360; // 6 hours = 360 minutes
-      }),
+      
     // Ensure paper date is not before today
   });
 
@@ -100,7 +95,7 @@ const SubjectPaper = () => {
       hideProgressBar: true,
     });
 
-    paperType === "mid-sem-exam"
+    values.paperType === "mid-sem-exam"
       ? setTimeout(() => {
           navigate("/qpaper/set-subject-paper/select-question-for-section-a");
         }, 1000)
@@ -219,7 +214,7 @@ const SubjectPaper = () => {
                       Time Allowance
                       <div className="relative">
                         <input
-                          type="time"
+                          type="text"
                           name="timeAllowance"
                           value={formik.values.timeAllowance}
                           onChange={formik.handleChange}

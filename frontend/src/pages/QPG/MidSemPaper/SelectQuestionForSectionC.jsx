@@ -255,6 +255,9 @@ const SelectQuestionForSectionC = () => {
 
     dataMap.sectionC = selectedQuestions;
 
+    localStorage.setItem('dataMap', JSON.stringify(dataMap));
+
+
     // Now 'selectedQuestions' array contains all the selected questions
 
     console.log("Datamap:", dataMap);
