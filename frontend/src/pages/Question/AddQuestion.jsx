@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/BreadCrumb/BreadCrumb";
-import DynamicDropDown from "../../components/Forms/DynamicDropDown";
+import DynamicDropDown from "../../components/Forms/DynamicDropDown"; // Import DynamicDropDown
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from "axios";
@@ -11,7 +11,6 @@ import ContextProviderContext from "../../context/ContextProvider";
 import "../../css/AddUser.css";
 import { useNavigate } from "react-router-dom";
 import { IoAdd, IoRemove } from "react-icons/io5";
-import { ChatGPTAPI } from "chatgpt"; // Import ChatGPTAPI
 import { toast } from "react-toastify";
 
 const AddQuestion = () => {
@@ -29,9 +28,11 @@ const AddQuestion = () => {
 
   const questionTypes = ["Normal", "MCQ", "True/False"];
   const questionLevels = ["EASY", "MEDIUM", "HARD"];
+  const translationOptions = { Gujarati: "gu", Hindi: "hi", English: "en" };
   const [options, setOptions] = useState([""]);
   const [translatedOptions, setTranslatedOptions] = useState([""]);
   const [translatedQuestion, setTranslatedQuestion] = useState("");
+  const [targetLanguage, setTargetLanguage] = useState("Gujarati"); // Default target language is Gujarati
 
   const validationSchema = yup.object({
     questionType: yup.string().required("Question Type is required"),
@@ -74,26 +75,61 @@ const AddQuestion = () => {
       updatedBy: user["id"],
     });
     if (response.status === 200) {
-      // console.log(response.data);
       toast.success(response.data.message);
       formik.resetForm();
+      setTranslatedQuestion("");
+      setTranslatedOptions([]);
+      setOptions([]);
     } else {
-      // console.log(response.data);
       toast.error(response.data.message);
     }
   };
 
   const handleAddOption = () => {
-    setOptions([...options, ""]); // Add a new empty option
-    setTranslatedOptions([...translatedOptions, ""]); // Add a new empty translated option
+    setOptions([...options, ""]);
+    setTranslatedOptions([...translatedOptions, ""]);
   };
 
   const handleRemoveOption = (index) => {
-    setOptions(options.filter((_, i) => i !== index)); // Remove the option at the specified index
-    setTranslatedOptions(translatedOptions.filter((_, i) => i !== index)); // Remove the translated option at the specified index
+    setOptions(options.filter((_, i) => i !== index));
+    setTranslatedOptions(translatedOptions.filter((_, i) => i !== index));
   };
 
-  const translateText = async (text, targetLanguage) => {};
+  const translateText = async () => {
+    try {
+      let text = formik.values.question;
+      if (formik.values.questionType === "MCQ") {
+        text += " [~~] " + options.join(" [~~] ");
+      }
+      const response = await axios.post(nodeBaseUrl + "/api/translate", {
+        text,
+        target: translationOptions[targetLanguage],
+      });
+      if (response.status === 200) {
+        const translatedText =
+          response.data.data[0]?.translations[0]?.text || "";
+        if (
+          formik.values.questionType === "Normal" ||
+          formik.values.questionType === "True/False"
+        ) {
+          setTranslatedQuestion(translatedText);
+        } else if (formik.values.questionType === "MCQ") {
+          const translatedText =
+            response.data.data[0]?.translations[0]?.text || "";
+          const translated = translatedText.split(" [~~] ");
+          setTranslatedQuestion(translated[0]);
+          translated.shift();
+          setTranslatedOptions(translated || []);
+        }
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Translation failed:", error);
+      toast.error("Translation failed. Please try again.");
+    }
+  };
 
   return (
     <DefaultLayout>
@@ -191,88 +227,85 @@ const AddQuestion = () => {
 
                 {/* MCQ Options */}
                 {formik.values.questionType === "MCQ" && (
-                  <>
-                    <div className="w-full flex items-center">
-                      <div className="w-full">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Options
-                        </label>
-                        <div className="flex flex-col">
-                          {options.map((option, index) => (
-                            <div
-                              key={index}
-                              className="flex items-center mb-2 gap-4"
-                            >
-                              {/* Original Option */}
-                              <input
-                                type="text"
-                                placeholder={`Enter Option ${index + 1}`}
-                                value={option}
-                                onChange={(e) =>
-                                  setOptions(
-                                    options.map((item, i) =>
-                                      i === index ? e.target.value : item
-                                    )
-                                  )
-                                }
-                                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                              />
-
-                              {/* Remove Option Button */}
-                              {options.length > 1 && (
-                                <button
-                                  type="button"
-                                  onClick={() => handleRemoveOption(index)}
-                                  className="ml-4 flex flex-shrink-0 rounded-full bg-meta-1 h-12 w-12 justify-center items-center text-white hover:bg-opacity-90"
-                                >
-                                  <IoRemove size={42} />
-                                </button>
-                              )}
-                              {/* Add Option Button */}
-                              {index === options.length - 1 && (
-                                <button
-                                  type="button"
-                                  onClick={handleAddOption}
-                                  className="ml-4 flex flex-shrink-0 rounded-full bg-primary h-12 w-12 justify-center items-center text-white hover:bg-opacity-90"
-                                >
-                                  <IoAdd fontSize={42} />
-                                </button>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-                {/* MCQ Options */}
-                {formik.values.questionType === "MCQ" && (
-                  <>
-                    <div className="w-full flex items-center">
-                      <div className="w-full">
-                        <label className="mb-2.5 block text-black dark:text-white">
-                          Translated Options
-                        </label>
-                        <div className="flex flex-col">
-                          {translatedOptions.map((transoption, index) => (
+                  <div className="w-full flex items-center">
+                    <div className="w-full">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Options
+                      </label>
+                      <div className="flex flex-col">
+                        {options.map((option, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center mb-2 gap-4"
+                          >
+                            {/* Original Option */}
                             <input
                               type="text"
-                              placeholder={`Translated Option ${index + 1}`}
-                              value={transoption}
+                              placeholder={`Enter Option ${index + 1}`}
+                              value={option}
                               onChange={(e) =>
-                                setTranslatedOptions(
-                                  translatedOptions.map((item, i) =>
+                                setOptions(
+                                  options.map((item, i) =>
                                     i === index ? e.target.value : item
                                   )
                                 )
                               }
-                              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mb-2"
+                              className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                             />
-                          ))}
-                        </div>
+
+                            {/* Remove Option Button */}
+                            {options.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveOption(index)}
+                                className="ml-4 flex flex-shrink-0 rounded-full bg-meta-1 h-12 w-12 justify-center items-center text-white hover:bg-opacity-90"
+                              >
+                                <IoRemove size={42} />
+                              </button>
+                            )}
+                            {/* Add Option Button */}
+                            {index === options.length - 1 && (
+                              <button
+                                type="button"
+                                onClick={handleAddOption}
+                                className="ml-4 flex flex-shrink-0 rounded-full bg-primary h-12 w-12 justify-center items-center text-white hover:bg-opacity-90"
+                              >
+                                <IoAdd fontSize={42} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  </>
+                  </div>
+                )}
+                {/* MCQ Options */}
+                {formik.values.questionType === "MCQ" && (
+                  <div className="w-full flex items-center">
+                    <div className="w-full">
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        Translated Options
+                      </label>
+                      <div className="flex flex-col">
+                        {translatedOptions.map((transoption, index) => (
+                          <input
+                            key={index + "trans"}
+                            type="text"
+                            placeholder={`Translated Option ${index + 1}`}
+                            value={transoption}
+                            onChange={(e) =>
+                              setTranslatedOptions(
+                                translatedOptions.map((item, i) =>
+                                  i === index ? e.target.value : item
+                                )
+                              )
+                            }
+                            className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary mb-2"
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 )}
 
                 {/* Answer */}
@@ -290,15 +323,24 @@ const AddQuestion = () => {
                       className="inputfield min-h-[100px]"
                     />
                   </label>
-                  {/* {formik.touched.answer && formik.errors.answer ? (
-                    <div className="error">{formik.errors.answer}</div>
-                  ) : null} */}
+                </div>
+
+                {/* Target Language Selection */}
+                <div className="w-full">
+                  <DynamicDropDown
+                    name="targetLanguage"
+                    title="Select Target Language"
+                    value={targetLanguage}
+                    optionlist={Object.keys(translationOptions)}
+                    onChange={(e) => setTargetLanguage(e.target.value)}
+                    onBlur={formik.handleBlur}
+                  />
                 </div>
 
                 <div className="flex flex-row gap-4">
                   <button
                     type="button"
-                    onClick={() => translateText(formik.values.question, "gu")}
+                    onClick={() => translateText()}
                     className="flex flex-row justify-center self-center mt-4.5 w-1/2 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
                   >
                     Translate

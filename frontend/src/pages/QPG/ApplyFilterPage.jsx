@@ -2,7 +2,7 @@ import React from "react";
 import { IoClose } from "react-icons/io5";
 import DynamicDropDown from "../../components/Forms/DynamicDropDown";
 
-const ApplyFilterPage = ({ onClose,onApplyFilter }) => {
+const ApplyFilterPage = ({ onClose, onApplyFilter }) => {
   const unitList = ["ML", "CN", "Hello"];
   const difficultyLevelList = ["Easy", "Moderate", "Hard"];
 

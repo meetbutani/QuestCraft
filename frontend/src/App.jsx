@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import ContextProvider from "../../context/ContextProvider";
 import Loader from "./common/Loader";
 import PageTitle from "./components/PageTitle";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -12,7 +11,7 @@ import ManageQuestion from "./pages/Question/ManageQuestion";
 import AddQuestion from "./pages/Question/AddQuestion";
 import SetUnitPaper from "./pages/QPG/SetUnitPaper";
 import ManagePaper from "./pages/QPG/ManagePaper";
-import SignIn from "./pages/auth/SignIn";
+import SignIn from "./pages/Auth/SignIn";
 import ManageUnit from "./pages/Unit/ManageUnit";
 import SelectSubjectUnit from "./pages/Unit/SelectSubjectUnit";
 import AddUser from "./pages/User/AddUser";
@@ -42,7 +41,10 @@ import SelectSubjectQue from "./pages/Question/SelectSubjectQue";
 import SelectUnitQue from "./pages/Question/SelectUnitQue";
 import ShowQuestion from "./pages/Question/ShowQuestion";
 import EditQuestion from "./pages/Question/EditQuestion";
-import Logout from "./pages/auth/Logout";
+import Logout from "./pages/Auth/Logout";
+import ManagePapers from "./pages/QuestionPaper/ManagePapers";
+import SelectSubjectPaper from "./pages/QuestionPaper/SelectSubjectPaper";
+import SetPaper from "./pages/QuestionPaper/SetPaper";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -98,6 +100,50 @@ function App() {
           </>
         }
       />
+      <Route
+        path="/dashboard"
+        element={
+          <>
+            <PageTitle title="Questcraft Dashboard" />
+            <Dashboard />
+          </>
+        }
+      />
+      {/* // --------------------- Question Papers Route ----------------------- */}
+      <Route
+        path="/question-paper/manage-paper"
+        element={
+          <>
+            <PageTitle title="Manage Paper" />
+            <ContextProvider>
+              <ManagePapers />
+            </ContextProvider>
+          </>
+        }
+      />
+      <Route
+        path="/question-paper/select-subject"
+        element={
+          <>
+            <PageTitle title="Select Subject" />
+            <ContextProvider>
+              <SelectSubjectPaper />
+            </ContextProvider>
+          </>
+        }
+      />
+      <Route
+        path="/question-paper/set-paper"
+        element={
+          <>
+            <PageTitle title="Set Paper" />
+            <ContextProvider>
+              <SetPaper />
+            </ContextProvider>
+          </>
+        }
+      />
+
       {/* // --------------------- QPG Route ----------------------- */}
       <Route
         path="/qpaper/set-subject-paper"

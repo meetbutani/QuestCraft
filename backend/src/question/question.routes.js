@@ -11,6 +11,9 @@ router.get("/:id", questionController.getQuestionById);
 // Retrieve questions by unit ID
 router.get("/unitId/:unitId", questionController.getQuestionsByUnitId);
 
+// Retrieve all questions for a given subject ID
+router.get("/subjectId/:subjectId", questionController.getQuestionsBySubjectId);
+
 // Retrieve all questions
 router.get("/", questionController.getAllQuestions);
 

@@ -35,6 +35,18 @@ exports.getQuestionsByUnitId = async (req, res) => {
   }
 };
 
+exports.getQuestionsBySubjectId = async (req, res) => {
+  try {
+    const questions = await questionService.findQuestionsBySubjectId(
+      req.params.subjectId
+    );
+    res.json({ data: questions });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
 exports.getAllQuestions = async (req, res) => {
   try {
     const questions = await questionService.findAllQuestions();

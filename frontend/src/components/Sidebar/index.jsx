@@ -104,7 +104,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <NavLink
                   to="/"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("calendar") &&
+                    (pathname == "/" || pathname.includes("/dashboard")) &&
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
@@ -125,8 +125,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <NavLink
                 to="/subject/manage-subject"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname.includes("institution-info") &&
-                  "bg-graydark dark:bg-meta-4"
+                  pathname.includes("/subject") && "bg-graydark dark:bg-meta-4"
                 }`}
               >
                 <div className="flex w-[22px] justify-center">
@@ -138,7 +137,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <NavLink
                 to="/unit/select-subject"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname.includes("calendar") && "bg-graydark dark:bg-meta-4"
+                  pathname.includes("/unit") && "bg-graydark dark:bg-meta-4"
                 }`}
               >
                 <HiMiniDocumentDuplicate size={22} />
@@ -148,7 +147,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               <NavLink
                 to="/question/select-subject"
                 className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname.includes("institution-info") &&
+                  pathname.includes("/question/") &&
                   "bg-graydark dark:bg-meta-4"
                 }`}
               >
@@ -156,6 +155,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <FaRegListAlt size={18} />
                 </div>
                 Question
+              </NavLink>
+
+              <NavLink
+                to="/question-paper/manage-paper"
+                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  pathname.includes("/question-paper") &&
+                  "bg-graydark dark:bg-meta-4"
+                }`}
+              >
+                <div className="flex w-[22px] justify-center">
+                  <CgFileDocument size={22} />
+                </div>
+                Question Papers
               </NavLink>
 
               <SidebarLinkGroup
@@ -254,8 +266,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <NavLink
                   to="/profile"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("calendar") &&
-                    "bg-graydark dark:bg-meta-4"
+                    pathname.includes("profile") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <div className="flex w-[22px] justify-center">
@@ -288,8 +299,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <NavLink
                   to="/user/manage-users"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("qsetting") &&
-                    "bg-graydark dark:bg-meta-4"
+                    pathname.includes("user") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <div className="flex w-[22px] justify-center">
@@ -305,8 +315,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <NavLink
                   to="/role/manage-role"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("qsetting") &&
-                    "bg-graydark dark:bg-meta-4"
+                    pathname.includes("role") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <div className="flex w-[22px] justify-center">

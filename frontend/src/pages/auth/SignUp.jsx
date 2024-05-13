@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import LogoDark from '../../images/logo/logo-dark.svg';
-import Logo from '../../images/logo/logo.svg';
-import DefaultLayout from '../../layout/DefaultLayout';
-import MobileLogo from '../../images/loginimage/MobileLogo';
+import React, { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
+import LogoDark from "../../images/logo/logo-dark.svg";
+import Logo from "../../images/logo/logo.svg";
+import DefaultLayout from "../../layout/DefaultLayout";
+import MobileLogo from "../../images/loginimage/MobileLogo";
 import { GoMail } from "react-icons/go";
 import { GoPerson } from "react-icons/go";
-import PasswordShowHideBtn from './PasswordShowHideBtn';
+import PasswordShowHideBtn from "./PasswordShowHideBtn";
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
@@ -35,7 +35,9 @@ const SignUp = () => {
         <div className="hidden w-full xl:block xl:w-1/2">
           <div className="py-17.5 px-26 text-center">
             <NavLink className="mb-5.5 inline-block" to="/">
-              <h1 className='flex text-title-xl font-bold text-black'>Questcraft</h1>
+              <h1 className="flex text-title-xl font-bold text-black">
+                Questcraft
+              </h1>
             </NavLink>
 
             <p className="2xl:px-20">
@@ -67,7 +69,7 @@ const SignUp = () => {
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                     <span className="absolute right-4 top-4">
-                      <GoPerson size={22} fill='#b1b9c5' />
+                      <GoPerson size={22} fill="#b1b9c5" />
                     </span>
                   </div>
                 </div>
@@ -82,7 +84,7 @@ const SignUp = () => {
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                     <span className="absolute right-4 top-4">
-                      <GoPerson size={22} fill='#b1b9c5' />
+                      <GoPerson size={22} fill="#b1b9c5" />
                     </span>
                   </div>
                 </div>
@@ -100,7 +102,7 @@ const SignUp = () => {
                   />
 
                   <span className="absolute right-4 top-4">
-                    <GoMail size={22} fill='#b1b9c5' />
+                    <GoMail size={22} fill="#b1b9c5" />
                   </span>
                 </div>
               </div>
@@ -159,7 +161,7 @@ const SignUp = () => {
 
               <div className="mt-6 text-center">
                 <p>
-                  Already have an account?{' '}
+                  Already have an account?{" "}
                   <Link to="/auth/signin" className="text-primary">
                     Sign in
                   </Link>

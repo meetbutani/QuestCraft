@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 import { decryptData } from "../js/secureData";
 import DefaultLayout from "../layout/DefaultLayout";
@@ -10,8 +10,15 @@ export const PermissionGuard = ({
 }) => {
   // Check if the user has the required permission
   const hasPermission = checkPermission(requiredPermission);
+
+  useEffect(() => {
+    if (setVariable != null) {
+      hasPermission ? setVariable(true) : setVariable(false);
+    }
+  }, [hasPermission]);
+
   if (setVariable != null) {
-    hasPermission ? setVariable(true) : setVariable(false);
+    return <></>;
   } else {
     return hasPermission ? children : <NoAccess />;
   }

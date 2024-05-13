@@ -1,14 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const paperController = require('./paper.controller'); // Importing the paper controller
+const paperController = require("./paper.controller");
 
-// Route for creating a new paper
-router.post('/papers', paperController.createPaper);
+// Create a new paper
+router.post("/", paperController.createPaper);
 
-// Route for finding papers by subject code
-router.get('/papers/subject/:subjectCode', paperController.findPapersBySubjectCode);
+// Get a paper by ID
+router.get("/:id", paperController.getPaperById);
 
-// Route for finding all papers
-router.get('/papers', paperController.findAllPapers);
+// Get all papers
+router.get("/", paperController.getAllPapers);
+
+// Update a paper by ID
+router.put("/:id", paperController.updatePaper);
+
+// Delete a paper by ID
+router.delete("/:id", paperController.deletePaperById);
 
 module.exports = router;

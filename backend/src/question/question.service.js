@@ -36,6 +36,19 @@ async function findQuestionsByUnitId(unitId) {
   }
 }
 
+async function findQuestionsBySubjectId(subjectId) {
+  try {
+    const questions = await Question.find({ subjectId })
+      .populate("unitId", "unitName")
+      .populate("subjectId", "subjectCode")
+      .populate("createdBy", "username")
+      .populate("updatedBy", "username");
+    return questions;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function findAllQuestions() {
   try {
     const questions = await Question.find()
@@ -75,6 +88,7 @@ module.exports = {
   createQuestion,
   findQuestionById,
   findQuestionsByUnitId,
+  findQuestionsBySubjectId,
   findAllQuestions,
   updateQuestionById,
   deleteQuestionById,

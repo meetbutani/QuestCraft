@@ -7,10 +7,10 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
-import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
 import { toLowerCase, toTitleCase } from "../../js/utils";
 import { json } from "react-router-dom";
 import { toast } from "react-toastify";
+import PasswordShowHideBtn from "../Auth/PasswordShowHideBtn";
 
 const AddUser = () => {
   const statusList = ["Active", "Inactive"];

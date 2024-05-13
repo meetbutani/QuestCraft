@@ -1,42 +1,63 @@
-const paperService = require('./paper.service'); // Importing the paper service
+const paperService = require("./paper.service");
 
-// Controller function to handle paper creation
-async function createPaper(req, res) {
-    const paperData = req.body;
-    try {
-        // Create a new paper
-        const paper = await paperService.createPaper(paperData);
-        res.status(201).json({ message: "Paper created successfully", paper });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.createPaper = async (req, res) => {
+  try {
+    const paper = await paperService.createPaper(req.body);
+    res.status(200).json({ message: "Paper Created Successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.getPaperById = async (req, res) => {
+  try {
+    const paper = await paperService.findPaperById(req.params.id);
+    if (!paper) {
+      return res.status(201).json({ message: "Paper not found" });
     }
-}
+    res.json({ data: paper });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to find papers by subject code
-async function findPapersBySubjectCode(req, res) {
-    const { subjectCode } = req.params;
-    try {
-        // Find papers by subject code
-        const papers = await paperService.findPapersBySubjectCode(subjectCode);
-        res.status(200).json({ papers });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.getAllPapers = async (req, res) => {
+  try {
+    const papers = await paperService.findAllPapers();
+    res.json({ data: papers });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
+
+exports.updatePaper = async (req, res) => {
+  try {
+    const updatedPaper = await paperService.updatePaperById(
+      req.params.id,
+      req.body
+    );
+    if (!updatedPaper) {
+      return res.status(201).json({ message: "Paper not found" });
     }
-}
+    res.json({ message: "Paper Updated Successfully", data: updatedPaper });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
+};
 
-// Controller function to find all papers
-async function findAllPapers(req, res) {
-    try {
-        // Find all papers
-        const papers = await paperService.findAllPapers();
-        res.status(200).json({ papers });
-    } catch (error) {
-        res.status(500).json({ message: "Internal server error", error: error.message });
+exports.deletePaperById = async (req, res) => {
+  try {
+    const deletedPaper = await paperService.deletePaperById(req.params.id);
+    if (!deletedPaper) {
+      return res.status(201).json({ message: "Paper not found" });
     }
-}
-
-module.exports = {
-    createPaper,
-    findPapersBySubjectCode,
-    findAllPapers,
+    res.json({ message: "Paper deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(201).json({ message: "Internal server error" });
+  }
 };

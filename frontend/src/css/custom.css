@@ -6,6 +6,34 @@
     @apply text-red-500
 }
 
+.step-progress-step-container {
+    display: flex;
+    justify-content: space-between;
+    /* margin-top: 70px; */
+    position: relative;
+    /* top: 50%; */
+    transition: 0.4s ease;
+    /* transform: translateY(-50%); */
+}
+
+.step-progress-step-container:before {
+    content: '';
+    @apply bg-meta-4;
+    position: absolute;
+    height: 3px;
+    top: 50%;
+    width: 100%;
+}
+
+.step-progress-step-container:after {
+    content: '';
+    @apply bg-primary;
+    position: absolute;
+    height: 3px;
+    top: 50%;
+    width: var(--progress-width);
+}
+
 .table-td-data {
     @apply border-b border-[#eee] dark:border-strokedark px-3;
 }

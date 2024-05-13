@@ -8,6 +8,7 @@ export const ContextProvider = ({ children }) => {
   const [selectedSubjectData, setSelectedSubjectData] = useState(null);
   const [selectedUserData, setSelectedUserData] = useState(null);
   const [selectedRoleData, setSelectedRoleData] = useState(null);
+  const [selectedPaperData, setSelectedPaperData] = useState(null);
 
   return (
     <ContextProviderContext.Provider
@@ -22,6 +23,8 @@ export const ContextProvider = ({ children }) => {
         setSelectedUserData,
         selectedRoleData,
         setSelectedRoleData,
+        selectedPaperData,
+        setSelectedPaperData,
       }}
     >
       {children}

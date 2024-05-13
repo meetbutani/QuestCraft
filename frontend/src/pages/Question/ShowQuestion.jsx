@@ -89,7 +89,28 @@ const ShowQuestion = () => {
                         {selectedQuestionData.mcqOptionsOrg.map(
                           (option, index) => (
                             <input
-                              key={index}
+                              key={index + "org"}
+                              value={option}
+                              disabled
+                              className="inputfield"
+                            />
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+                {selectedQuestionData.mcqOptionsTrans &&
+                  selectedQuestionData.mcqOptionsTrans.length > 0 &&
+                  selectedQuestionData.mcqOptionsTrans[0] !== "" && (
+                    <div>
+                      <label className="labelfield">
+                        Translated MCQ Options
+                      </label>
+                      <ul>
+                        {selectedQuestionData.mcqOptionsTrans.map(
+                          (option, index) => (
+                            <input
+                              key={index + "trans"}
                               value={option}
                               disabled
                               className="inputfield"

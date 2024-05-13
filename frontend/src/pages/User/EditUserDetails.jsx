@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import axios from "axios";
 import { javaBaseUrl } from "../../js/api.constatnt";
-import PasswordShowHideBtn from "../auth/PasswordShowHideBtn";
+import PasswordShowHideBtn from "../Auth/PasswordShowHideBtn";
 import { toLowerCase, toTitleCase } from "../../js/utils";
 import { useNavigate } from "react-router-dom";
 import ContextProviderContext from "../../context/ContextProvider";
